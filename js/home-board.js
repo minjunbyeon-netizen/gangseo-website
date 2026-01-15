@@ -58,6 +58,18 @@
         if (jobsContainer) {
             loadBoardList(2, jobsContainer, 'job-view.html');
         }
+
+        // 최근 소식 로드 (알림사항과 동일한 보드 사용 가능성 높음)
+        const recentNoticeContainer = document.getElementById('home-recent-notice-list');
+        if (recentNoticeContainer) {
+            loadBoardList(1, recentNoticeContainer, 'notice-view.html');
+        }
+
+        // 갤러리 로드
+        const galleryContainer = document.getElementById('home-gallery-list');
+        if (galleryContainer) {
+            loadGalleryList(8, galleryContainer, 'gallery-view.html');
+        }
     });
 
     /**
@@ -90,6 +102,34 @@
     }
 
     /**
+     * 갤러리 목록 로드
+     */
+    function loadGalleryList(boardNo, container, viewPage) {
+        const cacheKey = `${CONFIG.cachePrefix}gallery_${boardNo}`;
+        const cachedData = getCache(cacheKey);
+
+        if (cachedData) {
+            renderGallery(container, cachedData.data, viewPage);
+            return;
+        }
+
+        fetch(`${CONFIG.proxyUrl}?action=list&board_no=${boardNo}&page=1`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data && data.data.length > 0) {
+                    setCache(cacheKey, data);
+                    renderGallery(container, data.data, viewPage);
+                } else {
+                    container.innerHTML = '<div class="board-empty"><p>등록된 이미지가 없습니다.</p></div>';
+                }
+            })
+            .catch(error => {
+                console.error('Home gallery load error:', error);
+                container.innerHTML = '<div class="board-error"><p>불러오기 실패</p></div>';
+            });
+    }
+
+    /**
      * 목록 렌더링
      */
     function renderList(container, items, viewPage) {
@@ -108,6 +148,34 @@
                         <span class="date">${formattedDate}</span>
                     </a>
                 </li>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    /**
+     * 갤러리 렌더링
+     */
+    function renderGallery(container, items, viewPage) {
+        const limitedItems = items.slice(0, 6); // 메인 페이지는 6개
+        let html = '';
+
+        limitedItems.forEach(item => {
+            const localLink = `${viewPage}?id=${item.id}`;
+            const thumbnail = item.thumbnail || 'images/placeholder.png';
+            const formattedDate = item.date ? item.date.replace(/-/g, '.') : '';
+
+            html += `
+                <a href="${localLink}" class="gallery-card-home">
+                    <div class="gallery-card-img">
+                        <img src="${thumbnail}" alt="${escapeHtml(item.title)}" onerror="this.src='images/placeholder.png'" loading="lazy">
+                    </div>
+                    <div class="gallery-card-info">
+                        <h4 class="gallery-card-title">${escapeHtml(item.title)}</h4>
+                        <span class="gallery-card-date">${formattedDate}</span>
+                    </div>
+                </a>
             `;
         });
 
