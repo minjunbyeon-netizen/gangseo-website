@@ -1,17 +1,28 @@
 <?php
 /**
- * Cafe24 Board Proxy
- * Cafe24 게시판 콘텐츠를 가져와서 JSON으로 반환
+ * Cafe24 Board Proxy with Caching
+ * Cafe24 게시판 콘텐츠를 가져와서 JSON으로 반환 (캐싱 지원)
  */
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
+
+// 캐시 설정
+define('CACHE_DIR', __DIR__ . '/cache/');
+define('CACHE_TIME_LIST', 300);    // 목록 캐시: 5분
+define('CACHE_TIME_ARTICLE', 600); // 글 캐시: 10분
+
+// 캐시 디렉토리 생성
+if (!file_exists(CACHE_DIR)) {
+    mkdir(CACHE_DIR, 0755, true);
+}
 
 // 요청 파라미터
 $boardNo = isset($_GET['board_no']) ? intval($_GET['board_no']) : 2;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $articleId = isset($_GET['article_id']) ? intval($_GET['article_id']) : 0;
+$noCache = isset($_GET['nocache']) ? true : false;
 
 // 게시판 정보 매핑
 $boardInfo = [
@@ -19,6 +30,18 @@ $boardInfo = [
     2 => ['name' => '구인구직', 'slug' => '구인구직'],
     8 => ['name' => '갤러리', 'slug' => '갤러리']
 ];
+
+// 캐시 키 생성
+$cacheKey = $action . '_' . $boardNo . '_' . $page . '_' . $articleId;
+$cacheFile = CACHE_DIR . $cacheKey . '.json';
+$cacheTime = ($action === 'list') ? CACHE_TIME_LIST : CACHE_TIME_ARTICLE;
+
+// 캐시 확인
+if (!$noCache && file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTime) {
+    // 캐시에서 반환
+    echo file_get_contents($cacheFile);
+    exit;
+}
 
 try {
     if ($action === 'list') {
@@ -30,7 +53,12 @@ try {
         throw new Exception('Invalid action or missing parameters');
     }
 
-    echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    $json = json_encode($result, JSON_UNESCAPED_UNICODE);
+
+    // 캐시 저장
+    file_put_contents($cacheFile, $json);
+
+    echo $json;
 
 } catch (Exception $e) {
     echo json_encode([
