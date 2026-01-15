@@ -1264,6 +1264,36 @@
     margin: 0 15px 15px;
 }
 
+/* 상품 스켈레톤 */
+.skeleton-products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.skeleton-product-card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.skeleton-product-img {
+    width: 100%;
+    height: 200px;
+    border-radius: 0;
+}
+
+.skeleton-product-name {
+    height: 18px;
+    margin: 15px 15px 10px;
+}
+
+.skeleton-product-price {
+    height: 16px;
+    width: 80px;
+    margin: 0 15px 15px;
+}
+
 /* 상세글 스켈레톤 */
 .skeleton-article {
     padding: 30px;
