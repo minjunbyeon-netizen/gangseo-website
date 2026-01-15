@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>알림사항 | 부산강서시니어클럽</title>
-    <meta name="description" content="부산강서시니어클럽 알림사항 게시판">
+    <title>알림사항 상세 | 부산강서시니어클럽</title>
+    <meta name="description" content="부산강서시니어클럽 알림사항">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,7 +85,7 @@
             <h2 class="page-title">알림사항</h2>
             <p class="page-subtitle">부산강서시니어클럽의 공지사항 및 소식</p>
             <div class="breadcrumb">
-                <a href="index.html">홈</a> <span>></span> <span>게시판</span> <span>></span> <span>알림사항</span>
+                <a href="index.html">홈</a> <span>></span> <a href="notice.html">게시판</a> <span>></span> <span>알림사항</span>
             </div>
         </div>
     </section>
@@ -105,13 +105,17 @@
     <section class="page-content">
         <div class="container">
             <div class="content-section">
-                <h3 class="section-title">알림사항</h3>
-                <div class="notice-list" id="notice-list-container">
+                <!-- Article View Container -->
+                <div class="article-view" id="notice-article-view-container">
                     <div class="board-loading">
                         <p>게시글을 불러오는 중...</p>
                     </div>
                 </div>
-                <div class="pagination" id="notice-pagination"></div>
+
+                <!-- Back to List Button -->
+                <div class="article-actions">
+                    <a href="notice.html" class="btn-outline">목록으로</a>
+                </div>
             </div>
         </div>
     </section>
