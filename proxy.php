@@ -61,120 +61,207 @@ function fetchBoardList($boardNo, $page)
 
     $items = [];
 
-    // Cafe24 테이블 구조 파싱: ec-base-table 내의 tbody tr
-    $rows = $xpath->query("//div[contains(@class, 'ec-base-table')]//tbody//tr");
+    // 갤러리 게시판(board_no=8)은 ul/li 구조 사용
+    if ($boardNo == 8) {
+        // 갤러리 li 항목들 파싱
+        $galleryItems = $xpath->query("//div[contains(@module, 'board_list_8')]//li | //div[contains(@class, 'xans-board-list')]//li");
 
-    foreach ($rows as $row) {
-        $cells = $xpath->query(".//td", $row);
-        if ($cells->length < 3)
-            continue;
+        foreach ($galleryItems as $li) {
+            // 링크 추출
+            $linkNode = $xpath->query(".//a[contains(@href, '/article/')]", $li)->item(0);
+            if (!$linkNode)
+                continue;
 
-        // 링크와 제목 추출
-        $linkNode = $xpath->query(".//td[contains(@class, 'subject')]//a", $row)->item(0);
-        if (!$linkNode) {
-            $linkNode = $xpath->query(".//a[contains(@href, '/article/')]", $row)->item(0);
-        }
+            $href = $linkNode->getAttribute('href');
 
-        if (!$linkNode)
-            continue;
+            // URL에서 article ID 추출
+            preg_match('/\/article\/[^\/]+\/\d+\/(\d+)/', $href, $matches);
+            $articleId = $matches[1] ?? 0;
+            if (!$articleId)
+                continue;
 
-        $href = $linkNode->getAttribute('href');
-        $title = trim($linkNode->textContent);
-
-        if (empty($title) || strlen($title) < 2)
-            continue;
-
-        // URL에서 article ID 추출
-        preg_match('/\/article\/[^\/]+\/\d+\/(\d+)/', $href, $matches);
-        $articleId = $matches[1] ?? 0;
-        if (!$articleId)
-            continue;
-
-        // 번호 추출
-        $numCell = $cells->item(0);
-        $numText = trim($numCell->textContent);
-        $isNotice = (strpos($numText, '공지') !== false || $xpath->query(".//img[contains(@alt, '공지')]", $numCell)->length > 0);
-        $num = $isNotice ? 0 : intval($numText);
-
-        // 날짜 추출 - txtNum 클래스 또는 날짜 패턴
-        $dateText = '';
-        $dateCells = $xpath->query(".//td//span[@class='txtNum']", $row);
-        foreach ($dateCells as $dateCell) {
-            $text = trim($dateCell->textContent);
-            if (preg_match('/\d{4}-\d{2}-\d{2}/', $text)) {
-                $dateText = $text;
-                break;
+            // 제목 추출
+            $title = '';
+            $titleNode = $xpath->query(".//p[not(contains(@class, 'imgLink'))]", $li)->item(0);
+            if ($titleNode) {
+                $title = trim($titleNode->textContent);
             }
-        }
-        // 날짜를 못 찾았으면 전체 row에서 찾기
-        if (empty($dateText)) {
-            $rowHtml = $dom->saveHTML($row);
-            if (preg_match('/(\d{4}-\d{2}-\d{2})/', $rowHtml, $dateMatches)) {
-                $dateText = $dateMatches[1];
+            if (empty($title)) {
+                $title = trim($linkNode->textContent);
             }
-        }
+            if (empty($title) || strlen($title) < 2)
+                continue;
 
-        // 조회수 추출 - hit_display 클래스가 있는 td 내의 txtNum
-        $views = 0;
-        $hitCells = $xpath->query(".//td[contains(@class, 'hit')]//span[@class='txtNum'] | .//td[5]//span[@class='txtNum']", $row);
-        if ($hitCells->length > 0) {
-            foreach ($hitCells as $hitCell) {
-                $hitText = trim($hitCell->textContent);
-                if (is_numeric($hitText)) {
-                    $views = intval($hitText);
+            // 날짜 추출
+            $dateText = '';
+            $dateNode = $xpath->query(".//span | .//em", $li)->item(0);
+            if ($dateNode) {
+                $text = trim($dateNode->textContent);
+                if (preg_match('/\d{4}-\d{2}-\d{2}/', $text, $dateMatches)) {
+                    $dateText = $dateMatches[0];
+                } else {
+                    $dateText = $text;
+                }
+            }
+            // 날짜를 못 찾았으면 전체에서 찾기
+            if (empty($dateText)) {
+                $liHtml = $dom->saveHTML($li);
+                if (preg_match('/(\d{4}-\d{2}-\d{2})/', $liHtml, $dateMatches)) {
+                    $dateText = $dateMatches[1];
+                }
+            }
+
+            // 썸네일 이미지 추출
+            $thumbnail = '';
+            $imgNode = $xpath->query(".//img", $li)->item(0);
+            if ($imgNode) {
+                $src = $imgNode->getAttribute('src');
+                if (!empty($src)) {
+                    if (strpos($src, 'http') !== 0) {
+                        if (strpos($src, '//') === 0) {
+                            $thumbnail = 'https:' . $src;
+                        } elseif (strpos($src, '/') === 0) {
+                            $thumbnail = 'https://gs2015.kr' . $src;
+                        } else {
+                            $thumbnail = 'https://gs2015.kr/' . $src;
+                        }
+                    } else {
+                        $thumbnail = $src;
+                    }
+                }
+            }
+
+            $items[] = [
+                'id' => $articleId,
+                'num' => 0,
+                'isNotice' => false,
+                'type' => '',
+                'title' => $title,
+                'date' => $dateText,
+                'views' => 0,
+                'link' => 'https://gs2015.kr' . $href,
+                'thumbnail' => $thumbnail
+            ];
+        }
+    }
+
+    // 테이블 구조 파싱 (갤러리가 아니거나 갤러리에서 아이템을 못 찾은 경우)
+    if (count($items) === 0) {
+        // Cafe24 테이블 구조 파싱: ec-base-table 내의 tbody tr
+        $rows = $xpath->query("//div[contains(@class, 'ec-base-table')]//tbody//tr");
+
+        foreach ($rows as $row) {
+            $cells = $xpath->query(".//td", $row);
+            if ($cells->length < 3)
+                continue;
+
+            // 링크와 제목 추출
+            $linkNode = $xpath->query(".//td[contains(@class, 'subject')]//a", $row)->item(0);
+            if (!$linkNode) {
+                $linkNode = $xpath->query(".//a[contains(@href, '/article/')]", $row)->item(0);
+            }
+
+            if (!$linkNode)
+                continue;
+
+            $href = $linkNode->getAttribute('href');
+            $title = trim($linkNode->textContent);
+
+            if (empty($title) || strlen($title) < 2)
+                continue;
+
+            // URL에서 article ID 추출
+            preg_match('/\/article\/[^\/]+\/\d+\/(\d+)/', $href, $matches);
+            $articleId = $matches[1] ?? 0;
+            if (!$articleId)
+                continue;
+
+            // 번호 추출
+            $numCell = $cells->item(0);
+            $numText = trim($numCell->textContent);
+            $isNotice = (strpos($numText, '공지') !== false || $xpath->query(".//img[contains(@alt, '공지')]", $numCell)->length > 0);
+            $num = $isNotice ? 0 : intval($numText);
+
+            // 날짜 추출 - txtNum 클래스 또는 날짜 패턴
+            $dateText = '';
+            $dateCells = $xpath->query(".//td//span[@class='txtNum']", $row);
+            foreach ($dateCells as $dateCell) {
+                $text = trim($dateCell->textContent);
+                if (preg_match('/\d{4}-\d{2}-\d{2}/', $text)) {
+                    $dateText = $text;
                     break;
                 }
             }
-        }
-        // 조회수를 못 찾았으면 5번째 td에서 시도
-        if ($views === 0 && $cells->length >= 5) {
-            $viewCell = $cells->item(4);
-            $viewText = trim($viewCell->textContent);
-            if (is_numeric($viewText)) {
-                $views = intval($viewText);
-            }
-        }
-
-        // 구인/구직 타입 추출
-        $type = '구인';
-        $rowHtml = $dom->saveHTML($row);
-        if (strpos($title, '구직') !== false || strpos($rowHtml, '구직') !== false) {
-            $type = '구직';
-        }
-
-        // 썸네일 이미지 추출 (갤러리용)
-        $thumbnail = '';
-        $imgNodes = $xpath->query(".//img[not(contains(@src, 'ico_'))]", $row);
-        foreach ($imgNodes as $imgNode) {
-            $src = $imgNode->getAttribute('src');
-            if (!empty($src) && strpos($src, 'ico_') === false && strpos($src, 'icon') === false) {
-                if (strpos($src, 'http') !== 0) {
-                    if (strpos($src, '//') === 0) {
-                        $thumbnail = 'https:' . $src;
-                    } elseif (strpos($src, '/') === 0) {
-                        $thumbnail = 'https://gs2015.kr' . $src;
-                    } else {
-                        $thumbnail = 'https://gs2015.kr/' . $src;
-                    }
-                } else {
-                    $thumbnail = $src;
+            // 날짜를 못 찾았으면 전체 row에서 찾기
+            if (empty($dateText)) {
+                $rowHtml = $dom->saveHTML($row);
+                if (preg_match('/(\d{4}-\d{2}-\d{2})/', $rowHtml, $dateMatches)) {
+                    $dateText = $dateMatches[1];
                 }
-                break;
             }
-        }
 
-        $items[] = [
-            'id' => $articleId,
-            'num' => $num,
-            'isNotice' => $isNotice,
-            'type' => $type,
-            'title' => $title,
-            'date' => $dateText,
-            'views' => $views,
-            'link' => 'https://gs2015.kr' . $href,
-            'thumbnail' => $thumbnail
-        ];
-    }
+            // 조회수 추출 - hit_display 클래스가 있는 td 내의 txtNum
+            $views = 0;
+            $hitCells = $xpath->query(".//td[contains(@class, 'hit')]//span[@class='txtNum'] | .//td[5]//span[@class='txtNum']", $row);
+            if ($hitCells->length > 0) {
+                foreach ($hitCells as $hitCell) {
+                    $hitText = trim($hitCell->textContent);
+                    if (is_numeric($hitText)) {
+                        $views = intval($hitText);
+                        break;
+                    }
+                }
+            }
+            // 조회수를 못 찾았으면 5번째 td에서 시도
+            if ($views === 0 && $cells->length >= 5) {
+                $viewCell = $cells->item(4);
+                $viewText = trim($viewCell->textContent);
+                if (is_numeric($viewText)) {
+                    $views = intval($viewText);
+                }
+            }
+
+            // 구인/구직 타입 추출
+            $type = '구인';
+            $rowHtml = $dom->saveHTML($row);
+            if (strpos($title, '구직') !== false || strpos($rowHtml, '구직') !== false) {
+                $type = '구직';
+            }
+
+            // 썸네일 이미지 추출 (갤러리용)
+            $thumbnail = '';
+            $imgNodes = $xpath->query(".//img[not(contains(@src, 'ico_'))]", $row);
+            foreach ($imgNodes as $imgNode) {
+                $src = $imgNode->getAttribute('src');
+                if (!empty($src) && strpos($src, 'ico_') === false && strpos($src, 'icon') === false) {
+                    if (strpos($src, 'http') !== 0) {
+                        if (strpos($src, '//') === 0) {
+                            $thumbnail = 'https:' . $src;
+                        } elseif (strpos($src, '/') === 0) {
+                            $thumbnail = 'https://gs2015.kr' . $src;
+                        } else {
+                            $thumbnail = 'https://gs2015.kr/' . $src;
+                        }
+                    } else {
+                        $thumbnail = $src;
+                    }
+                    break;
+                }
+            }
+
+            $items[] = [
+                'id' => $articleId,
+                'num' => $num,
+                'isNotice' => $isNotice,
+                'type' => $type,
+                'title' => $title,
+                'date' => $dateText,
+                'views' => $views,
+                'link' => 'https://gs2015.kr' . $href,
+                'thumbnail' => $thumbnail
+            ];
+        }
+    } // end if (count($items) === 0)
 
     // 페이지네이션 정보 추출
     $pagination = [
