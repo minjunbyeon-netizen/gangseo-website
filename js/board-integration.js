@@ -156,25 +156,42 @@
     }
 
     /**
-     * 알림사항 목록 렌더링
+     * 알림사항 목록 렌더링 (테이블 형식)
      */
     function renderNoticeList(container, items, viewPage) {
-        let html = '';
-        let index = items.length;
+        let html = `
+            <table class="board-table">
+                <thead>
+                    <tr>
+                        <th class="num">번호</th>
+                        <th class="title">제목</th>
+                        <th class="date">작성일</th>
+                        <th class="views">조회</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
 
-        items.forEach(item => {
+        items.forEach((item, index) => {
             const localLink = `${viewPage}?id=${item.id}`;
+            const isNotice = item.isNotice || false;
+            const numDisplay = isNotice ? '<span class="notice-badge">공지</span>' : item.num || (items.length - index);
+            const views = item.views || '-';
 
             html += `
-                <div class="notice-item">
-                    <div class="notice-num">${index--}</div>
-                    <div class="notice-info">
-                        <h4><a href="${localLink}">${escapeHtml(item.title)}</a></h4>
-                    </div>
-                    <div class="notice-date">${item.date}</div>
-                </div>
+                <tr${isNotice ? ' class="notice-row"' : ''}>
+                    <td class="num">${numDisplay}</td>
+                    <td class="title"><a href="${localLink}">${escapeHtml(item.title)}</a></td>
+                    <td class="date">${item.date}</td>
+                    <td class="views">${views}</td>
+                </tr>
             `;
         });
+
+        html += `
+                </tbody>
+            </table>
+        `;
 
         container.innerHTML = html;
     }

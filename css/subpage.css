@@ -1053,6 +1053,85 @@
     flex-shrink: 0;
 }
 
+/* Board Table Styles */
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.board-table thead {
+    background: #f8f9fa;
+    border-top: 2px solid #333;
+    border-bottom: 1px solid #ddd;
+}
+
+.board-table th {
+    padding: 15px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.board-table th.title {
+    text-align: left;
+}
+
+.board-table td {
+    padding: 18px 10px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.board-table td.title {
+    text-align: left;
+}
+
+.board-table td.title a {
+    color: #333;
+    transition: color 0.2s;
+}
+
+.board-table td.title a:hover {
+    color: var(--primary-orange);
+}
+
+.board-table .num {
+    width: 80px;
+}
+
+.board-table .date {
+    width: 120px;
+}
+
+.board-table .views {
+    width: 80px;
+}
+
+.board-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.board-table .notice-row {
+    background: #fffef5;
+}
+
+.board-table .notice-row:hover {
+    background: #fffce8;
+}
+
+.notice-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--primary-orange);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+}
 
 /* Board Loading/Empty/Error States */
 .board-loading,
