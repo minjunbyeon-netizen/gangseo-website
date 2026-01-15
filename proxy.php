@@ -187,6 +187,9 @@ function fetchArticleDetail($boardNo, $articleId, $slug)
     $contentNode = $xpath->query("//div[contains(@class, 'view_content')] | //div[contains(@class, 'board_view')] | //div[@id='contents']")->item(0);
     $content = $contentNode ? $dom->saveHTML($contentNode) : '';
 
+    // 이미지 URL을 절대 경로로 변환
+    $content = convertToAbsoluteUrls($content, 'https://gs2015.kr');
+
     // 날짜 추출
     $date = '';
     $dateNode = $xpath->query("//*[contains(@class, 'date')] | //*[contains(@class, 'time')]")->item(0);
@@ -204,6 +207,46 @@ function fetchArticleDetail($boardNo, $articleId, $slug)
             'url' => $url
         ]
     ];
+}
+
+/**
+ * 상대 URL을 절대 URL로 변환
+ */
+function convertToAbsoluteUrls($html, $baseUrl)
+{
+    // src 속성 변환 (이미지, 스크립트 등)
+    $html = preg_replace_callback(
+        '/src=["\']([^"\']+)["\']/i',
+        function ($matches) use ($baseUrl) {
+            $src = $matches[1];
+            if (strpos($src, 'http') === 0 || strpos($src, '//') === 0) {
+                return $matches[0]; // 이미 절대 경로
+            }
+            if (strpos($src, '/') === 0) {
+                return 'src="' . $baseUrl . $src . '"';
+            }
+            return 'src="' . $baseUrl . '/' . $src . '"';
+        },
+        $html
+    );
+
+    // href 속성 변환 (링크)
+    $html = preg_replace_callback(
+        '/href=["\']([^"\']+)["\']/i',
+        function ($matches) use ($baseUrl) {
+            $href = $matches[1];
+            if (strpos($href, 'http') === 0 || strpos($href, '//') === 0 || strpos($href, '#') === 0 || strpos($href, 'javascript') === 0) {
+                return $matches[0]; // 이미 절대 경로이거나 특수 링크
+            }
+            if (strpos($href, '/') === 0) {
+                return 'href="' . $baseUrl . $href . '"';
+            }
+            return 'href="' . $baseUrl . '/' . $href . '"';
+        },
+        $html
+    );
+
+    return $html;
 }
 
 /**
