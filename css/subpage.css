@@ -2404,3 +2404,213 @@
         padding: 15px 30px;
     }
 }
+
+/* ========================================
+   Board Responsive Styles
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .gallery-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    /* Board Table Responsive */
+    .board-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .board-table thead {
+        display: none;
+    }
+
+    .board-table tbody {
+        display: block;
+    }
+
+    .board-table tr {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        background: #fff;
+    }
+
+    .board-table td {
+        border: none;
+        padding: 5px 0;
+        text-align: left;
+    }
+
+    .board-table td.num {
+        width: auto;
+        margin-right: 10px;
+    }
+
+    .board-table td.title {
+        width: 100%;
+        order: -1;
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+
+    .board-table td.date,
+    .board-table td.views {
+        width: auto;
+        font-size: 12px;
+        color: #999;
+    }
+
+    .board-table td.date::before {
+        content: "작성일 ";
+    }
+
+    .board-table td.views::before {
+        content: "조회 ";
+        margin-left: 10px;
+    }
+
+    .notice-badge {
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+
+    /* Jobs List Responsive */
+    .jobs-list {
+        border-top: 1px solid #ddd;
+    }
+
+    .job-item {
+        flex-wrap: wrap;
+        padding: 15px 10px;
+        gap: 10px;
+    }
+
+    .job-badge {
+        padding: 4px 12px;
+        font-size: 12px;
+        min-width: 40px;
+    }
+
+    .job-info {
+        width: calc(100% - 60px);
+    }
+
+    .job-info h4 {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .job-date {
+        width: 100%;
+        font-size: 12px;
+        margin-top: 5px;
+        padding-left: 52px;
+    }
+
+    /* Gallery Responsive */
+    .gallery-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .gallery-card-img img {
+        height: 120px;
+    }
+
+    .gallery-card-info {
+        padding: 12px;
+    }
+
+    .gallery-card-title {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+
+    .gallery-card-date {
+        font-size: 11px;
+    }
+
+    /* Article View Responsive */
+    .article-view {
+        border-radius: 8px;
+    }
+
+    .article-header {
+        padding: 20px 15px;
+    }
+
+    .article-title {
+        font-size: 18px;
+        line-height: 1.4;
+    }
+
+    .article-meta {
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .article-content {
+        padding: 20px 15px;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .article-content img {
+        margin: 15px auto;
+    }
+
+    .article-actions {
+        margin-top: 20px;
+    }
+
+    .article-actions .btn-outline {
+        padding: 10px 30px;
+        font-size: 14px;
+    }
+
+    /* Pagination Responsive */
+    .pagination {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .page-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .gallery-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-card-img img {
+        height: 180px;
+    }
+
+    .job-info {
+        width: 100%;
+    }
+
+    .job-date {
+        padding-left: 0;
+    }
+
+    .board-table tr {
+        padding: 12px 10px;
+    }
+
+    .board-table td.title {
+        font-size: 14px;
+    }
+}
