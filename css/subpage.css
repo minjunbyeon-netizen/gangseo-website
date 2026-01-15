@@ -938,41 +938,43 @@
 /* Jobs List */
 .jobs-list {
     margin-bottom: 30px;
+    border-top: 2px solid #333;
 }
 
 .job-item {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 20px;
+    padding: 20px 15px;
     background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
     transition: all 0.2s ease;
 }
 
 .job-item:hover {
-    border-color: #2e9e5e;
-    box-shadow: 0 3px 10px rgba(46, 158, 94, 0.1);
+    background: #fafafa;
 }
 
 .job-badge {
-    padding: 6px 14px;
-    border-radius: 20px;
+    padding: 6px 16px;
+    border-radius: 4px;
     font-size: 13px;
     font-weight: 600;
     flex-shrink: 0;
+    min-width: 50px;
+    text-align: center;
 }
 
 .job-badge.hiring {
     background: #e8f5e9;
     color: #2e7d32;
+    border: 1px solid #c8e6c9;
 }
 
 .job-badge.seeking {
     background: #e3f2fd;
     color: #1565c0;
+    border: 1px solid #bbdefb;
 }
 
 .job-info {
@@ -980,10 +982,15 @@
 }
 
 .job-info h4 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-bottom: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.job-info h4 a {
+    color: #333;
 }
 
 .job-info h4 a:hover {
@@ -991,13 +998,12 @@
 }
 
 .job-info p {
-    font-size: 14px;
-    color: var(--text-light);
+    display: none;
 }
 
 .job-date {
     font-size: 14px;
-    color: var(--text-light);
+    color: #999;
     flex-shrink: 0;
 }
 
