@@ -1052,4 +1052,185 @@ img {
     .product-item {
         flex: 0 0 250px;
     }
+
+    .business-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .business-card {
+        padding: 25px 20px;
+    }
+
+    .gallery-grid-home {
+        gap: 15px;
+    }
+}
+
+/* =====================================================
+   Additional Mobile Fixes
+   ===================================================== */
+@media (max-width: 768px) {
+
+    /* Header & Logo */
+    .header-inner {
+        padding: 0 15px;
+    }
+
+    .logo-img {
+        height: 40px;
+    }
+
+    /* Container */
+    .container {
+        padding: 0 15px;
+    }
+
+    /* Content Grid */
+    .content-grid {
+        padding: 30px 0;
+    }
+
+    .grid-row {
+        gap: 20px;
+    }
+
+    .grid-item {
+        padding: 20px 15px;
+    }
+
+    .box-header h3 {
+        font-size: 16px;
+    }
+
+    .list li a {
+        padding: 12px 0;
+    }
+
+    .list .title {
+        font-size: 13px;
+        max-width: calc(100% - 80px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .list .date {
+        font-size: 12px;
+    }
+
+    /* Business Section */
+    .main-business {
+        padding: 40px 0;
+    }
+
+    .business-cards {
+        gap: 15px;
+    }
+
+    /* Gallery Home */
+    .gallery-section {
+        padding: 40px 0;
+    }
+
+    .gallery-grid-home {
+        gap: 15px;
+    }
+
+    .gallery-card-home {
+        border-radius: 8px;
+    }
+
+    .gallery-card-title {
+        font-size: 13px;
+    }
+
+    .gallery-card-date {
+        font-size: 11px;
+    }
+
+    /* News Media */
+    .news-media-section {
+        padding: 40px 0;
+    }
+
+    .article-list-box {
+        padding: 20px 15px;
+    }
+
+    .video-box {
+        padding: 20px 15px;
+    }
+
+    /* Location */
+    .location-section {
+        padding: 40px 0;
+    }
+
+    .location-map {
+        height: 250px;
+    }
+
+    .location-info {
+        padding: 25px 20px;
+    }
+
+    .location-info h4 {
+        font-size: 16px;
+    }
+
+    .location-info p {
+        font-size: 13px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 30px 0;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-info p {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .footer-title {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .footer-title strong {
+        font-size: 15px;
+    }
+
+    .footer-copyright {
+        text-align: center;
+    }
+
+    .footer-copyright p {
+        font-size: 11px;
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+    .logo-img {
+        height: 35px;
+    }
+
+    .list .title {
+        font-size: 12px;
+        max-width: calc(100% - 70px);
+    }
+
+    .grid-item {
+        padding: 15px 12px;
+    }
+
+    .box-header h3 {
+        font-size: 15px;
+    }
 }
