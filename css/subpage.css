@@ -1001,6 +1001,26 @@
     flex-shrink: 0;
 }
 
+/* Board Loading/Empty/Error States */
+.board-loading,
+.board-empty,
+.board-error {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.board-loading p,
+.board-empty p,
+.board-error p {
+    font-size: 16px;
+}
+
+.board-error p {
+    color: #d32f2f;
+}
+
+
 /* Active Menu State */
 .gnb>ul>li.active>a {
     color: var(--primary-orange);

@@ -106,45 +106,12 @@
         <div class="container">
             <div class="content-section">
                 <h3 class="section-title">구인/구직</h3>
-                <div class="jobs-list">
-                    <div class="job-item">
-                        <div class="job-badge hiring">구인</div>
-                        <div class="job-info">
-                            <h4><a href="#">[강서구] 공원관리 도우미 모집</a></h4>
-                            <p>근무지: 강서구 일원 | 급여: 협의 | 모집인원: 5명</p>
-                        </div>
-                        <div class="job-date">2026.01.13</div>
-                    </div>
-                    <div class="job-item">
-                        <div class="job-badge hiring">구인</div>
-                        <div class="job-info">
-                            <h4><a href="#">[김해시] 경로당 급식 도우미</a></h4>
-                            <p>근무지: 김해시 일원 | 급여: 시급 10,000원 | 모집인원: 3명</p>
-                        </div>
-                        <div class="job-date">2026.01.10</div>
-                    </div>
-                    <div class="job-item">
-                        <div class="job-badge seeking">구직</div>
-                        <div class="job-info">
-                            <h4><a href="#">경비 및 시설관리 경력 보유 (65세, 남성)</a></h4>
-                            <p>희망근무지: 강서구, 사하구 | 희망급여: 월 150만원 이상</p>
-                        </div>
-                        <div class="job-date">2026.01.08</div>
-                    </div>
-                    <div class="job-item">
-                        <div class="job-badge hiring">구인</div>
-                        <div class="job-info">
-                            <h4><a href="#">[대저동] 농산물 선별 작업 보조</a></h4>
-                            <p>근무지: 대저동 농협 | 급여: 일급 80,000원 | 모집인원: 10명</p>
-                        </div>
-                        <div class="job-date">2026.01.05</div>
+                <div class="jobs-list" id="jobs-list-container">
+                    <div class="board-loading">
+                        <p>게시글을 불러오는 중...</p>
                     </div>
                 </div>
-                <div class="pagination">
-                    <a href="#" class="page-btn active">1</a>
-                    <a href="#" class="page-btn">2</a>
-                    <a href="#" class="page-btn next">다음</a>
-                </div>
+                <div class="pagination" id="jobs-pagination"></div>
             </div>
         </div>
     </section>
@@ -171,6 +138,7 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/board-integration.js"></script>
 </body>
 
 </html>
