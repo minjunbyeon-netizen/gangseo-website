@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구인/구직 상세 | 부산강서시니어클럽</title>
+    <meta name="description" content="부산강서시니어클럽 구인구직 게시판">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/subpage.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <h1 class="logo">
+                <a href="index.html">
+                    <span class="logo-text">
+                        <strong>부산강서시니어클럽</strong>
+                        <small>BUSAN Gangseo Senior Club</small>
+                    </span>
+                </a>
+            </h1>
+            <nav class="gnb">
+                <ul>
+                    <li class="has-submenu">
+                        <a href="about.html">기관소개</a>
+                        <ul class="submenu">
+                            <li><a href="about.html#greeting">인사말</a></li>
+                            <li><a href="about.html#mission">미션과 비전</a></li>
+                            <li><a href="about.html#organization">기관 조직도</a></li>
+                            <li><a href="about.html#location">오시는길</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="senior.html">노인일자리 사업</a>
+                        <ul class="submenu">
+                            <li><a href="senior.html#public">공익형</a></li>
+                            <li><a href="senior.html#capacity">역량형</a></li>
+                            <li><a href="senior.html#community">공동체형</a></li>
+                            <li><a href="senior.html#employment">취업알선형</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="products.html">생산판매</a>
+                        <ul class="submenu">
+                            <li><a href="products.html#sesame">정일품참기름</a></li>
+                            <li><a href="products.html#drinks">액상차&즙</a></li>
+                            <li><a href="products.html#coffee">더치커피</a></li>
+                            <li><a href="products.html#cafe">CAFE "만"</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu active">
+                        <a href="notice.html">게시판</a>
+                        <ul class="submenu">
+                            <li><a href="notice.html">알림사항</a></li>
+                            <li><a href="gallery.html">갤러리</a></li>
+                            <li><a href="jobs.html">구인/구직</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="apply.html" class="btn-apply">참여신청서</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" aria-label="메뉴 열기">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero hero-winter">
+        <div class="page-hero-overlay"></div>
+        <div class="container">
+            <h2 class="page-title">구인/구직</h2>
+            <p class="page-subtitle">일자리 정보를 찾아보세요</p>
+            <div class="breadcrumb">
+                <a href="index.html">홈</a> <span>></span> <a href="jobs.html">게시판</a> <span>></span> <span>구인/구직</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sub Navigation -->
+    <nav class="sub-nav">
+        <div class="container">
+            <ul class="sub-nav-list">
+                <li><a href="notice.html">알림사항</a></li>
+                <li><a href="gallery.html">갤러리</a></li>
+                <li><a href="jobs.html" class="active">구인/구직</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <section class="page-content">
+        <div class="container">
+            <div class="content-section">
+                <!-- Article View Container -->
+                <div class="article-view" id="article-view-container">
+                    <div class="board-loading">
+                        <p>게시글을 불러오는 중...</p>
+                    </div>
+                </div>
+
+                <!-- Back to List Button -->
+                <div class="article-actions">
+                    <a href="jobs.html" class="btn-outline">목록으로</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p class="footer-title"><strong>부산강서시니어클럽</strong> &nbsp;&nbsp; 대표 <span>배현옥</span> &nbsp;&nbsp;
+                        대표번호 <span>051) 973-1167</span> &nbsp;&nbsp; 팩스번호 <span>051) 973-1168</span></p>
+                    <p>주소 부산광역시 강서구 공항로811번가길 30(대저 2동) &nbsp;&nbsp; 사업자등록번호 <span>615-82-88196</span> &nbsp;&nbsp; 이메일
+                        <span>kss20150101@hanmail.net</span>
+                    </p>
+                </div>
+                <div class="footer-copyright">
+                    <p>Copyright &copy; <span class="highlight">BUSAN Gangseo Senior Club</span> . All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/board-integration.js"></script>
+</body>
+
+</html>
