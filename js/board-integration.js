@@ -1,6 +1,7 @@
 /**
- * Cafe24 Board Integration
+ * Cafe24 Board Integration with Caching
  * Cafe24 게시판 콘텐츠를 가져와서 현재 페이지에 렌더링
+ * LocalStorage 캐싱 + 스켈레톤 로딩 지원
  */
 
 (function () {
@@ -35,8 +36,101 @@
     };
 
     const CONFIG = {
-        proxyUrl: 'proxy.php'
+        proxyUrl: 'proxy.php',
+        cachePrefix: 'board_cache_',
+        listCacheTime: 3 * 60 * 1000,    // 목록 캐시: 3분
+        articleCacheTime: 5 * 60 * 1000  // 글 캐시: 5분
     };
+
+    /**
+     * 캐시 관리 함수들
+     */
+    function getCacheKey(type, boardNo, page, articleId) {
+        return `${CONFIG.cachePrefix}${type}_${boardNo}_${page || 0}_${articleId || 0}`;
+    }
+
+    function getCache(key, maxAge) {
+        try {
+            const cached = localStorage.getItem(key);
+            if (!cached) return null;
+
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp > maxAge) {
+                localStorage.removeItem(key);
+                return null;
+            }
+            return data;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function setCache(key, data) {
+        try {
+            localStorage.setItem(key, JSON.stringify({
+                data: data,
+                timestamp: Date.now()
+            }));
+        } catch (e) {
+            // localStorage 용량 초과 시 오래된 캐시 정리
+            clearOldCache();
+        }
+    }
+
+    function clearOldCache() {
+        const prefix = CONFIG.cachePrefix;
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith(prefix)) {
+                localStorage.removeItem(key);
+            }
+        }
+    }
+
+    /**
+     * 스켈레톤 로딩 HTML 생성
+     */
+    function getSkeletonHTML(type) {
+        if (type === 'table') {
+            return `
+                <div class="skeleton-container">
+                    ${Array(5).fill(`
+                        <div class="skeleton-row">
+                            <div class="skeleton skeleton-num"></div>
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-date"></div>
+                            <div class="skeleton skeleton-views"></div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else if (type === 'jobs') {
+            return `
+                <div class="skeleton-container">
+                    ${Array(5).fill(`
+                        <div class="skeleton-job-item">
+                            <div class="skeleton skeleton-badge"></div>
+                            <div class="skeleton skeleton-job-title"></div>
+                            <div class="skeleton skeleton-job-date"></div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else if (type === 'gallery') {
+            return `
+                <div class="skeleton-container skeleton-gallery">
+                    ${Array(6).fill(`
+                        <div class="skeleton-gallery-card">
+                            <div class="skeleton skeleton-img"></div>
+                            <div class="skeleton skeleton-gallery-title"></div>
+                            <div class="skeleton skeleton-gallery-date"></div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        return '<div class="board-loading"><p>게시글을 불러오는 중...</p></div>';
+    }
 
     // 페이지 로드시 실행
     document.addEventListener('DOMContentLoaded', function () {
@@ -75,23 +169,29 @@
 
         if (!container) return;
 
-        // 로딩 표시
-        container.innerHTML = '<div class="board-loading"><p>게시글을 불러오는 중...</p></div>';
+        // 캐시 확인
+        const cacheKey = getCacheKey('list', board.boardNo, page, 0);
+        const cachedData = getCache(cacheKey, CONFIG.listCacheTime);
+
+        if (cachedData) {
+            // 캐시에서 즉시 렌더링
+            renderBoardContent(board, container, paginationContainer, cachedData);
+            return;
+        }
+
+        // 스켈레톤 로딩 표시
+        const skeletonType = board.boardNo === 8 ? 'gallery' : (board.boardNo === 2 ? 'jobs' : 'table');
+        container.innerHTML = getSkeletonHTML(skeletonType);
 
         // AJAX 요청
         fetch(`${CONFIG.proxyUrl}?action=list&board_no=${board.boardNo}&page=${page}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data && data.data.length > 0) {
-                    // 게시판 종류에 따라 다른 렌더링
-                    if (board.boardNo === 2) {
-                        renderJobsList(container, data.data, board.viewPage);
-                    } else if (board.boardNo === 8) {
-                        renderGalleryList(container, data.data, board.viewPage);
-                    } else {
-                        renderNoticeList(container, data.data, board.viewPage);
-                    }
-                    renderPagination(paginationContainer, data.pagination);
+                    // 캐시 저장
+                    setCache(cacheKey, data);
+                    // 렌더링
+                    renderBoardContent(board, container, paginationContainer, data);
                 } else {
                     container.innerHTML = '<div class="board-empty"><p>등록된 게시글이 없습니다.</p></div>';
                 }
@@ -103,17 +203,51 @@
     }
 
     /**
+     * 게시판 콘텐츠 렌더링
+     */
+    function renderBoardContent(board, container, paginationContainer, data) {
+        if (board.boardNo === 2) {
+            renderJobsList(container, data.data, board.viewPage);
+        } else if (board.boardNo === 8) {
+            renderGalleryList(container, data.data, board.viewPage);
+        } else {
+            renderNoticeList(container, data.data, board.viewPage);
+        }
+        renderPagination(paginationContainer, data.pagination);
+    }
+
+    /**
      * 게시글 상세 로드
      */
     function loadArticleDetail(boardNo, articleId, container) {
+        // 캐시 확인
+        const cacheKey = getCacheKey('view', boardNo, 0, articleId);
+        const cachedData = getCache(cacheKey, CONFIG.articleCacheTime);
+
+        if (cachedData) {
+            renderArticleDetail(container, cachedData.data);
+            if (cachedData.data.title) {
+                document.title = cachedData.data.title + ' | 부산강서시니어클럽';
+            }
+            return;
+        }
+
         // 로딩 표시
-        container.innerHTML = '<div class="board-loading"><p>게시글을 불러오는 중...</p></div>';
+        container.innerHTML = `
+            <div class="skeleton-article">
+                <div class="skeleton skeleton-article-title"></div>
+                <div class="skeleton skeleton-article-meta"></div>
+                <div class="skeleton skeleton-article-content"></div>
+            </div>
+        `;
 
         // AJAX 요청
         fetch(`${CONFIG.proxyUrl}?action=view&board_no=${boardNo}&article_id=${articleId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data) {
+                    // 캐시 저장
+                    setCache(cacheKey, data);
                     renderArticleDetail(container, data.data);
                     // 페이지 타이틀 업데이트
                     if (data.data.title) {
@@ -209,7 +343,7 @@
             html += `
                 <a href="${localLink}" class="gallery-card">
                     <div class="gallery-card-img">
-                        <img src="${thumbnail}" alt="${escapeHtml(item.title)}" onerror="this.src='images/placeholder.png'">
+                        <img src="${thumbnail}" alt="${escapeHtml(item.title)}" onerror="this.src='images/placeholder.png'" loading="lazy">
                     </div>
                     <div class="gallery-card-info">
                         <h4 class="gallery-card-title">${escapeHtml(item.title)}</h4>

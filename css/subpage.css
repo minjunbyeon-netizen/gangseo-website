@@ -1158,6 +1158,151 @@
     color: #d32f2f;
 }
 
+/* Skeleton Loading Animation */
+@keyframes skeleton-pulse {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+.skeleton-container {
+    padding: 10px 0;
+}
+
+/* 테이블형 스켈레톤 */
+.skeleton-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.skeleton-num {
+    width: 50px;
+    height: 20px;
+}
+
+.skeleton-title {
+    flex: 1;
+    height: 18px;
+}
+
+.skeleton-date {
+    width: 80px;
+    height: 16px;
+}
+
+.skeleton-views {
+    width: 50px;
+    height: 16px;
+}
+
+/* 구인/구직 스켈레톤 */
+.skeleton-job-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.skeleton-badge {
+    width: 50px;
+    height: 30px;
+    border-radius: 4px;
+}
+
+.skeleton-job-title {
+    flex: 1;
+    height: 18px;
+}
+
+.skeleton-job-date {
+    width: 80px;
+    height: 16px;
+}
+
+/* 갤러리 스켈레톤 */
+.skeleton-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.skeleton-gallery-card {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.skeleton-img {
+    width: 100%;
+    height: 150px;
+    border-radius: 0;
+}
+
+.skeleton-gallery-title {
+    height: 18px;
+    margin: 15px 15px 10px;
+}
+
+.skeleton-gallery-date {
+    height: 14px;
+    width: 60px;
+    margin: 0 15px 15px;
+}
+
+/* 상세글 스켈레톤 */
+.skeleton-article {
+    padding: 30px;
+}
+
+.skeleton-article-title {
+    height: 28px;
+    width: 70%;
+    margin-bottom: 20px;
+}
+
+.skeleton-article-meta {
+    height: 16px;
+    width: 120px;
+    margin-bottom: 30px;
+}
+
+.skeleton-article-content {
+    height: 300px;
+    width: 100%;
+}
+
+/* 반응형 스켈레톤 */
+@media (max-width: 768px) {
+    .skeleton-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .skeleton-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .skeleton-img {
+        height: 180px;
+    }
+}
+
 /* Article View Styles */
 .article-view {
     background: #fff;
