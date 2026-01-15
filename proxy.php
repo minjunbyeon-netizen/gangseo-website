@@ -117,6 +117,26 @@ function fetchBoardList($boardNo, $page)
                         break;
                     }
                 }
+
+                // 썸네일 이미지 추출 (갤러리용)
+                $thumbnail = '';
+                $imgNodes = $xpath->query(".//img", $parent);
+                foreach ($imgNodes as $imgNode) {
+                    $src = $imgNode->getAttribute('src');
+                    if (!empty($src)) {
+                        // 상대 경로를 절대 경로로 변환
+                        if (strpos($src, 'http') !== 0) {
+                            if (strpos($src, '/') === 0) {
+                                $thumbnail = 'https://gs2015.kr' . $src;
+                            } else {
+                                $thumbnail = 'https://gs2015.kr/' . $src;
+                            }
+                        } else {
+                            $thumbnail = $src;
+                        }
+                        break;
+                    }
+                }
             }
 
             $items[] = [
@@ -125,7 +145,8 @@ function fetchBoardList($boardNo, $page)
                 'title' => $title,
                 'description' => $description,
                 'date' => $dateText,
-                'link' => 'https://gs2015.kr' . $href
+                'link' => 'https://gs2015.kr' . $href,
+                'thumbnail' => $thumbnail
             ];
         }
     }

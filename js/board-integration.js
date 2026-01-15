@@ -23,6 +23,14 @@
             articleContainerId: 'notice-article-view-container',
             listPage: 'notice.html',
             viewPage: 'notice-view.html'
+        },
+        gallery: {
+            boardNo: 8,
+            listContainerId: 'gallery-list-container',
+            paginationId: 'gallery-pagination',
+            articleContainerId: 'gallery-article-view-container',
+            listPage: 'gallery.html',
+            viewPage: 'gallery-view.html'
         }
     };
 
@@ -78,6 +86,8 @@
                     // 게시판 종류에 따라 다른 렌더링
                     if (board.boardNo === 2) {
                         renderJobsList(container, data.data, board.viewPage);
+                    } else if (board.boardNo === 8) {
+                        renderGalleryList(container, data.data, board.viewPage);
                     } else {
                         renderNoticeList(container, data.data, board.viewPage);
                     }
@@ -163,6 +173,32 @@
                     </div>
                     <div class="notice-date">${item.date}</div>
                 </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    /**
+     * 갤러리 목록 렌더링
+     */
+    function renderGalleryList(container, items, viewPage) {
+        let html = '';
+
+        items.forEach(item => {
+            const localLink = `${viewPage}?id=${item.id}`;
+            const thumbnail = item.thumbnail || 'images/placeholder.png';
+
+            html += `
+                <a href="${localLink}" class="gallery-card">
+                    <div class="gallery-card-img">
+                        <img src="${thumbnail}" alt="${escapeHtml(item.title)}" onerror="this.src='images/placeholder.png'">
+                    </div>
+                    <div class="gallery-card-info">
+                        <h4 class="gallery-card-title">${escapeHtml(item.title)}</h4>
+                        <span class="gallery-card-date">${item.date}</span>
+                    </div>
+                </a>
             `;
         });
 
