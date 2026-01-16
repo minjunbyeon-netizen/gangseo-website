@@ -376,38 +376,93 @@ function fetchArticleDetail($boardNo, $articleId, $slug)
         }
     }
 
-    // 본문 내용 추출 - fr-view fr-view-article 클래스 우선
+    // 본문 내용 추출 - 게시판 유형에 따라 다른 셀렉터 우선순위 적용
     $content = '';
-    $contentSelectors = [
-        "//div[contains(@class, 'fr-view') and contains(@class, 'fr-view-article')]",
-        "//div[contains(@class, 'fr-view')]",
-        "//div[contains(@class, 'detail')]",
-        "//div[contains(@class, 'view_content')]",
-        "//div[contains(@class, 'board_view')]",
-        "//td[@colspan]//div"
-    ];
+
+    // 갤러리 게시판(board_no=8)은 .detail 셀렉터를 우선 사용 (이미지가 이 영역에 있음)
+    if ($boardNo == 8) {
+        $contentSelectors = [
+            "//div[contains(@class, 'detail')]",
+            "//div[contains(@class, 'fr-view') and contains(@class, 'fr-view-article')]",
+            "//div[contains(@class, 'fr-view')]",
+            "//div[contains(@class, 'view_content')]",
+            "//div[contains(@class, 'board_view')]",
+            "//td[@colspan]//div"
+        ];
+    } else {
+        $contentSelectors = [
+            "//div[contains(@class, 'fr-view') and contains(@class, 'fr-view-article')]",
+            "//div[contains(@class, 'fr-view')]",
+            "//div[contains(@class, 'detail')]",
+            "//div[contains(@class, 'view_content')]",
+            "//div[contains(@class, 'board_view')]",
+            "//td[@colspan]//div"
+        ];
+    }
 
     foreach ($contentSelectors as $selector) {
         $contentNode = $xpath->query($selector)->item(0);
         if ($contentNode) {
-            $content = $dom->saveHTML($contentNode);
-            if (!empty($content) && strlen($content) > 50)
-                break;
+            $tempContent = $dom->saveHTML($contentNode);
+            // 콘텐츠가 충분히 길고, 가능하면 이미지가 포함된 것을 선호
+            if (!empty($tempContent) && strlen($tempContent) > 50) {
+                $content = $tempContent;
+                // 이미지가 있으면 바로 사용, 없으면 계속 탐색
+                if (strpos($tempContent, '<img') !== false) {
+                    break;
+                }
+            }
         }
     }
 
     // 이미지 URL을 절대 경로로 변환
     $content = convertToAbsoluteUrls($content, 'https://gs2015.kr');
 
-    // 날짜 추출
+    // 날짜 추출 - 다양한 셀렉터 순차 시도
     $date = '';
-    $dateNode = $xpath->query("//*[contains(@class, 'date')] | //*[contains(@class, 'time')]")->item(0);
-    if ($dateNode) {
-        $date = trim($dateNode->textContent);
+    $dateSelectors = [
+        "//ul[contains(@class, 'etcArea')]//li[contains(., '작성일')]//span[@class='txtNum']",
+        "//ul[contains(@class, 'etcArea')]//li//span[@class='txtNum']",
+        "//*[contains(@class, 'date')]",
+        "//*[contains(@class, 'time')]"
+    ];
+
+    foreach ($dateSelectors as $selector) {
+        $dateNodes = $xpath->query($selector);
+        foreach ($dateNodes as $dateNode) {
+            $text = trim($dateNode->textContent);
+            // 전각 공백 및 일반 공백 제거
+            $text = preg_replace('/[\s\x{3000}]+/u', '', $text);
+            if (preg_match('/(\d{4}-\d{2}-\d{2})/', $text, $matches)) {
+                $date = $matches[1];
+                break 2; // 날짜를 찾으면 루프 탈출
+            }
+        }
     }
-    // 날짜를 못 찾았으면 본문에서 찾기
-    if (empty($date) && preg_match('/(\d{4}-\d{2}-\d{2})/', $html, $dateMatches)) {
-        $date = $dateMatches[1];
+
+    // 날짜를 못 찾았으면 etcArea 전체에서 찾기
+    if (empty($date)) {
+        $etcAreaNode = $xpath->query("//ul[contains(@class, 'etcArea')]")->item(0);
+        if ($etcAreaNode) {
+            $etcText = $etcAreaNode->textContent;
+            if (preg_match('/(\d{4}-\d{2}-\d{2})/', $etcText, $dateMatches)) {
+                $date = $dateMatches[1];
+            }
+        }
+    }
+
+    // 그래도 못 찾으면 테이블(ec-base-table)에서 날짜 행 찾기
+    if (empty($date)) {
+        $tableRows = $xpath->query("//div[contains(@class, 'ec-base-table')]//tr");
+        foreach ($tableRows as $row) {
+            $rowText = $row->textContent;
+            if (strpos($rowText, '작성일') !== false || strpos($rowText, '등록일') !== false) {
+                if (preg_match('/(\d{4}-\d{2}-\d{2})/', $rowText, $dateMatches)) {
+                    $date = $dateMatches[1];
+                    break;
+                }
+            }
+        }
     }
 
     return [

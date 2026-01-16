@@ -146,6 +146,24 @@
             elements.forEach(el => {
                 if (el.style.width) el.style.maxWidth = '100%';
             });
+
+            // Cafe24 이미지 lazy loading 속성 변환 (ec-data-src -> src)
+            const lazyImages = contentArea.querySelectorAll('img[ec-data-src]');
+            lazyImages.forEach(img => {
+                const dataSrc = img.getAttribute('ec-data-src');
+                if (dataSrc) {
+                    img.src = dataSrc;
+                }
+            });
+
+            // data-src 속성도 처리
+            const dataSrcImages = contentArea.querySelectorAll('img[data-src]');
+            dataSrcImages.forEach(img => {
+                const dataSrc = img.getAttribute('data-src');
+                if (dataSrc && !img.src) {
+                    img.src = dataSrc;
+                }
+            });
         }
     }
 
