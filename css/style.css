@@ -118,7 +118,7 @@ img {
 }
 
 .logo-img {
-    height: 50px;
+    height: 40px;
     width: auto;
     object-fit: contain;
 }
@@ -225,7 +225,9 @@ img {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 10px;
+    position: relative;
+    z-index: 1001;
 }
 
 .mobile-menu-btn span {
@@ -424,7 +426,19 @@ img {
     font-weight: 700;
     color: #2e7d32;
     text-align: center;
+    margin-bottom: 0;
+}
+
+.business-header {
+    justify-content: center;
     margin-bottom: 50px;
+    gap: 20px;
+}
+
+.business-header .btn-more {
+    background: #2e7d32;
+    color: white;
+    border-color: #2e7d32;
 }
 
 .business-cards {
@@ -458,8 +472,8 @@ img {
 }
 
 .card-icon svg {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     color: #2e7d32;
 }
 
@@ -561,7 +575,7 @@ img {
 
 .article-title {
     flex: 1;
-    font-size: 15px;
+    font-size: 9px;
     color: var(--text-dark);
     white-space: nowrap;
     overflow: hidden;
@@ -976,10 +990,93 @@ img {
 
     .gnb {
         display: none;
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        background: var(--bg-white);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        z-index: 999;
+    }
+
+    .gnb>ul {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .gnb>ul>li>a {
+        padding: 15px 10px;
+        border-bottom: 1px solid var(--border-color);
+        display: block;
+    }
+
+    .gnb>ul>li:last-child>a {
+        border-bottom: none;
+    }
+
+    /* Submenu in mobile */
+    .submenu {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        background: #e8f5e9;
+        border-radius: 8px;
+        margin: 5px 0;
+        padding: 5px 0;
+    }
+
+    .submenu li a {
+        color: #2e7d32;
+        padding: 10px 15px;
+        text-align: left;
+    }
+
+    /* Show mobile menu when header has active class */
+    .header.active .gnb,
+    .gnb.mobile-open {
+        display: block;
     }
 
     .mobile-menu-btn {
         display: flex;
+    }
+
+    /* Mobile menu button animation when active */
+    .header.active .mobile-menu-btn span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .header.active .mobile-menu-btn span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .header.active .mobile-menu-btn span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* News article list - prevent text overlap */
+    .article-list li a {
+        flex-wrap: wrap;
+    }
+
+    .article-title {
+        flex: 1 1 100%;
+        white-space: normal;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .article-date {
+        flex: 1 1 100%;
+        text-align: left;
+    }
+
+    /* News media section layout */
+    .news-media-wrapper {
+        grid-template-columns: 1fr;
     }
 
     .slide {

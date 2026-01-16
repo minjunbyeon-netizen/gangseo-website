@@ -10,6 +10,8 @@
         proxyUrl: 'proxy.php',
         noticeContainerId: 'home-notice-list',
         jobsContainerId: 'home-jobs-list',
+        recentNoticeId: 'home-recent-notice-list',
+        galleryContainerId: 'home-gallery-list',
         maxItems: 4,
         cachePrefix: 'home_board_',
         cacheTime: 3 * 60 * 1000  // 3분 캐시
@@ -46,7 +48,9 @@
     }
 
     // 페이지 로드시 실행
-    document.addEventListener('DOMContentLoaded', function () {
+    function init() {
+        console.log('Home board integration initializing...');
+
         // 알림사항 로드
         const noticeContainer = document.getElementById(CONFIG.noticeContainerId);
         if (noticeContainer) {
@@ -59,34 +63,45 @@
             loadBoardList(2, jobsContainer, 'job-view.html');
         }
 
-        // 최근 소식 로드 (알림사항과 동일한 보드 사용 가능성 높음)
-        const recentNoticeContainer = document.getElementById('home-recent-notice-list');
+        // 최근 소식 로드
+        const recentNoticeContainer = document.getElementById(CONFIG.recentNoticeId);
         if (recentNoticeContainer) {
             loadBoardList(1, recentNoticeContainer, 'notice-view.html');
         }
 
         // 갤러리 로드
-        const galleryContainer = document.getElementById('home-gallery-list');
+        const galleryContainer = document.getElementById(CONFIG.galleryContainerId);
         if (galleryContainer) {
             loadGalleryList(8, galleryContainer, 'gallery-view.html');
         }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
     /**
      * 게시판 목록 로드
      */
     function loadBoardList(boardNo, container, viewPage) {
+        if (!container) return;
+
         const cacheKey = `${CONFIG.cachePrefix}${boardNo}`;
         const cachedData = getCache(cacheKey);
 
-        if (cachedData) {
+        if (cachedData && cachedData.data && cachedData.data.length > 0) {
             renderList(container, cachedData.data, viewPage);
             return;
         }
 
         // AJAX 요청
         fetch(`${CONFIG.proxyUrl}?action=list&board_no=${boardNo}&page=1`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
             .then(data => {
                 if (data.success && data.data && data.data.length > 0) {
                     setCache(cacheKey, data);
@@ -96,8 +111,8 @@
                 }
             })
             .catch(error => {
-                console.error('Home board load error:', error);
-                container.innerHTML = '<li><span class="title">불러오기 실패</span></li>';
+                console.error(`Home board ${boardNo} load error:`, error);
+                container.innerHTML = '<li><span class="title">불러오기 실패. 잠시 후 다시 시도해주세요.</span></li>';
             });
     }
 
@@ -105,16 +120,21 @@
      * 갤러리 목록 로드
      */
     function loadGalleryList(boardNo, container, viewPage) {
+        if (!container) return;
+
         const cacheKey = `${CONFIG.cachePrefix}gallery_${boardNo}`;
         const cachedData = getCache(cacheKey);
 
-        if (cachedData) {
+        if (cachedData && cachedData.data && cachedData.data.length > 0) {
             renderGallery(container, cachedData.data, viewPage);
             return;
         }
 
         fetch(`${CONFIG.proxyUrl}?action=list&board_no=${boardNo}&page=1`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
             .then(data => {
                 if (data.success && data.data && data.data.length > 0) {
                     setCache(cacheKey, data);
@@ -124,8 +144,8 @@
                 }
             })
             .catch(error => {
-                console.error('Home gallery load error:', error);
-                container.innerHTML = '<div class="board-error"><p>불러오기 실패</p></div>';
+                console.error(`Home gallery ${boardNo} load error:`, error);
+                container.innerHTML = '<div class="board-error"><p>갤러리를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p></div>';
             });
     }
 
@@ -133,12 +153,13 @@
      * 목록 렌더링
      */
     function renderList(container, items, viewPage) {
+        if (!container) return;
+
         const limitedItems = items.slice(0, CONFIG.maxItems);
         let html = '';
 
         limitedItems.forEach(item => {
             const localLink = `${viewPage}?id=${item.id}`;
-            // 날짜 형식 변환 (YYYY-MM-DD -> YYYY.MM.DD)
             const formattedDate = item.date ? item.date.replace(/-/g, '.') : '';
 
             html += `
@@ -158,6 +179,8 @@
      * 갤러리 렌더링
      */
     function renderGallery(container, items, viewPage) {
+        if (!container) return;
+
         const limitedItems = items.slice(0, 6); // 메인 페이지는 6개
         let html = '';
 
@@ -193,3 +216,4 @@
     }
 
 })();
+

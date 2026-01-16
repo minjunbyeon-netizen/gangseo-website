@@ -22,6 +22,7 @@ $boardNo = isset($_GET['board_no']) ? intval($_GET['board_no']) : 2;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $articleId = isset($_GET['article_id']) ? intval($_GET['article_id']) : 0;
+$productId = isset($_GET['product_id']) ? intval($_GET['product_id']) : 0;
 $cateNo = isset($_GET['cate_no']) ? intval($_GET['cate_no']) : 23;
 $noCache = isset($_GET['nocache']) ? true : false;
 
@@ -33,7 +34,7 @@ $boardInfo = [
 ];
 
 // 캐시 키 생성
-$cacheKey = $action . '_' . $boardNo . '_' . $page . '_' . $articleId . '_' . $cateNo;
+$cacheKey = $action . '_' . $boardNo . '_' . $page . '_' . $articleId . '_' . $cateNo . '_' . $productId;
 $cacheFile = CACHE_DIR . $cacheKey . '.json';
 $cacheTime = ($action === 'list' || $action === 'products') ? CACHE_TIME_LIST : CACHE_TIME_ARTICLE;
 
@@ -52,6 +53,8 @@ try {
         $result = fetchArticleDetail($boardNo, $articleId, $slug);
     } elseif ($action === 'products') {
         $result = fetchProductList($cateNo, $page);
+    } elseif ($action === 'product_view' && $productId > 0) {
+        $result = fetchProductDetail($productId);
     } else {
         throw new Exception('Invalid action or missing parameters');
     }
@@ -642,6 +645,82 @@ function fetchProductList($cateNo, $page)
         'category' => $categoryName,
         'data' => $items,
         'pagination' => $pagination
+    ];
+}
+
+/**
+ * 상품 상세 정보 가져오기
+ */
+function fetchProductDetail($productId)
+{
+    $url = "https://gs2015.kr/product/detail.html?product_no={$productId}";
+
+    $html = fetchUrl($url);
+    if (!$html) {
+        throw new Exception('Failed to fetch product detail');
+    }
+
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $dom->loadHTML('<?xml encoding="UTF-8">' . $html);
+    libxml_clear_errors();
+
+    $xpath = new DOMXPath($dom);
+
+    // 상품명 추출
+    $name = '';
+    $nameNode = $xpath->query("//div[contains(@class, 'infoArea')]//h2")->item(0);
+    if ($nameNode) {
+        $name = trim($nameNode->textContent);
+    }
+
+    // 가격 추출
+    $price = '';
+    $priceNode = $xpath->query("//*[@id='span_product_price_text']")->item(0);
+    if ($priceNode) {
+        $price = trim($priceNode->textContent);
+    }
+
+    // 메인 이미지 추출
+    $image = '';
+    $imgNode = $xpath->query("//div[contains(@class, 'keyImg')]//img")->item(0);
+    if ($imgNode) {
+        $src = $imgNode->getAttribute('src');
+        if (!empty($src)) {
+            if (strpos($src, 'http') !== 0) {
+                if (strpos($src, '//') === 0) {
+                    $image = 'https:' . $src;
+                } elseif (strpos($src, '/') === 0) {
+                    $image = 'https://gs2015.kr' . $src;
+                } else {
+                    $image = 'https://gs2015.kr/' . $src;
+                }
+            } else {
+                $image = $src;
+            }
+        }
+    }
+
+    // 상세 설명 추출
+    $content = '';
+    $contentNode = $xpath->query("//div[@id='prdDetail']")->item(0);
+    if ($contentNode) {
+        $content = $dom->saveHTML($contentNode);
+    }
+
+    // 이미지 및 링크를 절대 경로로 변환
+    $content = convertToAbsoluteUrls($content, 'https://gs2015.kr');
+
+    return [
+        'success' => true,
+        'data' => [
+            'id' => $productId,
+            'name' => $name,
+            'price' => $price,
+            'image' => $image,
+            'content' => $content,
+            'url' => $url
+        ]
     ];
 }
 ?>

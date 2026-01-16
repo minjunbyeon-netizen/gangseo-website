@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>생산판매 | 부산강서시니어클럽</title>
-    <meta name="description" content="부산강서시니어클럽 생산판매 - 정일품참기름, 액상차&즙, 더치커피, CAFE 만">
+    <title>상품 상세 | 부산강서시니어클럽</title>
+    <meta name="description" content="부산강서시니어클럽 상품 상세 정보">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,122 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/subpage.css">
+    <style>
+        .product-detail-view {
+            padding-bottom: 40px;
+        }
+
+        .product-detail-header {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+            align-items: flex-start;
+        }
+
+        .product-detail-img {
+            flex: 0 0 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-detail-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .product-detail-info {
+            flex: 1;
+        }
+
+        .product-detail-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .product-detail-price {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #e67e22;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-detail-guide {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .product-detail-guide h4 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .product-detail-guide ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-detail-guide li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .product-detail-guide li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .product-detail-body {
+            border-top: 2px solid #333;
+            padding-top: 50px;
+        }
+
+        .product-detail-body h3 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .product-content-area {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .product-content-area img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 992px) {
+            .product-detail-header {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .product-detail-img {
+                flex: none;
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -79,10 +195,11 @@
     <section class="page-hero hero-autumn">
         <div class="page-hero-overlay"></div>
         <div class="container">
-            <h2 class="page-title">생산판매</h2>
-            <p class="page-subtitle">정성을 담은 시니어 제품을 소개합니다</p>
+            <h2 class="page-title">상품 상세</h2>
+            <p class="page-subtitle">정성을 담은 시니어 제품 정보</p>
             <div class="breadcrumb">
-                <a href="index.html">홈</a> <span>></span> <span>생산판매</span>
+                <a href="index.html">홈</a> <span>></span> <a href="products.html">생산판매</a> <span>></span> <span>상품
+                    상세</span>
             </div>
         </div>
     </section>
@@ -90,77 +207,14 @@
     <!-- Page Content -->
     <section class="page-content">
         <div class="container">
-            <!-- Products Grid -->
-            <!-- Category: 정일품참기름 -->
-            <div class="content-section" id="sesame">
-                <h3 class="section-title">정일품참기름</h3>
-                <div class="product-item-grid" id="products-sesame-container">
-                    <div class="board-loading">
-                        <p>상품을 불러오는 중...</p>
-                    </div>
+            <div class="product-detail-view" id="product-detail-container">
+                <div class="board-loading">
+                    <p>상품 정보를 불러오는 중...</p>
                 </div>
             </div>
 
-            <!-- Category: 액상차&즙 -->
-            <div class="content-section" id="drinks">
-                <h3 class="section-title">액상차&즙</h3>
-                <div class="product-item-grid" id="products-drinks-container">
-                    <div class="board-loading">
-                        <p>상품을 불러오는 중...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Category: 더치커피 -->
-            <div class="content-section" id="coffee">
-                <h3 class="section-title">더치커피</h3>
-                <div class="product-item-grid" id="products-coffee-container">
-                    <div class="board-loading">
-                        <p>상품을 불러오는 중...</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Category: CAFE "만" -->
-            <div class="content-section" id="cafe">
-                <h3 class="section-title">CAFE "만"</h3>
-                <div class="product-card cafe-card">
-                    <div class="product-image">
-                        <div class="placeholder-image product-placeholder cafe-placeholder">
-                            <span>CAFE "만"</span>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>CAFE "만"</h3>
-                        <p>부산강서시니어클럽에서 운영하는 카페입니다. 따뜻한 차 한 잔과 함께 휴식을 취해보세요.</p>
-                        <ul class="product-features">
-                            <li>따뜻하고 편안한 분위기</li>
-                            <li>다양한 음료 및 디저트</li>
-                            <li>어르신 바리스타 운영</li>
-                        </ul>
-                        <div class="cafe-info">
-                            <p><strong>운영시간:</strong> 평일 09:00 ~ 18:00</p>
-                            <p><strong>위치:</strong> 부산강서시니어클럽 1층</p>
-                        </div>
-                        <a href="#" class="btn-outline">카페 방문하기</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Order Info -->
-            <div class="order-info-box">
-                <h3>제품 주문 안내</h3>
-                <p>모든 제품은 전화 또는 방문을 통해 주문하실 수 있습니다.</p>
-                <div class="order-contact">
-                    <div class="contact-item">
-                        <strong>전화 주문</strong>
-                        <p>051) 973-1167</p>
-                    </div>
-                    <div class="contact-item">
-                        <strong>방문 주문</strong>
-                        <p>부산광역시 강서구 공항로811번가길 30</p>
-                    </div>
-                </div>
+            <div class="article-actions" style="margin-top: 40px; text-align: center;">
+                <a href="products.html" class="btn-outline">목록으로</a>
             </div>
         </div>
     </section>
@@ -177,7 +231,8 @@
                     </p>
                 </div>
                 <div class="footer-copyright">
-                    <p>Copyright © <span class="highlight">BUSAN Gangseo Senior Club</span> . All Rights Reserved.</p>
+                    <p>Copyright &copy; <span class="highlight">BUSAN Gangseo Senior Club</span> . All Rights Reserved.
+                    </p>
                 </div>
             </div>
         </div>
@@ -186,7 +241,7 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/product-integration.js?v=20240522"></script>
+    <script src="js/product-view.js?v=20240522"></script>
 </body>
 
 </html>

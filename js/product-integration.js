@@ -128,7 +128,7 @@
             const price = item.price || '가격문의';
 
             html += `
-                <a href="${item.link}" target="_blank" class="product-item">
+                <a href="product-view.html?id=${item.id}" class="product-item">
                     <div class="product-item-img">
                         <img src="${image}" alt="${escapeHtml(item.name)}" onerror="this.src='images/placeholder.png'" loading="lazy">
                     </div>
