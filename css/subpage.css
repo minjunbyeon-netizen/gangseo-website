@@ -3019,3 +3019,36 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Cafe Gallery */
+.cafe-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.cafe-image-item {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.cafe-image-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.cafe-image-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .cafe-gallery {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
