@@ -13,6 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
 
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://gs2015.kr">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
     <!-- Slick Slider CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
@@ -154,28 +158,28 @@
             <div class="business-cards">
                 <div class="business-card">
                     <div class="card-icon">
-                        <img src="images/service/service-public.png" alt="공익형">
+                        <img src="images/service/service-public.png" alt="공익형" loading="lazy">
                     </div>
                     <h3>공익형</h3>
                     <p>공익 증진을 위해 자발적으로<br>참여하는 일자리</p>
                 </div>
                 <div class="business-card">
                     <div class="card-icon">
-                        <img src="images/service/service-capacity.png" alt="역량형">
+                        <img src="images/service/service-capacity.png" alt="역량형" loading="lazy">
                     </div>
                     <h3>역량형</h3>
                     <p>적합한 업종에서 연중<br>운영되는 일자리</p>
                 </div>
                 <div class="business-card">
                     <div class="card-icon">
-                        <img src="images/service/service-community.png" alt="공동체형">
+                        <img src="images/service/service-community.png" alt="공동체형" loading="lazy">
                     </div>
                     <h3>공동체형</h3>
                     <p>노인인력을 활용하여<br>서비스를 제공하는 사업</p>
                 </div>
                 <div class="business-card">
                     <div class="card-icon">
-                        <img src="images/service/service-employment.png" alt="취업알선형">
+                        <img src="images/service/service-employment.png" alt="취업알선형" loading="lazy">
                     </div>
                     <h3>취업알선형</h3>
                     <p>참여자에게 적합한 일자리를<br>발굴 및 지원</p>
@@ -295,9 +299,9 @@
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer></script>
     <script src="js/main.js?v=2.2"></script>
-    <script src="js/home-board.js"></script>
+    <script src="js/home-board.js" defer></script>
 </body>
 
 </html>
