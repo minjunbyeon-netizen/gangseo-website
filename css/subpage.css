@@ -2,103 +2,116 @@
    Subpage Styles - Busan Gangseo Senior Club
    ===================================================== */
 
-/* Page Hero - Split View Design */
+/* Page Hero - Modern Premium Design */
 .page-hero {
     margin-top: var(--header-height);
     position: relative;
-    min-height: 120px;
+    height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: #1a1a1a;
     text-align: center;
     overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0% 100%);
 }
 
-/* Left and Right Image Panels */
-.page-hero::before,
-.page-hero::after {
+/* Base seasonal background handling */
+.page-hero::before {
     content: '';
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 25%;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
+    z-index: 1;
+    animation: heroZoom 20s infinite alternate ease-in-out;
 }
 
-.page-hero::before {
-    left: 0;
+@keyframes heroZoom {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
 }
 
-.page-hero::after {
-    right: 0;
-}
-
-/* Seasonal Hero Backgrounds */
-.page-hero.hero-spring::before,
-.page-hero.hero-spring::after {
+.page-hero.hero-spring::before {
     background-image: url('../images/hero_spring.png');
 }
 
-.page-hero.hero-summer::before,
-.page-hero.hero-summer::after {
+.page-hero.hero-summer::before {
     background-image: url('../images/hero_summer.png');
 }
 
-.page-hero.hero-autumn::before,
-.page-hero.hero-autumn::after {
+.page-hero.hero-autumn::before {
     background-image: url('../images/hero_autumn.png');
 }
 
-.page-hero.hero-winter::before,
-.page-hero.hero-winter::after {
+.page-hero.hero-winter::before {
     background-image: url('../images/hero_winter.png');
 }
 
-/* Green decorative bar at bottom */
+/* Gradient Overlay for Depth and Text Readability */
 .page-hero-overlay {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
-    height: 8px;
-    background: linear-gradient(90deg, #2e9e5e 0%, #1a6b3d 100%);
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(46, 158, 94, 0.8) 0%,
+            rgba(26, 107, 61, 0.6) 50%,
+            rgba(0, 0, 0, 0.4) 100%);
+    z-index: 2;
 }
 
 .page-hero .container {
     position: relative;
-    z-index: 2;
-    padding: 30px 0;
+    z-index: 3;
+    padding: 0;
 }
 
 .page-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 10px;
-    letter-spacing: 8px;
+    font-size: 48px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 15px;
+    letter-spacing: 4px;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .page-subtitle {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
-    color: #666;
-    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 25px;
+    letter-spacing: 1px;
 }
 
 .breadcrumb {
-    font-size: 13px;
-    color: #888;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
 }
 
 .breadcrumb a {
-    color: #2e9e5e;
+    color: #fff;
+    font-weight: 600;
     text-decoration: none;
 }
 
 .breadcrumb span {
     margin: 0 8px;
+    opacity: 0.5;
 }
 
 /* Page Content */
