@@ -584,6 +584,23 @@ function convertToAbsoluteUrls($html, $baseUrl)
         $html
     );
 
+    // style 속성의 background-image url 변환
+    $html = preg_replace_callback(
+        '/url\(["\']?([^"\')\s]+)["\']?\)/i',
+        function ($matches) use ($baseUrl) {
+            $url = $matches[1];
+            // data:, http, // 로 시작하면 그대로 유지
+            if (strpos($url, 'data:') === 0 || strpos($url, 'http') === 0 || strpos($url, '//') === 0) {
+                return $matches[0];
+            }
+            if (strpos($url, '/') === 0) {
+                return 'url("' . $baseUrl . $url . '")';
+            }
+            return 'url("' . $baseUrl . '/' . $url . '")';
+        },
+        $html
+    );
+
     return $html;
 }
 

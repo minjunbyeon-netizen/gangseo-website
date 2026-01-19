@@ -14,15 +14,51 @@ $(document).ready(function () {
 
     // Mobile menu toggle
     initMobileMenu();
+
+    // Global Image Error Handling
+    initImageErrorHandler();
 });
+
+/**
+ * Global Image Error Handling
+ * Automatically replaces broken images with a placeholder
+ */
+function initImageErrorHandler() {
+    // 1. 처리 함수 정의
+    const handleImageError = (img) => {
+        // 플레이스홀더 자체가 깨진 경우 무한 루프 방지
+        if (img.src.includes('images/placeholder.png')) return;
+
+        // 이미지가 이미 에러 상태거나 로드 실패인 경우
+        console.warn('Handling broken image:', img.src);
+        img.src = 'images/placeholder.png';
+    };
+
+    // 2. 이벤트 위임을 통한 실시간 에러 감지 (캡처링 사용)
+    document.addEventListener('error', function (e) {
+        if (e.target.tagName.toLowerCase() === 'img') {
+            handleImageError(e.target);
+        }
+    }, true);
+
+    // 3. 이미 로드 시도가 끝난(또는 실패한) 이미지들 체크
+    document.querySelectorAll('img').forEach(function (img) {
+        if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) {
+            handleImageError(img);
+        }
+    });
+}
 
 /**
  * Hero Slider using Slick Carousel
  */
 function initHeroSlider() {
+    // If no slider container exists, don't even bother
+    if ($('.slider-container').length === 0) return;
+
     // Check if slick is loaded before initializing
     if (typeof $.fn.slick === 'undefined') {
-        console.warn('Slick carousel not loaded, retrying in 100ms...');
+        console.warn('Slick carousel script is missing, retrying in 100ms...');
         setTimeout(initHeroSlider, 100);
         return;
     }
