@@ -850,6 +850,26 @@ img {
     color: var(--text-dark);
 }
 
+@media (max-width: 768px) {
+    .location-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .map-container iframe {
+        min-height: 300px;
+    }
+
+    .location-info-box {
+        padding: 25px;
+    }
+
+    .info-block {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+}
+
 /* =====================================================
    Content Grid Section
    ===================================================== */
