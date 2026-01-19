@@ -133,8 +133,6 @@ function fetchBoardList($boardNo, $page)
                 $text = trim($dateNode->textContent);
                 if (preg_match('/\d{4}-\d{2}-\d{2}/', $text, $dateMatches)) {
                     $dateText = $dateMatches[0];
-                } else {
-                    $dateText = $text;
                 }
             }
             // 날짜를 못 찾았으면 전체에서 찾기
@@ -143,6 +141,11 @@ function fetchBoardList($boardNo, $page)
                 if (preg_match('/(\d{4}-\d{2}-\d{2})/', $liHtml, $dateMatches)) {
                     $dateText = $dateMatches[1];
                 }
+            }
+
+            // 날짜가 없거나 유효하지 않은 경우 (9999-12-31 등) 처리
+            if (empty($dateText) || strpos($dateText, '9999') !== false) {
+                $dateText = date('Y-m-d'); // 기본값으로 오늘 날짜 사용 또는 빈 문자열
             }
 
             // 썸네일 이미지 추출
@@ -465,6 +468,68 @@ function fetchArticleDetail($boardNo, $articleId, $slug)
         }
     }
 
+    // 날짜가 없거나 유효하지 않은 경우 처리
+    if (empty($date) || strpos($date, '9999') !== false) {
+        $date = date('Y-m-d');
+    }
+
+    // 첨부파일 추출
+    $attachments = [];
+
+    // 방법 1: tr.attach 클래스에서 첨부파일 찾기
+    $attachRows = $xpath->query("//tr[contains(@class, 'attach')]");
+    foreach ($attachRows as $attachRow) {
+        $attachLinks = $xpath->query(".//a", $attachRow);
+        foreach ($attachLinks as $link) {
+            $onclick = $link->getAttribute('onclick');
+            $fileName = trim($link->textContent);
+
+            if (!empty($onclick) && strpos($onclick, 'file_download') !== false) {
+                // onclick에서 다운로드 URL 추출
+                // BOARD_READ.file_download('/exec/front/Board/download/?no=326&realname=xxx.pdf&filename=파일명.pdf');
+                if (preg_match("/file_download\\(['\"]([^'\"]+)['\"]/", $onclick, $urlMatches)) {
+                    $downloadPath = $urlMatches[1];
+                    // HTML 엔티티 디코딩
+                    $downloadPath = html_entity_decode($downloadPath);
+                    $downloadUrl = 'https://gs2015.kr' . $downloadPath;
+
+                    $attachments[] = [
+                        'name' => $fileName,
+                        'url' => $downloadUrl
+                    ];
+                }
+            }
+        }
+    }
+
+    // 방법 2: '첨부파일' 텍스트가 포함된 행에서 찾기 (attach 클래스가 없는 경우)
+    if (empty($attachments)) {
+        $tableRows = $xpath->query("//div[contains(@class, 'ec-base-table')]//tr");
+        foreach ($tableRows as $row) {
+            $thNode = $xpath->query(".//th", $row)->item(0);
+            if ($thNode && strpos($thNode->textContent, '첨부파일') !== false) {
+                $attachLinks = $xpath->query(".//td//a", $row);
+                foreach ($attachLinks as $link) {
+                    $onclick = $link->getAttribute('onclick');
+                    $fileName = trim($link->textContent);
+
+                    if (!empty($onclick) && strpos($onclick, 'file_download') !== false) {
+                        if (preg_match("/file_download\\(['\"]([^'\"]+)['\"]/", $onclick, $urlMatches)) {
+                            $downloadPath = $urlMatches[1];
+                            $downloadPath = html_entity_decode($downloadPath);
+                            $downloadUrl = 'https://gs2015.kr' . $downloadPath;
+
+                            $attachments[] = [
+                                'name' => $fileName,
+                                'url' => $downloadUrl
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     return [
         'success' => true,
         'data' => [
@@ -472,6 +537,7 @@ function fetchArticleDetail($boardNo, $articleId, $slug)
             'title' => $title,
             'content' => $content,
             'date' => $date,
+            'attachments' => $attachments,
             'url' => $url
         ]
     ];

@@ -147,22 +147,26 @@
                 if (el.style.width) el.style.maxWidth = '100%';
             });
 
-            // Cafe24 이미지 lazy loading 속성 변환 (ec-data-src -> src)
-            const lazyImages = contentArea.querySelectorAll('img[ec-data-src]');
-            lazyImages.forEach(img => {
-                const dataSrc = img.getAttribute('ec-data-src');
-                if (dataSrc) {
-                    img.src = dataSrc;
+            // Cafe24 이미지 lazy loading 속성 및 프로토콜 처리
+            const allImages = contentArea.querySelectorAll('img');
+            allImages.forEach(img => {
+                const dataSrc = img.getAttribute('ec-data-src') || img.getAttribute('data-src') || img.getAttribute('org_src');
+                if (dataSrc && (!img.src || img.src.includes('placeholder') || img.src.length < 10)) {
+                    // 프로토콜 처리
+                    let finalSrc = dataSrc;
+                    if (finalSrc.startsWith('//')) {
+                        finalSrc = 'https:' + finalSrc;
+                    } else if (finalSrc.startsWith('/') && !finalSrc.startsWith('//')) {
+                        finalSrc = 'https://gs2015.kr' + finalSrc;
+                    }
+                    img.src = finalSrc;
                 }
-            });
 
-            // data-src 속성도 처리
-            const dataSrcImages = contentArea.querySelectorAll('img[data-src]');
-            dataSrcImages.forEach(img => {
-                const dataSrc = img.getAttribute('data-src');
-                if (dataSrc && !img.src) {
-                    img.src = dataSrc;
-                }
+                // 깨진 이미지 처리
+                img.onerror = function () {
+                    this.src = 'images/placeholder.png';
+                    this.style.opacity = '0.5';
+                };
             });
         }
     }

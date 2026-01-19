@@ -360,6 +360,35 @@
      * 게시글 상세 렌더링
      */
     function renderArticleDetail(container, article) {
+        // 첨부파일 섹션 생성
+        let attachmentsHtml = '';
+        if (article.attachments && article.attachments.length > 0) {
+            attachmentsHtml = `
+                <div class="article-attachments">
+                    <h4 class="attachments-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                        첨부파일
+                    </h4>
+                    <ul class="attachments-list">
+                        ${article.attachments.map(file => `
+                            <li class="attachment-item">
+                                <a href="${file.url}" target="_blank" rel="noopener noreferrer" class="attachment-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                    <span class="attachment-name">${escapeHtml(file.name)}</span>
+                                </a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
         const html = `
             <div class="article-header">
                 <h3 class="article-title">${escapeHtml(article.title)}</h3>
@@ -370,6 +399,7 @@
             <div class="article-content">
                 ${article.content || '<p>내용이 없습니다.</p>'}
             </div>
+            ${attachmentsHtml}
         `;
 
         container.innerHTML = html;

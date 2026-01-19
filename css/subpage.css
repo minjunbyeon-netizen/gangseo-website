@@ -1380,6 +1380,79 @@
     margin-bottom: 15px;
 }
 
+/* Article Attachments */
+.article-attachments {
+    margin-top: 30px;
+    padding: 25px 30px;
+    background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
+    border-radius: 12px;
+    border: 1px solid #e0f2e9;
+}
+
+.attachments-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0f2e9;
+}
+
+.attachments-title svg {
+    color: #2e9e5e;
+}
+
+.attachments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.attachment-item {
+    margin-bottom: 10px;
+}
+
+.attachment-item:last-child {
+    margin-bottom: 0;
+}
+
+.attachment-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0f2e9;
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.attachment-link:hover {
+    background: #2e9e5e;
+    border-color: #2e9e5e;
+    color: white;
+    transform: translateX(5px);
+}
+
+.attachment-link svg {
+    color: #2e9e5e;
+    flex-shrink: 0;
+}
+
+.attachment-link:hover svg {
+    color: white;
+}
+
+.attachment-name {
+    word-break: break-all;
+}
+
 .article-actions {
     margin-top: 30px;
     text-align: center;
