@@ -150,10 +150,16 @@ function fetchBoardList($boardNo, $page)
 
             // 썸네일 이미지 추출
             $thumbnail = '';
+            // 우선 data-src 확인 (지연 로딩 대응)
             $imgNode = $xpath->query(".//img", $li)->item(0);
             if ($imgNode) {
-                $src = $imgNode->getAttribute('src');
-                if (!empty($src)) {
+                $src = $imgNode->getAttribute('data-src');
+                if (empty($src)) {
+                    $src = $imgNode->getAttribute('src');
+                }
+
+                // ico_ 가 포함된 이미지는 무시
+                if (!empty($src) && strpos($src, 'ico_') === false) {
                     if (strpos($src, 'http') !== 0) {
                         if (strpos($src, '//') === 0) {
                             $thumbnail = 'https:' . $src;

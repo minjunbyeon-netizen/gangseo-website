@@ -111,26 +111,40 @@ function initMobileMenu() {
         const isExpanded = header.hasClass('active');
         $(this).attr('aria-expanded', isExpanded);
         $(this).attr('aria-label', isExpanded ? '메뉴 닫기' : '메뉴 열기');
-    });
 
-    // Close menu when clicking on a menu link
-    $('.gnb a').on('click', function () {
-        if ($(window).width() <= 768) {
-            header.removeClass('active');
-            gnb.removeClass('mobile-open');
-            menuBtn.attr('aria-expanded', 'false');
-            menuBtn.attr('aria-label', '메뉴 열기');
+        // Reset submenus when menu is closed
+        if (!isExpanded) {
+            $('.has-submenu').removeClass('active');
         }
     });
 
-    // Close menu when clicking outside
-    $(document).on('click', function (e) {
+    // Accordion logic for submenus on mobile
+    $('.has-submenu > a').on('click', function (e) {
         if ($(window).width() <= 768) {
-            if (!$(e.target).closest('.header').length && header.hasClass('active')) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const parentLi = $(this).parent();
+            const isActive = parentLi.hasClass('active');
+
+            // Close other open submenus
+            $('.has-submenu').not(parentLi).removeClass('active');
+
+            // Toggle current submenu
+            parentLi.toggleClass('active');
+        }
+    });
+
+    // Close menu when clicking on a final menu link
+    $('.gnb a').on('click', function (e) {
+        if ($(window).width() <= 768) {
+            // Only close if it's NOT a parent item that was just clicked
+            if (!$(this).parent().hasClass('has-submenu')) {
                 header.removeClass('active');
                 gnb.removeClass('mobile-open');
                 menuBtn.attr('aria-expanded', 'false');
                 menuBtn.attr('aria-label', '메뉴 열기');
+                $('.has-submenu').removeClass('active');
             }
         }
     });

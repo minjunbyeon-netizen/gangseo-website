@@ -1655,18 +1655,28 @@
 @media (max-width: 768px) {
     .mission-vision-flow {
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
     }
 
     .mv-circle {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
         padding: 15px;
+        border-width: 2px;
     }
 
     .mv-arrow {
         transform: rotate(90deg);
         margin: 5px 0;
+        font-size: 24px;
+    }
+
+    .mv-circle p {
+        font-size: 13px;
+    }
+
+    .mv-circle .core-value-text {
+        font-size: 15px;
     }
 }
 
@@ -1760,10 +1770,19 @@
     flex-direction: column;
     align-items: center;
     gap: 0;
-    padding: 50px 30px;
+    padding: 50px 20px;
     background: #fff;
     border-radius: 8px;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+    .org-chart-wrapper {
+        align-items: center;
+        padding: 20px 10px;
+        overflow-x: hidden;
+    }
 }
 
 /* Vertical connector lines */
@@ -2091,6 +2110,56 @@
     .org-chart-wrapper .org-level {
         flex-direction: column;
         align-items: center;
+        width: 100%;
+        gap: 10px;
+        padding: 15px 0;
+    }
+
+    .org-chart-wrapper .org-box {
+        padding: 10px 20px;
+        font-size: 13px;
+        min-width: 200px;
+        width: 80%;
+        max-width: 280px;
+    }
+
+    .org-chart-wrapper .org-president {
+        padding: 12px 30px;
+        font-size: 15px;
+        min-width: 150px;
+    }
+
+    /* Hide horizontal lines on mobile, use simple vertical space */
+    .org-chart-wrapper .org-committee::before,
+    .org-chart-wrapper .org-support::before,
+    .org-chart-wrapper .org-departments::before {
+        display: none;
+    }
+
+    /* Simplified vertical connectors on mobile */
+    .org-chart-wrapper .org-top::after,
+    .org-chart-wrapper .org-committee::after {
+        left: 50%;
+        height: 15px;
+    }
+
+    .org-business {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .org-business-item {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .org-sub-list {
+        min-width: auto;
+        width: 100%;
+        padding: 10px;
+        font-size: 13px;
     }
 }
 
