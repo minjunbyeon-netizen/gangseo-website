@@ -1638,7 +1638,8 @@
     position: relative;
 }
 
-.sub-nav-list a::after {
+/* 밑줄 효과 제거 */
+/* .sub-nav-list a::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -1648,17 +1649,17 @@
     height: 3px;
     background: var(--primary-orange);
     transition: width 0.3s ease;
-}
+} */
 
 .sub-nav-list a:hover,
 .sub-nav-list a.active {
     color: var(--primary-orange);
 }
 
-.sub-nav-list a:hover::after,
+/* .sub-nav-list a:hover::after,
 .sub-nav-list a.active::after {
     width: 80%;
-}
+} */
 
 /* =====================================================
    Mission & Vision Diagram - gs2015.kr Style
