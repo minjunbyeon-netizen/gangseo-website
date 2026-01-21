@@ -179,8 +179,8 @@
 .video-box {
     max-width: 100%;
     /* 🔧 최대 너비 (100% = 전체, 90% = 좁게, 80% = 더 좁게) */
-    margin: 0 15px;
-    /* 🔧 좌우 여백 (0 = 없음, 15px = 보통, 25px = 넓게) */
+    margin: 0 25px 0 15px;
+    /* 🔧 여백 (상 우 하 좌) - 오른쪽: 25px, 왼쪽: 15px */
 }
 
 .article-list-box .box-header,
