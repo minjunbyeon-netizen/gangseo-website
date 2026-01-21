@@ -829,10 +829,14 @@ body {
 }
 
 .job-date {
-    flex-shrink: 0 !important;
+    flex: 0 0 auto !important;
+    /* 🔧 수정: flex-shrink 0 유지 */
+    max-width: 60px !important;
+    /* 🔧 추가: 최대 너비 제한 */
     font-size: 10px !important;
     color: #999 !important;
     white-space: nowrap !important;
+    text-align: right !important;
 }
 
 .board-item {
