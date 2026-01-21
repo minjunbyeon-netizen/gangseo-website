@@ -209,14 +209,44 @@
 
 .notice-jobs-stack .list {
     padding: 10px 15px;
+    list-style: none;
+    margin: 0;
+}
+
+/* 🔧 메인 페이지 알림사항/구인구직 리스트 아이템 */
+.notice-jobs-stack .list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.notice-jobs-stack .list li:last-child {
+    border-bottom: none;
+}
+
+.notice-jobs-stack .list li a {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
 }
 
 .notice-jobs-stack .list .title {
-    font-size: 13px;
+    flex: 1 !important;
+    font-size: 13px !important;
+    color: #333 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: block !important;
 }
 
 .notice-jobs-stack .list .date {
-    font-size: 11px;
+    flex-shrink: 0 !important;
+    font-size: 11px !important;
+    color: #999 !important;
+    white-space: nowrap !important;
 }
 
 /* =====================================================
@@ -257,7 +287,7 @@
 }
 
 .gallery-grid-home .gallery-card-img {
-    height: 140px;
+    height: 130px;
     /* 🔧 갤러리 이미지 높이 - 이 값을 변경하세요 */
     overflow: hidden;
     display: flex;
