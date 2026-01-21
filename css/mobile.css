@@ -374,6 +374,109 @@
 }
 
 /* =====================================================
+   Organization Chart - 모바일 컴팩트 레이아웃
+   ===================================================== */
+.org-chart-wrapper {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.org-level {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.org-box {
+    padding: 8px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 60px;
+    white-space: nowrap;
+}
+
+.org-president {
+    background: #1b5e20;
+    color: white;
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+.org-yellow {
+    background: #fff8e1;
+    color: #f57c00;
+    border: 1px solid #ffcc80;
+}
+
+.org-orange {
+    background: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffab91;
+}
+
+.org-green {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.org-purple {
+    background: #f3e5f5;
+    color: #7b1fa2;
+    border: 1px solid #ce93d8;
+}
+
+.org-gray {
+    background: #f5f5f5;
+    color: #616161;
+    border: 1px solid #e0e0e0;
+}
+
+/* 사업 관리 영역 */
+.org-business {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.org-business-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.org-business-item .org-box {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.org-sub-list {
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.org-sub-list li {
+    font-size: 9px;
+    color: #666;
+    padding: 3px 0;
+    border-bottom: 1px solid #f0f0f0;
+    line-height: 1.4;
+}
+
+.org-sub-list li:last-child {
+    border-bottom: none;
+}
+
+/* =====================================================
    Subpage Hero
    ===================================================== */
 .page-hero {
