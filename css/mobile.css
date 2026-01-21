@@ -257,7 +257,8 @@
 }
 
 .gallery-grid-home .gallery-card-img {
-    height: 100px;
+    height: 140px;
+    /* 🔧 갤러리 이미지 높이 - 이 값을 변경하세요 */
     overflow: hidden;
     display: flex;
     justify-content: center;
