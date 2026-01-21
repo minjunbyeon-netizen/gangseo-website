@@ -147,75 +147,92 @@
 }
 
 /* =====================================================
-   News & Media Section
+   🔧 News & Media Section (영상갤러리/알림사항/구인구직 영역)
    ===================================================== */
 .news-media-section {
-    padding: 40px 0;
+    padding: 25px 0;
+    /* 🔧 섹션 상하 패딩 - 컴팩트 */
 }
 
 .news-media-wrapper {
     grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 0 10px;
+    gap: 10px;
+    /* 🔧 박스들 사이 간격 - 컴팩트 */
+    padding: 0 8px;
+    /* 🔧 전체 좌우 패딩 - 컴팩트 */
 }
 
-/* 박스 둥근 모서리 보이도록 */
+/* 🔧 박스 공통 스타일 (영상/알림/구인 3개 박스 모두 적용) */
 .video-box,
 .notice-box,
 .job-box {
     border-radius: 12px;
+    /* 🔧 박스 둥근 모서리 크기 */
     overflow: hidden;
+    /* 🔧 내용 넘침 숨김 */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    /* 🔧 박스 그림자 */
 }
 
 .article-list-box .box-header,
 .video-box .box-header {
-    padding: 15px;
+    padding: 10px 12px;
+    /* 🔧 헤더 패딩 - 컴팩트 */
 }
 
 .article-list-box .box-header h3,
 .video-box .box-header h3 {
     font-size: 16px;
+    /* 🔧 헤더 제목 폰트 크기 */
 }
 
 .article-list {
     padding: 10px 15px;
+    /* 🔧 기사 리스트 패딩 */
 }
 
 .article-list li a {
     padding: 12px 0;
+    /* 🔧 기사 항목 상하 패딩 */
 }
 
 .article-title {
     font-size: 13px;
+    /* 🔧 기사 제목 폰트 크기 */
 }
 
 .article-date {
     font-size: 11px;
+    /* 🔧 기사 날짜 폰트 크기 */
 }
 
-/* Notice and Jobs boxes */
+/* 🔧 알림사항/구인구직 박스 스택 영역 */
 .notice-jobs-stack {
-    gap: 15px;
+    gap: 10px;
+    /* 🔧 알림/구인 박스 사이 간격 - 컴팩트 */
 }
 
 .notice-jobs-stack .box-header {
-    padding: 12px 15px;
+    padding: 10px 12px;
+    /* 🔧 박스 헤더 패딩 - 컴팩트 */
 }
 
 .notice-jobs-stack .box-header h3 {
-    font-size: 16px;
+    font-size: 14px;
+    /* 🔧 박스 제목 폰트 크기 - 컴팩트 */
 }
 
 .notice-jobs-stack .list {
-    padding: 10px 15px;
+    padding: 6px 12px;
+    /* 🔧 리스트 내부 패딩 - 컴팩트 */
     list-style: none;
     margin: 0;
 }
 
-/* 🔧 메인 페이지 알림사항/구인구직 리스트 아이템 */
+/* 🔧 알림사항/구인구직 리스트 아이템 스타일 */
 .notice-jobs-stack .list li {
-    padding: 8px 0;
+    padding: 6px 0;
+    /* 🔧 각 항목 상하 패딩 - 컴팩트 */
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -229,13 +246,16 @@
     justify-content: space-between !important;
     align-items: center !important;
     gap: 10px !important;
+    /* 🔧 제목과 날짜 사이 간격 */
     text-decoration: none !important;
 }
 
 .notice-jobs-stack .list .title {
     flex: 1 !important;
     font-size: 13px !important;
+    /* 🔧 제목 폰트 크기 */
     color: #333 !important;
+    /* 🔧 제목 색상 */
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
@@ -245,7 +265,9 @@
 .notice-jobs-stack .list .date {
     flex-shrink: 0 !important;
     font-size: 11px !important;
+    /* 🔧 날짜 폰트 크기 */
     color: #999 !important;
+    /* 🔧 날짜 색상 */
     white-space: nowrap !important;
 }
 
