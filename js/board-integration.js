@@ -406,7 +406,7 @@
     }
 
     /**
-     * 페이지네이션 렌더링
+     * 페이지네이션 렌더링 (화살표 버튼 + 페이지 번호 제한)
      */
     function renderPagination(container, pagination) {
         if (!container || !pagination) return;
@@ -414,21 +414,59 @@
         let html = '';
         const currentPage = pagination.current || 1;
         const totalPages = pagination.total || 1;
+        const maxVisiblePages = 5; // 항상 5개의 페이지 번호만 표시
 
-        // 이전 버튼
-        if (pagination.hasPrev) {
-            html += `<a href="?page=${currentPage - 1}" class="page-btn prev">이전</a>`;
+        // 페이지 번호 범위 계산
+        let startPage, endPage;
+        if (totalPages <= maxVisiblePages) {
+            // 전체 페이지가 최대 표시 개수보다 적으면 모두 표시
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            // 현재 페이지를 중심으로 범위 계산
+            const halfVisible = Math.floor(maxVisiblePages / 2);
+            startPage = Math.max(1, currentPage - halfVisible);
+            endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            // 끝에 도달했을 때 시작 페이지 조정
+            if (endPage - startPage < maxVisiblePages - 1) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
         }
 
-        // 페이지 번호
-        for (let i = 1; i <= totalPages; i++) {
+        // 맨 처음 버튼 (<<)
+        if (currentPage > 1) {
+            html += `<a href="?page=1" class="page-btn page-first" title="첫 페이지">&laquo;</a>`;
+        } else {
+            html += `<button class="page-btn page-first" disabled title="첫 페이지">&laquo;</button>`;
+        }
+
+        // 이전 버튼 (<)
+        if (pagination.hasPrev) {
+            html += `<a href="?page=${currentPage - 1}" class="page-btn page-prev" title="이전 페이지">&lsaquo;</a>`;
+        } else {
+            html += `<button class="page-btn page-prev" disabled title="이전 페이지">&lsaquo;</button>`;
+        }
+
+
+        // 페이지 번호 (5개만 표시)
+        for (let i = startPage; i <= endPage; i++) {
             const activeClass = i === currentPage ? 'active' : '';
             html += `<a href="?page=${i}" class="page-btn ${activeClass}">${i}</a>`;
         }
 
-        // 다음 버튼
+        // 다음 버튼 (>)
         if (pagination.hasNext) {
-            html += `<a href="?page=${currentPage + 1}" class="page-btn next">다음</a>`;
+            html += `<a href="?page=${currentPage + 1}" class="page-btn page-next" title="다음 페이지">&rsaquo;</a>`;
+        } else {
+            html += `<button class="page-btn page-next" disabled title="다음 페이지">&rsaquo;</button>`;
+        }
+
+        // 맨 끝 버튼 (>>)
+        if (currentPage < totalPages) {
+            html += `<a href="?page=${totalPages}" class="page-btn page-last" title="마지막 페이지">&raquo;</a>`;
+        } else {
+            html += `<button class="page-btn page-last" disabled title="마지막 페이지">&raquo;</button>`;
         }
 
         container.innerHTML = html;

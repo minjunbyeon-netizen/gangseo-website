@@ -2,69 +2,59 @@
    Subpage Styles - Busan Gangseo Senior Club
    ===================================================== */
 
-/* Page Hero - Split View Design */
+/* Page Hero - Full Width Background Design */
+/* 🔧 서브페이지 헤더 - 배경 이미지 설정 */
 .page-hero {
     margin-top: var(--header-height);
     position: relative;
-    min-height: 120px;
+    /* 🔧 서브페이지 히어로 섹션 높이 설정 */
+    /* 현재값: 120px - 이 값을 변경하면 서브페이지 상단 이미지 영역의 높이가 조정됩니다 */
+    /* 예시: 100px (낮게), 150px (높게), 200px (더 높게) */
+    min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
     text-align: center;
     overflow: hidden;
+    /* 🔧 배경 이미지 설정 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* Left and Right Image Panels */
-.page-hero::before,
-.page-hero::after {
+/* 🔧 서브페이지 헤더 - 텍스트 가독성을 위한 오버레이 */
+.page-hero::before {
     content: '';
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 25%;
-    background-size: cover;
-    background-position: center;
-}
-
-.page-hero::before {
     left: 0;
-}
-
-.page-hero::after {
     right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.15);
+    /* 🔧 검은색 반투명 오버레이 (투명도: 0.15) - 배경 이미지를 선명하게 보이게 함 */
+    /* 투명도를 높이면 배경이 더 어두워집니다 (예: 0.3, 0.4) */
+    /* 투명도를 낮추면 배경이 더 밝아집니다 (예: 0.1, 0.05) */
+    z-index: 1;
 }
 
 /* Seasonal Hero Backgrounds */
-.page-hero.hero-spring::before,
-.page-hero.hero-spring::after {
-    background-image: url('../images/hero_spring.png');
+/* 🔧 계절별 배경 이미지 - 여기서 이미지 경로를 변경하세요 */
+.page-hero.hero-spring {
+    background-image: url('/01_work/01_gangseo/images/hero_spring.png');
 }
 
-.page-hero.hero-summer::before,
-.page-hero.hero-summer::after {
-    background-image: url('../images/hero_summer.png');
+.page-hero.hero-summer {
+    background-image: url('/01_work/01_gangseo/images/hero_summer.png');
 }
 
-.page-hero.hero-autumn::before,
-.page-hero.hero-autumn::after {
-    background-image: url('../images/hero_autumn.png');
+.page-hero.hero-autumn {
+    background-image: url('/01_work/01_gangseo/images/hero_autumn.png');
 }
 
-.page-hero.hero-winter::before,
-.page-hero.hero-winter::after {
-    background-image: url('../images/hero_winter.png');
+.page-hero.hero-winter {
+    background-image: url('/01_work/01_gangseo/images/hero_winter.png');
 }
 
-/* Green decorative bar at bottom */
-.page-hero-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: linear-gradient(90deg, #2e9e5e 0%, #1a6b3d 100%);
-}
 
 .page-hero .container {
     position: relative;
@@ -74,27 +64,32 @@
 
 .page-title {
     font-size: 36px;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-weight: 900;
+    color: #ffffff;
     margin-bottom: 10px;
     letter-spacing: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .page-subtitle {
     font-size: 14px;
-    font-weight: 400;
-    color: #666;
+    font-weight: 600;
+    color: #ffffff;
     margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .breadcrumb {
     font-size: 13px;
-    color: #888;
+    color: #ffffff;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .breadcrumb a {
-    color: #2e9e5e;
+    color: #ffffff;
     text-decoration: none;
+    font-weight: 600;
 }
 
 .breadcrumb span {
@@ -790,33 +785,75 @@
 }
 
 /* Pagination */
+/* Pagination - Enhanced Design */
 .pagination {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    align-items: center;
+    gap: 6px;
     margin-top: 50px;
+    flex-wrap: wrap;
 }
 
 .page-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
-    height: 36px;
+    min-width: 40px;
+    height: 40px;
     padding: 0 12px;
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 14px;
-    color: var(--text-medium);
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #666666;
+    cursor: pointer;
     transition: all 0.2s ease;
+    text-decoration: none;
 }
 
-.page-btn:hover,
+/* Arrow buttons (first, prev, next, last) */
+.page-btn.page-first,
+.page-btn.page-prev,
+.page-btn.page-next,
+.page-btn.page-last {
+    font-weight: 600;
+    color: #888888;
+}
+
+/* Hover state */
+.page-btn:hover:not(.active):not(:disabled) {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+    color: #333333;
+}
+
+/* Active state - Teal color matching reference image */
 .page-btn.active {
-    background: #2e9e5e;
-    border-color: #2e9e5e;
-    color: white;
+    background: #00bfa5;
+    border-color: #00bfa5;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: default;
+}
+
+/* Disabled state */
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Pagination ellipsis (...) */
+.page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    color: #999999;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 /* Gallery Grid */

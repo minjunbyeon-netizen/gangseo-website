@@ -12,7 +12,7 @@
         jobsContainerId: 'home-jobs-list',
         recentNoticeId: 'home-recent-notice-list',
         galleryContainerId: 'home-gallery-list',
-        maxItems: 4,
+        maxItems: 3, // 🔧 알림사항과 구인/구직 목록에 표시할 개수 (기본값: 4 → 변경: 3)
         cachePrefix: 'home_board_',
         cacheTime: 3 * 60 * 1000  // 3분 캐시
     };
