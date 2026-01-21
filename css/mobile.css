@@ -1,0 +1,603 @@
+/* =====================================================
+   Mobile Styles - 부산강서시니어클럽
+   모바일 전용 스타일 (768px 이하에서만 적용)
+   ===================================================== */
+
+/* =====================================================
+   Header & Navigation
+   ===================================================== */
+.header {
+    height: 60px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-inner {
+    padding: 0 15px;
+}
+
+.logo-img {
+    height: 35px;
+}
+
+/* Desktop navigation hidden on mobile */
+.gnb {
+    display: none;
+}
+
+/* Mobile menu button visible */
+.mobile-menu-btn {
+    display: flex !important;
+}
+
+/* =====================================================
+   Hero Slider (Main Page)
+   ===================================================== */
+.hero-slider {
+    margin-top: 60px;
+}
+
+.slide {
+    min-height: 350px;
+}
+
+.slide-content {
+    padding: 0 20px;
+}
+
+.sub-title {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.main-title {
+    font-size: 28px !important;
+    line-height: 1.3;
+}
+
+.slide-desc {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+/* Slider navigation arrows */
+.slick-prev,
+.slick-next {
+    width: 35px;
+    height: 35px;
+}
+
+.slick-prev {
+    left: 10px;
+}
+
+.slick-next {
+    right: 10px;
+}
+
+/* =====================================================
+   Main Business Section
+   ===================================================== */
+.main-business {
+    padding: 50px 0;
+}
+
+.business-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.business-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.business-card {
+    padding: 25px 15px;
+}
+
+.card-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+.business-card h3 {
+    font-size: 16px;
+}
+
+.business-card p {
+    font-size: 12px;
+}
+
+/* =====================================================
+   News & Media Section
+   ===================================================== */
+.news-media-section {
+    padding: 50px 0;
+}
+
+.news-media-wrapper {
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.article-list-box .box-header,
+.video-box .box-header {
+    padding: 15px;
+}
+
+.article-list-box .box-header h3,
+.video-box .box-header h3 {
+    font-size: 16px;
+}
+
+.article-list {
+    padding: 10px 15px;
+}
+
+.article-list li a {
+    padding: 12px 0;
+}
+
+.article-title {
+    font-size: 13px;
+}
+
+.article-date {
+    font-size: 11px;
+}
+
+/* Notice and Jobs boxes */
+.notice-jobs-stack {
+    gap: 15px;
+}
+
+.notice-jobs-stack .box-header {
+    padding: 12px 15px;
+}
+
+.notice-jobs-stack .box-header h3 {
+    font-size: 16px;
+}
+
+.notice-jobs-stack .list {
+    padding: 10px 15px;
+}
+
+.notice-jobs-stack .list .title {
+    font-size: 13px;
+}
+
+.notice-jobs-stack .list .date {
+    font-size: 11px;
+}
+
+/* =====================================================
+   Gallery Section
+   ===================================================== */
+.gallery-section {
+    padding: 50px 0;
+}
+
+.bento-gallery {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}
+
+.bento-item {
+    height: 200px;
+}
+
+/* =====================================================
+   Location Section
+   ===================================================== */
+.location-section {
+    padding: 50px 0;
+}
+
+.location-wrapper {
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.location-info-box {
+    padding: 25px 20px;
+}
+
+.location-info-box h3 {
+    font-size: 18px;
+}
+
+.location-info-box p {
+    font-size: 14px;
+}
+
+/* =====================================================
+   Footer
+   ===================================================== */
+.footer {
+    padding: 30px 0;
+}
+
+.footer-content {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+
+.footer-info p {
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.footer-title {
+    font-size: 14px;
+}
+
+.footer-copyright {
+    font-size: 11px;
+}
+
+/* Footer mobile line breaks */
+.footer-br-mo {
+    display: inline !important;
+}
+
+.footer-br-pc {
+    display: none !important;
+}
+
+.footer-mobile-row {
+    display: block;
+}
+
+/* =====================================================
+   Subpage Hero
+   ===================================================== */
+.page-hero {
+    margin-top: 60px;
+    min-height: 100px;
+}
+
+.page-title {
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+.page-subtitle {
+    font-size: 12px;
+}
+
+.breadcrumb {
+    font-size: 11px;
+}
+
+/* =====================================================
+   Subpage Navigation
+   ===================================================== */
+.sub-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sub-nav-list {
+    flex-wrap: nowrap;
+    gap: 5px;
+    padding: 10px 15px;
+    justify-content: flex-start;
+    min-width: max-content;
+}
+
+.sub-nav-list li a {
+    font-size: 13px;
+    padding: 8px 15px;
+    white-space: nowrap;
+    border-radius: 20px;
+}
+
+.sub-nav-list li a.active {
+    background: #26a69a;
+    color: #fff !important;
+}
+
+/* =====================================================
+   Board List (Notice, Gallery, Jobs)
+   ===================================================== */
+.board-list {
+    gap: 15px;
+}
+
+.board-item {
+    padding: 15px;
+}
+
+.board-item-title {
+    font-size: 14px;
+}
+
+.board-item-info {
+    font-size: 11px;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.gallery-item {
+    height: 120px;
+}
+
+/* =====================================================
+   Pagination
+   ===================================================== */
+.pagination {
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: 12px;
+}
+
+/* =====================================================
+   Service Info Table (Senior page)
+   ===================================================== */
+.service-info-table {
+    font-size: 12px;
+}
+
+.service-info-table th,
+.service-info-table td {
+    padding: 10px 8px;
+    display: block;
+    width: 100%;
+}
+
+.service-info-table tr {
+    display: block;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Service Grid */
+.service-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.service-item {
+    padding: 15px;
+}
+
+.service-item h5 {
+    font-size: 14px;
+}
+
+.service-item p {
+    font-size: 12px;
+}
+
+/* Section Image Grid */
+.section-image-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.image-placeholder {
+    height: 100px;
+}
+
+/* Service Intro Box */
+.service-intro-box {
+    padding: 20px 15px;
+}
+
+.service-intro-box h4 {
+    font-size: 16px;
+}
+
+.service-intro-box p {
+    font-size: 13px;
+}
+
+/* =====================================================
+   About Page
+   ===================================================== */
+/* Greeting Section */
+.greeting-content {
+    flex-direction: column;
+    gap: 20px;
+}
+
+.greeting-image {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.greeting-text h3 {
+    font-size: 20px;
+}
+
+.greeting-text p {
+    font-size: 14px;
+}
+
+/* Mission & Vision */
+.mission-vision-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.mv-card {
+    padding: 25px 20px;
+}
+
+.mv-card h3 {
+    font-size: 18px;
+}
+
+.mv-card p {
+    font-size: 13px;
+}
+
+/* Organization Chart */
+.org-chart {
+    padding: 20px 15px;
+}
+
+.org-level {
+    gap: 10px;
+}
+
+.org-box {
+    font-size: 12px;
+    padding: 10px 15px;
+}
+
+/* =====================================================
+   Apply Page
+   ===================================================== */
+.apply-form {
+    padding: 20px 15px;
+}
+
+.form-group label {
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    font-size: 14px;
+    padding: 10px 12px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+}
+
+/* =====================================================
+   Products Page
+   ===================================================== */
+.product-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.product-card {
+    padding: 20px;
+}
+
+.product-image {
+    height: 180px;
+}
+
+.product-title {
+    font-size: 18px;
+}
+
+.product-desc {
+    font-size: 13px;
+}
+
+/* =====================================================
+   Apply CTA Section
+   ===================================================== */
+.apply-cta {
+    padding: 40px 20px;
+}
+
+.apply-cta h3 {
+    font-size: 20px;
+}
+
+.apply-cta p {
+    font-size: 14px;
+}
+
+.btn-primary {
+    padding: 12px 25px;
+    font-size: 14px;
+}
+
+/* =====================================================
+   General Utility
+   ===================================================== */
+.container {
+    padding: 0 15px;
+}
+
+.section-title {
+    font-size: 22px;
+    padding-left: 15px;
+}
+
+.section-title::before {
+    height: 20px;
+}
+
+/* Hide elements on mobile */
+.hide-mobile {
+    display: none !important;
+}
+
+/* Show elements on mobile */
+.show-mobile {
+    display: block !important;
+}
+
+/* =====================================================
+   Mobile Menu Overlay
+   ===================================================== */
+.mobile-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    z-index: 999;
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu ul {
+    list-style: none;
+}
+
+.mobile-menu li {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.mobile-menu li a {
+    display: block;
+    padding: 15px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #222;
+}
+
+.mobile-menu .submenu {
+    padding-left: 20px;
+    background: #f9f9f9;
+}
+
+.mobile-menu .submenu li a {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 12px 0;
+}
