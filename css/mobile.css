@@ -418,19 +418,23 @@ body {
 }
 
 .content-section {
-    margin-bottom: 40px;
-    overflow-x: hidden;
+    margin-bottom: 30px;
+    overflow: visible;
 }
 
-/* 섹션 타이틀 */
+/* 섹션 타이틀 - 모바일에서 보이도록 확실히 표시 */
 .content-section .section-title {
-    font-size: 20px;
+    font-size: 18px;
     padding-left: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    display: block;
+    visibility: visible;
+    position: relative;
+    overflow: visible;
 }
 
 .content-section .section-title::before {
-    height: 20px;
+    height: 18px;
 }
 
 /* 게시판 리스트 */
