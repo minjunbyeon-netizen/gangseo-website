@@ -435,30 +435,182 @@ body {
 
 /* 게시판 리스트 */
 .board-list {
-    gap: 12px;
+    gap: 0;
     width: 100%;
 }
 
+/* =====================================================
+   Board Table - 모바일 컴팩트 한 줄 표시
+   ===================================================== */
+.board-table {
+    width: 100%;
+    font-size: 11px;
+    border-collapse: collapse;
+}
+
+.board-table thead {
+    display: none;
+    /* 모바일에서 헤더 숨김 */
+}
+
+.board-table tbody tr {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    gap: 8px;
+}
+
+.board-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* 번호/공지 */
+.board-table td.num {
+    flex-shrink: 0;
+    width: 32px;
+    text-align: center;
+    font-size: 10px;
+    color: #888;
+}
+
+.board-table td.num .notice-badge {
+    background: #4caf50;
+    color: #fff;
+    font-size: 9px;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* 제목 */
+.board-table td.title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.board-table td.title a {
+    font-size: 12px;
+    color: #333;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 날짜 */
+.board-table td.date {
+    flex-shrink: 0;
+    width: 55px;
+    font-size: 10px;
+    color: #999;
+    text-align: right;
+}
+
+/* 조회수 */
+.board-table td.views {
+    flex-shrink: 0;
+    width: 28px;
+    font-size: 10px;
+    color: #aaa;
+    text-align: right;
+}
+
+/* 공지 행 강조 */
+.board-table tr.notice-row {
+    background: #f9fff9;
+}
+
+/* =====================================================
+   Job Item - 모바일 컴팩트 한 줄 표시
+   ===================================================== */
+.job-item {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    gap: 8px;
+}
+
+.job-item:last-child {
+    border-bottom: none;
+}
+
+.job-badge {
+    flex-shrink: 0;
+    font-size: 9px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.job-badge.hiring {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.job-badge.seeking {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.job-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.job-info h4 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.job-info h4 a {
+    color: #333;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.job-info p {
+    display: none;
+    /* 모바일에서 설명 숨김 */
+}
+
+.job-date {
+    flex-shrink: 0;
+    font-size: 10px;
+    color: #999;
+    white-space: nowrap;
+}
+
 .board-item {
-    padding: 15px;
-    border-radius: 10px;
+    padding: 10px 0;
+    border-radius: 0;
+    border-bottom: 1px solid #eee;
     overflow: hidden;
 }
 
 .board-item-title {
-    font-size: 14px;
+    font-size: 12px;
     word-break: keep-all;
-    line-height: 1.4;
+    line-height: 1.3;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
+    display: block;
 }
 
 .board-item-info {
-    font-size: 11px;
-    margin-top: 8px;
+    font-size: 10px;
+    margin-top: 4px;
+    color: #999;
 }
 
 /* 구인/구직 리스트 */
