@@ -183,6 +183,13 @@
     /* 🔧 여백 (상 우 하 좌) - 오른쪽: 25px, 왼쪽: 15px */
 }
 
+/* 🔧 알림사항/구인구직 박스 좌우 여백 (모바일 전용) */
+.notice-box,
+.job-box {
+    margin: 0 25px 0 15px;
+    /* 🔧 여백 (상 우 하 좌) - 오른쪽: 25px, 왼쪽: 15px */
+}
+
 .article-list-box .box-header,
 .video-box .box-header {
     padding: 10px 12px;
