@@ -589,8 +589,11 @@ body {
     overflow-x: hidden;
 }
 
+/* 🔧 콘텐츠 섹션 - 상단 패딩 조절 (현재: 20px) */
 .content-section {
     margin-bottom: 30px;
+    padding-top: 20px;
+    /* 🔧 상단 패딩 - 이 값을 변경하세요 */
     overflow: visible;
 }
 
