@@ -752,6 +752,7 @@ body {
     flex: 1 !important;
     min-width: 0 !important;
     overflow: hidden !important;
+    display: block !important;
 }
 
 .job-info h4 {
@@ -759,6 +760,7 @@ body {
     font-size: 12px !important;
     font-weight: 500 !important;
     line-height: 1.4 !important;
+    display: block !important;
 }
 
 .job-info h4 a {
