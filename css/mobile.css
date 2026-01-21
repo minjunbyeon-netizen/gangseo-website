@@ -592,7 +592,7 @@ body {
 /* 🔧 콘텐츠 섹션 - 상단 패딩 조절 (현재: 20px) */
 .content-section {
     margin-bottom: 30px;
-    padding-top: 20px;
+    padding-top: 100px;
     /* 🔧 상단 패딩 - 이 값을 변경하세요 */
     overflow: visible;
 }
@@ -704,69 +704,80 @@ body {
 }
 
 /* =====================================================
-   Job Item - 모바일 컴팩트 한 줄 표시
+   Job Item - 모바일 알림사항처럼 컴팩트 표시
    ===================================================== */
+.jobs-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
+
 .job-item {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    gap: 8px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid #eee !important;
+    gap: 8px !important;
+    background: transparent !important;
 }
 
 .job-item:last-child {
-    border-bottom: none;
+    border-bottom: none !important;
 }
 
 .job-badge {
-    flex-shrink: 0;
-    font-size: 9px;
-    padding: 3px 6px;
-    border-radius: 3px;
-    font-weight: 500;
+    flex-shrink: 0 !important;
+    font-size: 9px !important;
+    padding: 3px 8px !important;
+    border-radius: 3px !important;
+    font-weight: 600 !important;
+    min-width: 28px !important;
+    text-align: center !important;
 }
 
 .job-badge.hiring {
-    background: #e3f2fd;
-    color: #1976d2;
+    background: #e8f5e9 !important;
+    color: #2e7d32 !important;
 }
 
 .job-badge.seeking {
-    background: #fff3e0;
-    color: #e65100;
+    background: #fff3e0 !important;
+    color: #e65100 !important;
 }
 
 .job-info {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
+    flex: 1 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
 }
 
 .job-info h4 {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 500;
+    margin: 0 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
 }
 
 .job-info h4 a {
-    color: #333;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: #333 !important;
+    display: block !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
 }
 
 .job-info p {
-    display: none;
-    /* 모바일에서 설명 숨김 */
+    display: none !important;
 }
 
 .job-date {
-    flex-shrink: 0;
-    font-size: 10px;
-    color: #999;
-    white-space: nowrap;
+    flex-shrink: 0 !important;
+    font-size: 10px !important;
+    color: #999 !important;
+    white-space: nowrap !important;
 }
 
 .board-item {
