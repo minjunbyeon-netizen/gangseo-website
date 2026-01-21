@@ -177,10 +177,10 @@
 
 /* 🔧 영상 갤러리 박스 좌우 너비 제한 (모바일 전용) */
 .video-box {
-    max-width: 90%;
+    max-width: 100%;
     /* 🔧 최대 너비 (100% = 전체, 90% = 좁게, 80% = 더 좁게) */
-    margin: 0 auto;
-    /* 🔧 가운데 정렬 */
+    margin: 0 15px;
+    /* 🔧 좌우 여백 (0 = 없음, 15px = 보통, 25px = 넓게) */
 }
 
 .article-list-box .box-header,
