@@ -829,10 +829,10 @@
     color: #333333;
 }
 
-/* Active state - Teal color matching reference image */
+/* Active state - Soft green color */
 .page-btn.active {
-    background: #00bfa5;
-    border-color: #00bfa5;
+    background: #4caf50;
+    border-color: #4caf50;
     color: #ffffff;
     font-weight: 600;
     cursor: default;
