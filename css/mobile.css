@@ -76,9 +76,13 @@
     line-height: 1.3;
 }
 
+/* 모바일에서 설명 텍스트 숨김 - h2 제목만 표시 */
 .slide-desc {
-    font-size: 14px;
-    margin-top: 15px;
+    display: none;
+}
+
+.sub-title {
+    display: none;
 }
 
 /* Slider navigation arrows */
