@@ -186,6 +186,24 @@
     /* 🔧 헤더 제목 폰트 크기 */
 }
 
+/* 🔧 영상 갤러리 비디오 높이 조절 */
+.video-box .video-wrapper {
+    position: relative;
+    padding-bottom: 35% !important;
+    /* 🔧 영상 높이 비율 (낮게: 30-40%, 보통: 50%, 높게: 56.25%) */
+    height: 0;
+    overflow: hidden;
+    margin-top: 0 !important;
+}
+
+.video-box .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .article-list {
     padding: 10px 15px;
     /* 🔧 기사 리스트 패딩 */
