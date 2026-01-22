@@ -1207,7 +1207,8 @@ img {
     .gnb {
         display: none;
         position: fixed;
-        top: var(--header-height);
+        top: 50px;
+        /* 헤더 높이만큼 아래에 위치 */
         left: 0;
         right: 0;
         background: var(--bg-white);
