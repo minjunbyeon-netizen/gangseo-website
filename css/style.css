@@ -331,7 +331,8 @@ img {
     }
 
     .slide-desc {
-        font-size: 16px;
+        font-size: 12px;
+        /* Mobile: 12px */
     }
 }
 
@@ -340,7 +341,8 @@ img {
 }
 
 .slide-desc {
-    font-size: 18px;
+    font-size: 22px;
+    /* PC view: 22px, Mobile view: 12px (defined in mobile media query) */
     color: rgba(255, 255, 255, 0.9);
     margin-top: 20px;
     font-weight: 300;
