@@ -243,73 +243,22 @@
             <!-- Organization Section -->
             <div class="content-section" id="organization">
                 <h3 class="section-title">기관 조직도</h3>
-                <div class="org-chart-wrapper">
-                    <!-- 관장 -->
-                    <div class="org-level org-top">
-                        <div class="org-box org-president">관장</div>
-                    </div>
-                    <!-- 위원회 -->
-                    <div class="org-level org-committee">
-                        <div class="org-box org-yellow">운영위원회</div>
-                        <div class="org-box org-yellow">노사협의회</div>
-                    </div>
-                    <!-- 지원 -->
-                    <div class="org-level org-support">
-                        <div class="org-box org-orange">대내 지원</div>
-                        <div class="org-box org-orange">부산시 일자리위원</div>
-                        <div class="org-box org-orange">대외 지원</div>
-                    </div>
-                    <!-- 부서 -->
-                    <div class="org-level org-departments">
-                        <div class="org-box org-green">사서·공익</div>
-                        <div class="org-box org-green">시장·언론</div>
-                        <div class="org-box org-green">인파·주차</div>
-                    </div>
-                    <div class="org-level org-departments">
-                        <div class="org-box org-purple">운영</div>
-                        <div class="org-box org-purple">기획·평가·제안</div>
-                        <div class="org-box org-purple">교육·홍보·마케팅</div>
-                    </div>
-                    <!-- 사업 관리 -->
-                    <div class="org-level org-business">
-                        <div class="org-business-item">
-                            <div class="org-box org-gray">특화사업관리</div>
-                            <ul class="org-sub-list">
-                                <li>ESG사업</li>
-                                <li>복지용구</li>
-                                <li>공산품조립</li>
-                                <li>화훼판매</li>
-                            </ul>
-                        </div>
-                        <div class="org-business-item">
-                            <div class="org-box org-gray">생산관리</div>
-                            <ul class="org-sub-list">
-                                <li>쿠바팜 농산품</li>
-                                <li>더치커피</li>
-                            </ul>
-                        </div>
-                        <div class="org-business-item">
-                            <div class="org-box org-gray">사업장 관리</div>
-                            <ul class="org-sub-list">
-                                <li>CaFe "만" 1호점 대저2동</li>
-                                <li>2호점 명지안전체험관</li>
-                                <li>3호점 기적의 도서관</li>
-                                <li>4호점 농업기술지원센터</li>
-                                <li>5호점 김해공항 화물청사</li>
-                                <li>대저2동 스팀세차</li>
-                                <li>김해공항 서포터즈</li>
-                            </ul>
-                        </div>
-                        <div class="org-business-item">
-                            <div class="org-box org-gray">인파</div>
-                            <ul class="org-sub-list">
-                                <li>부산시 신중년 취업알선</li>
-                                <li>부산시 신중년 시장형</li>
-                                <li>지자체 취업지원</li>
-                            </ul>
-                        </div>
-                    </div>
+
+                <!-- 모바일 안내 문구 -->
+                <p class="org-chart-notice">※ 이미지 클릭 시 크게 볼 수 있습니다</p>
+
+                <!-- 조직도 이미지 (클릭 가능) -->
+                <div class="org-chart-image-wrapper">
+                    <img src="images/organization_chart.png" alt="부산강서시니어클럽 조직도" class="org-chart-image clickable"
+                        onclick="openOrgChartModal()">
                 </div>
+            </div>
+
+            <!-- 조직도 확대 모달 -->
+            <div id="orgChartModal" class="org-modal" onclick="closeOrgChartModal()">
+                <span class="org-modal-close">&times;</span>
+                <img class="org-modal-content" id="orgChartModalImg" src="images/organization_chart.png" alt="조직도 확대">
+                <div class="org-modal-caption">조직도 - 클릭하여 닫기</div>
             </div>
 
             <!-- Location Section -->
@@ -443,6 +392,23 @@
                     }
                 });
             });
+        });
+
+        // 조직도 모달 열기
+        function openOrgChartModal() {
+            document.getElementById('orgChartModal').style.display = 'block';
+        }
+
+        // 조직도 모달 닫기
+        function closeOrgChartModal() {
+            document.getElementById('orgChartModal').style.display = 'none';
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeOrgChartModal();
+            }
         });
     </script>
 </body>

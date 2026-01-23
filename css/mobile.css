@@ -1313,3 +1313,44 @@ body {
     font-weight: 400;
     padding: 12px 0;
 }
+/* =====================================================
+   Organization Chart Image & Modal - Mobile
+   ===================================================== */
+
+/* 모바일에서 조직도 안내 문구 표시 */
+.org-chart-notice {
+    display: block !important;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+/* 모바일 조직도 이미지 */
+.org-chart-image-wrapper {
+    margin: 20px 0;
+}
+
+.org-chart-image {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 모바일 모달 조정 */
+.org-modal {
+    padding-top: 30px;
+}
+
+.org-modal-content {
+    max-width: 95%;
+    max-height: 80vh;
+}
+
+.org-modal-close {
+    top: 10px;
+    right: 20px;
+    font-size: 35px;
+}
+
+.org-modal-caption {
+    font-size: 12px;
+    padding: 8px 0;
+}

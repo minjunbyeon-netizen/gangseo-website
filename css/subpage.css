@@ -3,26 +3,26 @@
    ===================================================== */
 
 /* Page Hero - Full Width Background Design */
-/* 🔧 서브페이지 헤더 - 배경 이미지 설정 */
+/* ?�� ?�브?�이지 ?�더 - 배경 ?��?지 ?�정 */
 .page-hero {
     margin-top: var(--header-height);
     position: relative;
-    /* 🔧 서브페이지 히어로 섹션 높이 설정 */
-    /* 현재값: 120px - 이 값을 변경하면 서브페이지 상단 이미지 영역의 높이가 조정됩니다 */
-    /* 예시: 100px (낮게), 150px (높게), 200px (더 높게) */
+    /* ?�� ?�브?�이지 ?�어�??�션 ?�이 ?�정 */
+    /* ?�재�? 120px - ??값을 변경하�??�브?�이지 ?�단 ?��?지 ?�역???�이가 조정?�니??*/
+    /* ?�시: 100px (??��), 150px (?�게), 200px (???�게) */
     min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    /* 🔧 배경 이미지 설정 */
+    /* ?�� 배경 ?��?지 ?�정 */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* 🔧 서브페이지 헤더 - 텍스트 가독성을 위한 오버레이 */
+/* ?�� ?�브?�이지 ?�더 - ?�스??가?�성???�한 ?�버?�이 */
 .page-hero::before {
     content: '';
     position: absolute;
@@ -31,28 +31,28 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.15);
-    /* 🔧 검은색 반투명 오버레이 (투명도: 0.15) - 배경 이미지를 선명하게 보이게 함 */
-    /* 투명도를 높이면 배경이 더 어두워집니다 (예: 0.3, 0.4) */
-    /* 투명도를 낮추면 배경이 더 밝아집니다 (예: 0.1, 0.05) */
+    /* ?�� 검?�??반투�??�버?�이 (?�명?? 0.15) - 배경 ?��?지�??�명?�게 보이�???*/
+    /* ?�명?��? ?�이�?배경?????�두?�집?�다 (?? 0.3, 0.4) */
+    /* ?�명?��? ??���?배경????밝아집니??(?? 0.1, 0.05) */
     z-index: 1;
 }
 
 /* Seasonal Hero Backgrounds */
-/* 🔧 계절별 배경 이미지 - 여기서 이미지 경로를 변경하세요 */
+/* ?�� 계절�?배경 ?��?지 - ?�기???��?지 경로�?변경하?�요 */
 .page-hero.hero-spring {
-    background-image: url('/01_work/01_gangseo/images/hero_spring.png');
+    background-image: url('../images/hero_spring.png');
 }
 
 .page-hero.hero-summer {
-    background-image: url('/01_work/01_gangseo/images/hero_summer.png');
+    background-image: url('../images/hero_summer.png');
 }
 
 .page-hero.hero-autumn {
-    background-image: url('/01_work/01_gangseo/images/hero_autumn.png');
+    background-image: url('../images/hero_autumn.png');
 }
 
 .page-hero.hero-winter {
-    background-image: url('/01_work/01_gangseo/images/hero_winter.png');
+    background-image: url('../images/hero_winter.png');
 }
 
 
@@ -392,7 +392,7 @@
 }
 
 .job-features li::before {
-    content: '✓';
+    content: '??;
     position: absolute;
     left: 0;
     color: #2e9e5e;
@@ -509,7 +509,7 @@
 }
 
 .product-features li::before {
-    content: '•';
+    content: '??;
     position: absolute;
     left: 0;
     color: #2e9e5e;
@@ -1217,7 +1217,7 @@
     padding: 10px 0;
 }
 
-/* 테이블형 스켈레톤 */
+/* ?�이블형 ?�켈?�톤 */
 .skeleton-row {
     display: flex;
     align-items: center;
@@ -1246,7 +1246,7 @@
     height: 16px;
 }
 
-/* 구인/구직 스켈레톤 */
+/* 구인/구직 ?�켈?�톤 */
 .skeleton-job-item {
     display: flex;
     align-items: center;
@@ -1271,7 +1271,7 @@
     height: 16px;
 }
 
-/* 갤러리 스켈레톤 */
+/* 갤러�??�켈?�톤 */
 .skeleton-gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1301,7 +1301,7 @@
     margin: 0 15px 15px;
 }
 
-/* 상품 스켈레톤 */
+/* ?�품 ?�켈?�톤 */
 .skeleton-products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1331,7 +1331,7 @@
     margin: 0 15px 15px;
 }
 
-/* 상세글 스켈레톤 */
+/* ?�세글 ?�켈?�톤 */
 .skeleton-article {
     padding: 30px;
 }
@@ -1353,7 +1353,7 @@
     width: 100%;
 }
 
-/* 반응형 스켈레톤 */
+/* 반응???�켈?�톤 */
 @media (max-width: 768px) {
     .skeleton-gallery {
         grid-template-columns: repeat(2, 1fr);
@@ -1638,7 +1638,7 @@
     position: relative;
 }
 
-/* 밑줄 효과 제거 */
+/* 밑줄 ?�과 ?�거 */
 /* .sub-nav-list a::after {
     content: '';
     position: absolute;
@@ -1765,7 +1765,7 @@
     font-weight: 300;
 }
 
-/* 핵심목표 - Radial Diagram Mobile Fix */
+/* ?�심목표 - Radial Diagram Mobile Fix */
 @media (max-width: 768px) {
     .radial-diagram {
         height: auto !important;
@@ -1832,7 +1832,7 @@
     padding: 20px 0;
 }
 
-/* Top level - 관장 */
+/* Top level - 관??*/
 .org-chart-wrapper .org-top {
     padding-bottom: 30px;
 }
@@ -1918,7 +1918,7 @@
     position: relative;
 }
 
-/* 관장 - blue oval at top */
+/* 관??- blue oval at top */
 .org-chart-wrapper .org-president {
     background: #3498db;
     color: white;
@@ -1929,28 +1929,28 @@
     border: 3px solid #2980b9;
 }
 
-/* 운영위원회/노사협의회 - yellow with border */
+/* ?�영?�원???�사?�의??- yellow with border */
 .org-yellow {
     background: #fff9e6 !important;
     color: #333 !important;
     border: 2px solid #f5c842 !important;
 }
 
-/* 대내지원/부산시일자리위원/대외지원 - orange */
+/* ?�?��???부?�시?�자리위???�?��???- orange */
 .org-orange {
     background: #fef0e6 !important;
     color: #333 !important;
     border: 2px solid #f5a142 !important;
 }
 
-/* 사서·공익/시장·언론/인파·주차 - green */
+/* ?�서·공익/?�장·?�론/?�파·주차 - green */
 .org-green {
     background: #e8f5e9 !important;
     color: #333 !important;
     border: 2px solid #81c784 !important;
 }
 
-/* 운영/기획·평가·제안/교육·홍보·마케팅 - purple/lavender */
+/* ?�영/기획·?��?·?�안/교육·?�보·마�???- purple/lavender */
 .org-purple {
     background: #f3e5f5 !important;
     color: #333 !important;
@@ -2202,7 +2202,7 @@
 }
 
 /* =====================================================
-   Core Objectives Section (핵심목표) - Radial Layout
+   Core Objectives Section (?�심목표) - Radial Layout
    ===================================================== */
 .core-objectives-section {
     margin-top: 50px;
@@ -2352,7 +2352,7 @@
 }
 
 /* =====================================================
-   Core Tasks Section (핵심과제) - Clean Design
+   Core Tasks Section (?�심과제) - Clean Design
    ===================================================== */
 .core-tasks-section {
     margin-top: 50px;
@@ -2895,7 +2895,7 @@
     }
 
     .board-table td.date::before {
-        content: "작성일 ";
+        content: "?�성??";
     }
 
     .board-table td.views::before {
@@ -3159,3 +3159,107 @@
         gap: 20px;
     }
 }
+/* =====================================================
+   Organization Chart Image & Modal
+   ===================================================== */
+
+/* ������ �ȳ� ���� */
+.org-chart-notice {
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: none; /* PC������ ���� */
+}
+
+/* ������ �̹��� ���� */
+.org-chart-image-wrapper {
+    text-align: center;
+    margin: 30px 0;
+}
+
+/* ������ �̹��� */
+.org-chart-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: scale(0.85);transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.org-chart-image.clickable {
+    cursor: pointer;
+}
+
+.org-chart-image.clickable:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ������ ��� */
+.org-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.org-modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.org-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.org-modal-close:hover,
+.org-modal-close:focus {
+    color: #bbb;
+}
+
+.org-modal-caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+/* ��� �ִϸ��̼� */
+.org-modal-content,
+.org-modal-caption {
+    animation: zoom 0.3s;
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
