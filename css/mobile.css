@@ -1,9 +1,4 @@
 ﻿/* =====================================================
-   Mobile Styles - 부?�강?�시?�어?�럽
-   모바???�용 ?��???(768px ?�하?�서�??�용)
-   ===================================================== */
-
-/* =====================================================
    Header & Navigation
    ===================================================== */
 .header {
@@ -22,7 +17,6 @@
     height: 100%;
 }
 
-/* 로고 ?�역 개선 */
 .logo {
     max-width: 200px;
 }
@@ -32,7 +26,6 @@
     width: auto;
 }
 
-/* 로고 ???��? 글???�기�?(모바?�에??가?�성 ?�어�? */
 .logo-sub-text {
     display: none;
 }
@@ -110,7 +103,6 @@
     text-align: center;
 }
 
-/* 비즈?�스 카드 - 2??그리???��??�되 가?�성 개선 */
 .business-cards {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
@@ -135,7 +127,6 @@
     line-height: 1.3;
 }
 
-/* 카드 ?�명 ?�스??- 가?�성 개선 */
 .business-card p {
     font-size: 11px;
     line-height: 1.5;
@@ -143,34 +134,23 @@
     word-break: keep-all;
 }
 
-/* =====================================================
-   ?�� News & Media Section (?�상갤러�??�림?�항/구인구직 ?�역)
-   ===================================================== */
 .news-media-section {
     padding: 5px 0;
-    /* ?�� ?�션 ?�하 ?�딩 - 컴팩??*/
-}
+    }
 
 .news-media-wrapper {
     grid-template-columns: 1fr;
     gap: 10px;
-    /* ?�� 박스???�이 간격 - 컴팩??*/
-    padding: 0 15px;
-    /* ?�� ?�체 좌우 ?�딩 - 컴팩??*/
-}
+        padding: 0 15px;
+    }
 
-/* ?�� 박스 공통 ?��???(?�상/?�림/구인 3�?박스 모두 ?�용) */
-/* ?�� 박스 공통 ?��???(?�상/?�림/구인 3�?박스 모두 ?�용) */
 .video-box,
 .notice-box,
 .job-box {
     border-radius: 12px;
-    /* ?�� 박스 ?�근 모서�??�기 */
-    overflow: hidden;
-    /* ?�� ?�용 ?�침 ?��? */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    /* ?�� 박스 그림??*/
-}
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
 /* 🔧 모든 박스 좌우 너비 제한 (모바일 전용) - 비디오, 알림사항, 구인구직 통일 */
 .video-box,
@@ -201,12 +181,10 @@
     /* 🔧 헤더 제목 폰트 크기 (모든 박스 통일) */
 }
 
-/* ?�� ?�상 갤러�?비디???�이 조절 */
 .video-box .video-wrapper {
     position: relative;
     padding-bottom: 56.25% !important;
-    /* ?�� ?�상 ?�이 비율 (??��: 30-40%, 보통: 50%, ?�게: 56.25%) */
-    height: 0;
+        height: 0;
     overflow: hidden;
     margin-top: 0 !important;
 }
@@ -221,23 +199,19 @@
 
 .article-list {
     padding: 10px 15px;
-    /* ?�� 기사 리스???�딩 */
-}
+    }
 
 .article-list li a {
     padding: 12px 0;
-    /* ?�� 기사 ??�� ?�하 ?�딩 */
-}
+    }
 
 .article-title {
     font-size: 13px;
-    /* ?�� 기사 ?�목 ?�트 ?�기 */
-}
+    }
 
 .article-date {
     font-size: 11px;
-    /* ?�� 기사 ?�짜 ?�트 ?�기 */
-}
+    }
 
 
 /* 🔧 알림사항/구인구직 박스 스택 영역 */
@@ -255,11 +229,9 @@
     margin: 0;
 }
 
-/* ?�� ?�림?�항/구인구직 리스???�이???��???*/
 .notice-jobs-stack .list li {
     padding: 6px 0;
-    /* ?�� �???�� ?�하 ?�딩 - 컴팩??*/
-    border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
 }
 
 .notice-jobs-stack .list li:last-child {
@@ -272,17 +244,14 @@
     justify-content: space-between !important;
     align-items: center !important;
     gap: 10px !important;
-    /* ?�� ?�목�??�짜 ?�이 간격 */
-    text-decoration: none !important;
+        text-decoration: none !important;
 }
 
 .notice-jobs-stack .list .title {
     flex: 1 !important;
     font-size: 13px !important;
-    /* ?�� ?�목 ?�트 ?�기 */
-    color: #333 !important;
-    /* ?�� ?�목 ?�상 */
-    overflow: hidden !important;
+        color: #333 !important;
+        overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     display: block !important;
@@ -291,10 +260,8 @@
 .notice-jobs-stack .list .date {
     flex-shrink: 0 !important;
     font-size: 11px !important;
-    /* ?�� ?�짜 ?�트 ?�기 */
-    color: #999 !important;
-    /* ?�� ?�짜 ?�상 */
-    white-space: nowrap !important;
+        color: #999 !important;
+        white-space: nowrap !important;
 }
 
 /* =====================================================
@@ -316,7 +283,6 @@
     overflow: hidden;
 }
 
-/* 메인 ?�이지 갤러�?그리??- 2???�이?�웃 */
 .gallery-grid-home {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
@@ -336,8 +302,7 @@
 
 .gallery-grid-home .gallery-card-img {
     height: 130px;
-    /* ?�� 갤러�??��?지 ?�이 - ??값을 변경하?�요 */
-    overflow: hidden;
+        overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -372,7 +337,6 @@
     color: #999;
 }
 
-/* 갤러�?카드 그리??- 2???�이?�웃 */
 .gallery-card-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -475,9 +439,6 @@
     display: block;
 }
 
-/* =====================================================
-   Organization Chart - 모바??컴팩???�이?�웃
-   ===================================================== */
 .org-chart-wrapper {
     padding: 15px;
     background: #f9f9f9;
@@ -540,7 +501,6 @@
     border: 1px solid #e0e0e0;
 }
 
-/* ?�업 관�??�역 */
 .org-business {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -610,7 +570,6 @@
     position: relative;
 }
 
-/* ?�크�??�트 - ?�른쪽에 그라?�이??추�? */
 .sub-nav::after {
     content: '';
     position: absolute;
@@ -627,8 +586,7 @@
     gap: 8px;
     padding: 12px 15px;
     padding-right: 50px;
-    /* ?�크�??�트 공간 ?�보 */
-    justify-content: flex-start;
+        justify-content: flex-start;
     min-width: max-content;
 }
 
@@ -652,11 +610,6 @@
     font-weight: 500;
 }
 
-/* =====================================================
-   Board List (Notice, Gallery, Jobs) - ?�버?�로??방�?
-   ===================================================== */
-
-/* ?�체 ?�이지 ?�버?�로??방�? */
 html,
 body {
     overflow-x: hidden;
@@ -668,15 +621,12 @@ body {
     overflow-x: hidden;
 }
 
-/* ?�� 콘텐�??�션 - ?�단 ?�딩 조절 (?�재: 20px) */
 .content-section {
     margin-bottom: 30px;
     padding-top: 100px;
-    /* ?�� ?�단 ?�딩 - ??값을 변경하?�요 */
-    overflow: visible;
+        overflow: visible;
 }
 
-/* ?�션 ?�?��? - 모바?�에??보이?�록 ?�실???�시 */
 .content-section .section-title {
     font-size: 18px;
     padding-left: 15px;
@@ -691,15 +641,11 @@ body {
     height: 18px;
 }
 
-/* 게시??리스??*/
 .board-list {
     gap: 0;
     width: 100%;
 }
 
-/* =====================================================
-   Board Table - 모바??컴팩????�??�시
-   ===================================================== */
 .board-table {
     width: 100%;
     font-size: 11px;
@@ -708,8 +654,7 @@ body {
 
 .board-table thead {
     display: none;
-    /* 모바?�에???�더 ?��? */
-}
+    }
 
 .board-table tbody tr {
     display: flex;
@@ -724,7 +669,6 @@ body {
     border-bottom: none;
 }
 
-/* 번호/공�? */
 .board-table td.num {
     flex-shrink: 0;
     width: 32px;
@@ -741,7 +685,6 @@ body {
     border-radius: 3px;
 }
 
-/* ?�목 */
 .board-table td.title {
     flex: 1;
     min-width: 0;
@@ -759,7 +702,6 @@ body {
     white-space: nowrap;
 }
 
-/* ?�짜 */
 .board-table td.date {
     flex-shrink: 0;
     width: 55px;
@@ -768,7 +710,6 @@ body {
     text-align: right;
 }
 
-/* 조회??*/
 .board-table td.views {
     flex-shrink: 0;
     width: 28px;
@@ -782,9 +723,6 @@ body {
     background: #f9fff9;
 }
 
-/* =====================================================
-   Job Item - 모바???�림?�항처럼 컴팩???�시
-   ===================================================== */
 .jobs-list {
     display: flex !important;
     flex-direction: column !important;
@@ -828,8 +766,7 @@ body {
 
 .job-info {
     flex: 1 1 auto !important;
-    /* ?�� ?�정: flex-basis�?auto�?변�?(0%?�서) */
-    overflow: hidden !important;
+        overflow: hidden !important;
     display: block !important;
 }
 
@@ -856,10 +793,8 @@ body {
 
 .job-date {
     flex: 0 0 auto !important;
-    /* ?�� ?�정: flex-shrink 0 ?��? */
-    max-width: 60px !important;
-    /* ?�� 추�?: 최�? ?�비 ?�한 */
-    font-size: 10px !important;
+        max-width: 60px !important;
+        font-size: 10px !important;
     color: #999 !important;
     white-space: nowrap !important;
     text-align: right !important;
@@ -888,7 +823,6 @@ body {
     color: #999;
 }
 
-/* 구인/구직 리스??*/
 .jobs-list {
     display: flex;
     flex-direction: column;
@@ -924,7 +858,6 @@ body {
     color: #666;
 }
 
-/* Gallery Grid - 2???�이?�웃 */
 .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -937,7 +870,6 @@ body {
     overflow: hidden;
 }
 
-/* 갤러�?카드 그리??- 2???�이?�웃 개선 */
 .gallery-card-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
@@ -983,7 +915,6 @@ body {
     color: #999;
 }
 
-/* 갤러�?카드 - ?��?지?� ?�목 간격 최소??*/
 .gallery-card-img {
     height: 120px;
     overflow: hidden;
@@ -1008,9 +939,6 @@ body {
     color: #999;
 }
 
-/* =====================================================
-   Pagination - 모바??최적??
-   ===================================================== */
 .pagination {
     gap: 4px;
     flex-wrap: wrap;
@@ -1026,7 +954,6 @@ body {
     border-radius: 4px;
 }
 
-/* 처음/??버튼 */
 .page-btn.page-first,
 .page-btn.page-last,
 .page-btn.page-prev,
