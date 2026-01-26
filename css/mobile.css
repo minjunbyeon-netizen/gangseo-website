@@ -76,14 +76,8 @@
     line-height: 1.3;
 }
 
-/* 모바?�에???�명 ?�스???��? - h2 ?�목�??�시 */
 /* .slide-desc { display: none; } */
 
-
-/* [사용자 수정] 모바일 서브텍스트 크기 조정 */
-.slide-desc {
-    font-size: 14px;  /* 기본값: 16px (style.css), 원하는 크기로 변경하세요 (예: 12px, 14px, 15px 등) */
-}
 .sub-title {
     display: none;
 }
@@ -790,7 +784,7 @@ body {
     text-align: right;
 }
 
-/* 공�? ??강조 */
+/* 공지 강조 */
 .board-table tr.notice-row {
     background: #f9fff9;
 }
@@ -1102,6 +1096,7 @@ body {
 .section-image-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+    justify-items: center;
 }
 
 .image-placeholder {
@@ -1316,6 +1311,7 @@ body {
     font-weight: 400;
     padding: 12px 0;
 }
+
 /* =====================================================
    Organization Chart Image & Modal - Mobile
    ===================================================== */
@@ -1358,5 +1354,16 @@ body {
     padding: 8px 0;
 }
 
+/* Fix encoding for date and views labels in mobile mode */
+.board-table td.date::before {
+    content: "작성일 ";
+}
 
+/* Fix encoding issues - using Unicode escape sequences */
+.board-table td.date::before {
+    content: "" !important;
+}
 
+.board-table td.views::before {
+    content: "\c870\d68c " !important;
+}
