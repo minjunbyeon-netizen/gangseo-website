@@ -55,6 +55,10 @@
     background-image: url('../images/subpage/4.png');
 }
 
+.page-hero.hero-apply {
+    background-image: url('../images/subpage/5.png');
+}
+
 
 .page-hero .container {
     position: relative;

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기관 추진 체계 통합 페이지</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fcfdfe;
+            color: #111827;
+        }
+
+        /* 섹션 타이틀: 크기 대폭 확대, 중앙 정렬 강조 */
+        .section-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-align: center;
+            color: #111827;
+            margin-bottom: 4rem;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            width: 100%;
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 6rem;
+            }
+        }
+
+        .section-title span {
+            color: #059669;
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+
+        /* 공통 애니메이션 */
+        .reveal {
+            animation: reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 리본 스타일 */
+        .ribbon-step {
+            clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%);
+        }
+
+        @media (max-width: 1024px) {
+            .ribbon-step {
+                clip-path: polygon(0% 0%, 100% 0%, 100% 94%, 50% 100%, 0% 94%);
+            }
+        }
+
+        /* 핵심목표 점선 애니메이션 */
+        .line-flow {
+            stroke-dasharray: 6;
+            animation: flow 15s linear infinite;
+        }
+
+        @keyframes flow {
+            from {
+                stroke-dashoffset: 120;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center py-32 px-6 space-y-64">
+
+    <!-- SECTION 1: MISSION & VISION -->
+    <section class="w-full max-w-7xl reveal">
+        <h1 class="section-title">미션 <span>&</span> 비전</h1>
+
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-10">
+            <!-- Mission -->
+            <div class="group flex flex-col items-center flex-1">
+                <div
+                    class="w-72 h-72 md:w-96 md:h-96 rounded-full border-[12px] border-emerald-600 bg-white flex flex-col items-center justify-center p-10 shadow-2xl transition-all group-hover:scale-105 group-hover:shadow-emerald-200/50">
+                    <h2 class="text-3xl font-black text-emerald-600 mb-2">미션</h2>
+                    <p class="text-sm font-bold text-emerald-400 mb-8 tracking-[0.3em] uppercase">Mission</p>
+                    <p class="text-xl font-semibold text-gray-700 leading-tight text-center break-keep">
+                        일자리를 통한<br><span class="text-emerald-800 text-2xl font-black">건강한 노후</span>를<br>디자인함
+                    </p>
+                </div>
+            </div>
+
+            <!-- Arrow Icon -->
+            <div class="rotate-90 lg:rotate-0 text-emerald-400 opacity-50">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path d="M13 5l7 7-7 7M5 12h15" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+
+            <!-- Value -->
+            <div class="group flex flex-col items-center flex-1">
+                <div
+                    class="w-72 h-72 md:w-96 md:h-96 rounded-full border-[12px] border-emerald-500 bg-white flex flex-col items-center justify-center p-10 shadow-2xl transition-all group-hover:scale-105 group-hover:shadow-emerald-200/50">
+                    <h2 class="text-3xl font-black text-emerald-600 mb-2">핵심가치</h2>
+                    <p class="text-sm font-bold text-emerald-400 mb-8 tracking-[0.3em] uppercase">Value</p>
+                    <p class="text-2xl font-black text-gray-900 text-center tracking-tight">
+                        존중 · 배려 · 감사
+                    </p>
+                </div>
+            </div>
+
+            <!-- Arrow Icon -->
+            <div class="rotate-90 lg:rotate-0 text-emerald-400 opacity-50">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path d="M13 5l7 7-7 7M5 12h15" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+
+            <!-- Vision -->
+            <div class="group flex flex-col items-center flex-1">
+                <div
+                    class="w-72 h-72 md:w-96 md:h-96 rounded-full border-[12px] border-emerald-400 bg-white flex flex-col items-center justify-center p-10 shadow-2xl transition-all group-hover:scale-105 group-hover:shadow-emerald-200/50">
+                    <h2 class="text-3xl font-black text-emerald-600 mb-2">비전</h2>
+                    <p class="text-sm font-bold text-emerald-400 mb-8 tracking-[0.3em] uppercase">Vision</p>
+                    <p class="text-xl font-semibold text-gray-700 leading-tight text-center break-keep">
+                        괜찮은 일자리를 통한<br><span class="text-emerald-800 text-2xl font-black">건강한 지역사회</span><br>구축
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: STRATEGY -->
+    <section class="w-full max-w-7xl reveal">
+        <h1 class="section-title">추진전략</h1>
+
+        <div class="flex flex-col lg:flex-row items-stretch justify-center w-full">
+            <!-- Step Block 1 -->
+            <div class="flex-1 flex flex-col items-center group">
+                <div
+                    class="w-20 h-20 bg-white border-4 border-emerald-600 rounded-full z-10 -mb-10 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <div class="ribbon-step bg-emerald-600 w-full py-16 px-8 text-center text-white">
+                    <h3 class="text-2xl font-black mb-1">지역사회조사</h3>
+                    <p class="text-xs font-bold opacity-70 tracking-widest uppercase">Research</p>
+                </div>
+            </div>
+            <!-- Step Block 2 -->
+            <div class="flex-1 flex flex-col items-center group lg:-ml-6">
+                <div
+                    class="w-20 h-20 bg-white border-4 border-emerald-500 rounded-full z-10 -mb-10 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ribbon-step bg-emerald-500 w-full py-16 px-8 text-center text-white">
+                    <h3 class="text-2xl font-black mb-1">목표설정</h3>
+                    <p class="text-xs font-bold opacity-70 tracking-widest uppercase">Objective</p>
+                </div>
+            </div>
+            <!-- Step Block 3 -->
+            <div class="flex-1 flex flex-col items-center group lg:-ml-6">
+                <div
+                    class="w-20 h-20 bg-white border-4 border-emerald-400 rounded-full z-10 -mb-10 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div class="ribbon-step bg-emerald-400 w-full py-16 px-8 text-center text-white">
+                    <h3 class="text-2xl font-black mb-1">사업실행</h3>
+                    <p class="text-xs font-bold opacity-70 tracking-widest uppercase">Practice</p>
+                </div>
+            </div>
+            <!-- Step Block 4 -->
+            <div class="flex-1 flex flex-col items-center group lg:-ml-6">
+                <div
+                    class="w-20 h-20 bg-white border-4 border-teal-500 rounded-full z-10 -mb-10 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <svg class="w-10 h-10 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div class="ribbon-step bg-teal-500 w-full py-16 px-8 text-center text-white">
+                    <h3 class="text-2xl font-black mb-1">성과평가</h3>
+                    <p class="text-xs font-bold opacity-70 tracking-widest uppercase">Evaluation</p>
+                </div>
+            </div>
+            <!-- Step Block 5 -->
+            <div class="flex-1 flex flex-col items-center group lg:-ml-6">
+                <div
+                    class="w-20 h-20 bg-white border-4 border-teal-600 rounded-full z-10 -mb-10 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <svg class="w-10 h-10 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </div>
+                <div class="ribbon-step bg-teal-600 w-full py-16 px-8 text-center text-white">
+                    <h3 class="text-2xl font-black mb-1">환류 및 피드백</h3>
+                    <p class="text-xs font-bold opacity-70 tracking-widest uppercase">Feedback</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: CORE OBJECTIVES -->
+    <section class="w-full max-w-7xl reveal">
+        <h1 class="section-title">핵심목표</h1>
+
+        <div class="relative flex items-center justify-center h-[700px] md:h-[850px]">
+            <!-- Radial Lines -->
+            <svg class="absolute inset-0 w-full h-full hidden md:block">
+                <g class="stroke-emerald-100 stroke-[3] line-flow fill-none">
+                    <line x1="50%" y1="50%" x2="50%" y2="10%" />
+                    <line x1="50%" y1="50%" x2="85%" y2="25%" />
+                    <line x1="50%" y1="50%" x2="85%" y2="75%" />
+                    <line x1="50%" y1="50%" x2="50%" y2="90%" />
+                    <line x1="50%" y1="50%" x2="15%" y2="75%" />
+                    <line x1="50%" y1="50%" x2="15%" y2="25%" />
+                </g>
+            </svg>
+
+            <!-- Center -->
+            <div
+                class="z-20 w-56 h-56 md:w-64 md:h-64 bg-emerald-600 rounded-full border-[12px] border-white shadow-2xl flex items-center justify-center text-white text-4xl font-black italic">
+                CORE
+            </div>
+
+            <!-- Orbiting Items -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 md:top-[2%]">
+                <div
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-emerald-500 rounded-full shadow-xl flex items-center justify-center text-center p-4">
+                    <span class="text-sm md:text-lg font-black text-gray-800 leading-tight">신중년 세대<br>선도 사업단</span>
+                </div>
+            </div>
+            <div class="absolute top-[20%] right-0 md:right-[5%]">
+                <div
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-emerald-400 rounded-full shadow-xl flex items-center justify-center text-center p-4">
+                    <span class="text-sm md:text-lg font-black text-gray-800 leading-tight">노인일자리<br>사업 활성화</span>
+                </div>
+            </div>
+            <div class="absolute bottom-[20%] right-0 md:right-[5%]">
+                <div
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-teal-400 rounded-full shadow-xl flex items-center justify-center text-center p-4">
+                    <span class="text-sm md:text-lg font-black text-gray-800 leading-tight">지역사회자원<br>네트워크 구축</span>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 md:bottom-[2%]">
+                <div
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-teal-500 rounded-full shadow-xl flex items-center justify-center text-center p-4">
+                    <span class="text-sm md:text-lg font-black text-gray-800 leading-tight">유관기관<br>협력체계 강화</span>
+                </div>
+            </div>
+            <div class="absolute bottom-[20%] left-0 md:left-[5%]">
+                <div
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-teal-400 rounded-full shadow-xl flex items-center justify-center text-center p-4">
+                    <span class="text-sm md:text-lg font-black text-gray-800 leading-tight">여가문화 및<br>교육활동 활성</span>
+                </div>
+            </div>
+            <div class="absolute top-[20%] left-0 md:left-[5%]">
+                <div
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white border-[6px] border-emerald-400 rounded-full shadow-xl flex items-center justify-center text-center p-4">
+                    <span class="text-sm md:text-lg font-black text-gray-800 leading-tight">직원역량강화<br>프로그램 실행</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: CORE TASKS -->
+    <section class="w-full max-w-7xl reveal">
+        <h1 class="section-title">핵심과제</h1>
+
+        <div class="grid grid-cols-1 gap-8">
+            <!-- Task Item 01 -->
+            <div class="flex items-center gap-8 group">
+                <div
+                    class="w-20 h-20 md:w-24 md:h-24 bg-emerald-600 text-white rounded-3xl flex items-center justify-center text-4xl font-black italic shadow-2xl flex-shrink-0 transition-all group-hover:-translate-y-2 group-hover:rotate-6">
+                    01</div>
+                <div
+                    class="flex-1 bg-white border-l-[12px] border-emerald-600 p-8 shadow-xl rounded-r-3xl transition-all group-hover:bg-emerald-50">
+                    <h4 class="text-2xl font-black text-gray-900">신중년 세대를 위한 선도적 사업운영</h4>
+                    <p class="text-emerald-600 text-sm font-bold mt-1">Leading project operation for the new middle-aged
+                        generation</p>
+                </div>
+            </div>
+            <!-- Task Item 02 -->
+            <div class="flex items-center gap-8 group">
+                <div
+                    class="w-20 h-20 md:w-24 md:h-24 bg-emerald-500 text-white rounded-3xl flex items-center justify-center text-4xl font-black italic shadow-2xl flex-shrink-0 transition-all group-hover:-translate-y-2 group-hover:rotate-6">
+                    02</div>
+                <div
+                    class="flex-1 bg-white border-l-[12px] border-emerald-500 p-8 shadow-xl rounded-r-3xl transition-all group-hover:bg-emerald-50">
+                    <h4 class="text-2xl font-black text-gray-900">안전 및 복리후생 환경 구축</h4>
+                    <p class="text-emerald-500 text-sm font-bold mt-1">Establishing safety and welfare environment</p>
+                </div>
+            </div>
+            <!-- Task Item 03 -->
+            <div class="flex items-center gap-8 group">
+                <div
+                    class="w-20 h-20 md:w-24 md:h-24 bg-emerald-400 text-white rounded-3xl flex items-center justify-center text-4xl font-black italic shadow-2xl flex-shrink-0 transition-all group-hover:-translate-y-2 group-hover:rotate-6">
+                    03</div>
+                <div
+                    class="flex-1 bg-white border-l-[12px] border-emerald-400 p-8 shadow-xl rounded-r-3xl transition-all group-hover:bg-emerald-50">
+                    <h4 class="text-2xl font-black text-gray-900">재정 및 회계관리 투명성 확보</h4>
+                    <p class="text-emerald-400 text-sm font-bold mt-1">Ensuring transparency in financial and accounting
+                        management</p>
+                </div>
+            </div>
+            <!-- Task Item 04 -->
+            <div class="flex items-center gap-8 group">
+                <div
+                    class="w-20 h-20 md:w-24 md:h-24 bg-teal-500 text-white rounded-3xl flex items-center justify-center text-4xl font-black italic shadow-2xl flex-shrink-0 transition-all group-hover:-translate-y-2 group-hover:rotate-6">
+                    04</div>
+                <div
+                    class="flex-1 bg-white border-l-[12px] border-teal-500 p-8 shadow-xl rounded-r-3xl transition-all group-hover:bg-emerald-50">
+                    <h4 class="text-2xl font-black text-gray-900">직원 역량강화 프로그램 개발 실행</h4>
+                    <p class="text-teal-500 text-sm font-bold mt-1">Developing and executing employee capacity building
+                        programs</p>
+                </div>
+            </div>
+            <!-- Task Item 05 -->
+            <div class="flex items-center gap-8 group">
+                <div
+                    class="w-20 h-20 md:w-24 md:h-24 bg-teal-600 text-white rounded-3xl flex items-center justify-center text-4xl font-black italic shadow-2xl flex-shrink-0 transition-all group-hover:-translate-y-2 group-hover:rotate-6">
+                    05</div>
+                <div
+                    class="flex-1 bg-white border-l-[12px] border-teal-600 p-8 shadow-xl rounded-r-3xl transition-all group-hover:bg-emerald-50">
+                    <h4 class="text-2xl font-black text-gray-900">지역사회자원 및 유관기관 연대 강화</h4>
+                    <p class="text-teal-600 text-sm font-bold mt-1">Strengthening solidarity with community resources
+                        and related organizations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="w-full max-w-7xl text-center border-t-2 border-emerald-100 pt-20 pb-12 text-gray-400">
+        <p class="text-2xl font-black text-emerald-600 mb-4 tracking-[0.3em] uppercase italic">Healthy Society Design
+            Institute</p>
+        <div class="flex justify-center gap-4 text-xs font-bold uppercase tracking-widest text-gray-300">
+            <span>Innovation</span>
+            <span>•</span>
+            <span>Trust</span>
+            <span>•</span>
+            <span>Health</span>
+        </div>
+    </footer>
+
+</body>
+
+</html>
