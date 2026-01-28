@@ -434,20 +434,12 @@
             }
         }
 
-        // 맨 처음 버튼 (<<)
+        // 맨 처음 버튼 (<)
         if (currentPage > 1) {
-            html += `<a href="?page=1" class="page-btn page-first" title="첫 페이지">&laquo;</a>`;
+            html += `<a href="?page=1" class="page-btn page-first" title="첫 페이지">&lsaquo;</a>`;
         } else {
-            html += `<button class="page-btn page-first" disabled title="첫 페이지">&laquo;</button>`;
+            html += `<button class="page-btn page-first" disabled title="첫 페이지">&lsaquo;</button>`;
         }
-
-        // 이전 버튼 (<)
-        if (pagination.hasPrev) {
-            html += `<a href="?page=${currentPage - 1}" class="page-btn page-prev" title="이전 페이지">&lsaquo;</a>`;
-        } else {
-            html += `<button class="page-btn page-prev" disabled title="이전 페이지">&lsaquo;</button>`;
-        }
-
 
         // 페이지 번호 (5개만 표시)
         for (let i = startPage; i <= endPage; i++) {
@@ -455,18 +447,11 @@
             html += `<a href="?page=${i}" class="page-btn ${activeClass}">${i}</a>`;
         }
 
-        // 다음 버튼 (>)
-        if (pagination.hasNext) {
-            html += `<a href="?page=${currentPage + 1}" class="page-btn page-next" title="다음 페이지">&rsaquo;</a>`;
-        } else {
-            html += `<button class="page-btn page-next" disabled title="다음 페이지">&rsaquo;</button>`;
-        }
-
-        // 맨 끝 버튼 (>>)
+        // 맨 끝 버튼 (>)
         if (currentPage < totalPages) {
-            html += `<a href="?page=${totalPages}" class="page-btn page-last" title="마지막 페이지">&raquo;</a>`;
+            html += `<a href="?page=${totalPages}" class="page-btn page-last" title="마지막 페이지">&rsaquo;</a>`;
         } else {
-            html += `<button class="page-btn page-last" disabled title="마지막 페이지">&raquo;</button>`;
+            html += `<button class="page-btn page-last" disabled title="마지막 페이지">&rsaquo;</button>`;
         }
 
         container.innerHTML = html;

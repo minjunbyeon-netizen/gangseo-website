@@ -3,26 +3,26 @@
    ===================================================== */
 
 /* Page Hero - Full Width Background Design */
-/* ?�� ?�브?�이지 ?�더 - 배경 ?��?지 ?�정 */
+/* ?�� ?�브?�이지 ?�더 - 배경 ?��?지 ?�정 */
 .page-hero {
     margin-top: var(--header-height);
     position: relative;
-    /* ?�� ?�브?�이지 ?�어�??�션 ?�이 ?�정 */
-    /* ?�재�? 120px - ??값을 변경하�??�브?�이지 ?�단 ?��?지 ?�역???�이가 조정?�니??*/
-    /* ?�시: 100px (??��), 150px (?�게), 200px (???�게) */
-    min-height: 250px;
+    /* ?�� ?�브?�이지 ?�어�??�션 ?�이 ?�정 */
+    /* ?�재�? 120px - ??값을 변경하�??�브?�이지 ?�단 ?��?지 ?�역???�이가 조정?�니??*/
+    /* ?�시: 100px (??��), 150px (?�게), 200px (???�게) */
+    min-height: 288px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    /* ?�� 배경 ?��?지 ?�정 */
+    /* ?�� 배경 ?��?지 ?�정 */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* ?�� ?�브?�이지 ?�더 - ?�스??가?�성???�한 ?�버?�이 */
+/* ?�� ?�브?�이지 ?�더 - ?�스??가?�성???�한 ?�버?�이 */
 .page-hero::before {
     content: '';
     position: absolute;
@@ -31,28 +31,28 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.15);
-    /* ?�� 검?�??반투�??�버?�이 (?�명?? 0.15) - 배경 ?��?지�??�명?�게 보이�???*/
-    /* ?�명?��? ?�이�?배경?????�두?�집?�다 (?? 0.3, 0.4) */
-    /* ?�명?��? ??���?배경????밝아집니??(?? 0.1, 0.05) */
+    /* ?�� 검?�??반투�??�버?�이 (?�명?? 0.15) - 배경 ?��?지�??�명?�게 보이�???*/
+    /* ?�명?��? ?�이�?배경?????�두?�집?�다 (?? 0.3, 0.4) */
+    /* ?�명?��? ??���?배경????밝아집니??(?? 0.1, 0.05) */
     z-index: 1;
 }
 
 /* Seasonal Hero Backgrounds */
-/* ?�� 계절�?배경 ?��?지 - ?�기???��?지 경로�?변경하?�요 */
+/* ?�� 계절�?배경 ?��?지 - ?�기???��?지 경로�?변경하?�요 */
 .page-hero.hero-spring {
-    background-image: url('../images/hero_spring.png');
+    background-image: url('../images/subpage/1.png');
 }
 
 .page-hero.hero-summer {
-    background-image: url('../images/hero_summer.png');
+    background-image: url('../images/subpage/2.png');
 }
 
 .page-hero.hero-autumn {
-    background-image: url('../images/hero_autumn.png');
+    background-image: url('../images/subpage/3.png');
 }
 
 .page-hero.hero-winter {
-    background-image: url('../images/hero_winter.png');
+    background-image: url('../images/subpage/4.png');
 }
 
 
@@ -134,9 +134,10 @@
 /* Greeting Box */
 .greeting-box {
     display: block;
-    background: var(--bg-light);
+    background: #ffffff;
     padding: 40px;
     border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .greeting-image .placeholder-image {
@@ -174,6 +175,12 @@
     margin-top: 30px;
     font-size: 18px;
     color: var(--text-dark);
+    text-align: end;
+}
+
+.sign_img {
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* Mission Vision */
@@ -393,7 +400,7 @@
 
 .job-features li::before {
     content: '??;
-    position: absolute;
+ position: absolute;
     left: 0;
     color: #2e9e5e;
     font-weight: 700;
@@ -510,7 +517,7 @@
 
 .product-features li::before {
     content: '??;
-    position: absolute;
+ position: absolute;
     left: 0;
     color: #2e9e5e;
     font-weight: 700;
@@ -1217,7 +1224,7 @@
     padding: 10px 0;
 }
 
-/* ?�이블형 ?�켈?�톤 */
+/* ?�이블형 ?�켈?�톤 */
 .skeleton-row {
     display: flex;
     align-items: center;
@@ -1246,7 +1253,7 @@
     height: 16px;
 }
 
-/* 구인/구직 ?�켈?�톤 */
+/* 구인/구직 ?�켈?�톤 */
 .skeleton-job-item {
     display: flex;
     align-items: center;
@@ -1271,7 +1278,7 @@
     height: 16px;
 }
 
-/* 갤러�??�켈?�톤 */
+/* 갤러�??�켈?�톤 */
 .skeleton-gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1301,7 +1308,7 @@
     margin: 0 15px 15px;
 }
 
-/* ?�품 ?�켈?�톤 */
+/* ?�품 ?�켈?�톤 */
 .skeleton-products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1331,7 +1338,7 @@
     margin: 0 15px 15px;
 }
 
-/* ?�세글 ?�켈?�톤 */
+/* ?�세글 ?�켈?�톤 */
 .skeleton-article {
     padding: 30px;
 }
@@ -1353,7 +1360,7 @@
     width: 100%;
 }
 
-/* 반응???�켈?�톤 */
+/* 반응???�켈?�톤 */
 @media (max-width: 768px) {
     .skeleton-gallery {
         grid-template-columns: repeat(2, 1fr);
@@ -1638,7 +1645,7 @@
     position: relative;
 }
 
-/* 밑줄 ?�과 ?�거 */
+/* 밑줄 ?�과 ?�거 */
 /* .sub-nav-list a::after {
     content: '';
     position: absolute;
@@ -1765,7 +1772,7 @@
     font-weight: 300;
 }
 
-/* ?�심목표 - Radial Diagram Mobile Fix */
+/* ?�심목표 - Radial Diagram Mobile Fix */
 @media (max-width: 768px) {
     .radial-diagram {
         height: auto !important;
@@ -1929,28 +1936,28 @@
     border: 3px solid #2980b9;
 }
 
-/* ?�영?�원???�사?�의??- yellow with border */
+/* ?�영?�원???�사?�의??- yellow with border */
 .org-yellow {
     background: #fff9e6 !important;
     color: #333 !important;
     border: 2px solid #f5c842 !important;
 }
 
-/* ?�?��???부?�시?�자리위???�?��???- orange */
+/* ?�?��???부?�시?�자리위???�?��???- orange */
 .org-orange {
     background: #fef0e6 !important;
     color: #333 !important;
     border: 2px solid #f5a142 !important;
 }
 
-/* ?�서·공익/?�장·?�론/?�파·주차 - green */
+/* ?�서·공익/?�장·?�론/?�파·주차 - green */
 .org-green {
     background: #e8f5e9 !important;
     color: #333 !important;
     border: 2px solid #81c784 !important;
 }
 
-/* ?�영/기획·?��?·?�안/교육·?�보·마�???- purple/lavender */
+/* ?�영/기획·?��?·?�안/교육·?�보·마�???- purple/lavender */
 .org-purple {
     background: #f3e5f5 !important;
     color: #333 !important;
@@ -2023,15 +2030,16 @@
     display: flex;
     align-items: flex-start;
     gap: 15px;
-    background: var(--bg-light);
+    background: #ffffff;
     padding: 25px;
     border-radius: 15px;
     transition: all 0.3s ease;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
 }
 
 .location-info-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .location-info-card .info-icon {
@@ -2055,9 +2063,10 @@
 
 /* Transport Info */
 .transport-info {
-    background: var(--bg-light);
+    background: #ffffff;
     padding: 30px;
     border-radius: 15px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
 }
 
 .transport-info h4 {
@@ -2202,7 +2211,7 @@
 }
 
 /* =====================================================
-   Core Objectives Section (?�심목표) - Radial Layout
+   Core Objectives Section (?�심목표) - Radial Layout
    ===================================================== */
 .core-objectives-section {
     margin-top: 50px;
@@ -2352,7 +2361,7 @@
 }
 
 /* =====================================================
-   Core Tasks Section (?�심과제) - Clean Design
+   Core Tasks Section (?�심과제) - Clean Design
    ===================================================== */
 .core-tasks-section {
     margin-top: 50px;
@@ -2596,7 +2605,6 @@
 .image-placeholder {
     aspect-ratio: 4/3;
     background: #f5f5f5;
-    border: 2px dashed #ddd;
     border-radius: 8px;
     overflow: hidden;
     display: flex;
@@ -2895,7 +2903,7 @@
     }
 
     .board-table td.date::before {
-        content: "?�성??";
+        content: "?�성??";
     }
 
     .board-table td.views::before {
@@ -3159,32 +3167,37 @@
         gap: 20px;
     }
 }
+
 /* =====================================================
    Organization Chart Image & Modal
    ===================================================== */
 
-/* ������ �ȳ� ���� */
+/* ������ �ȳ� ���� */
 .org-chart-notice {
     text-align: center;
     color: #666;
     font-size: 13px;
     margin-bottom: 15px;
-    display: none; /* PC������ ���� */
+    display: none;
+    /* PC������ ���� */
 }
 
-/* ������ �̹��� ���� */
+/* ������ �̹��� ���� */
 .org-chart-image-wrapper {
     text-align: center;
     margin: 30px 0;
 }
 
-/* ������ �̹��� */
+/* 조직도 이미지 */
 .org-chart-image {
-    max-width: 100%;
+    width: 100%;
+    max-width: 1200px;
     height: auto;
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: scale(0.85);transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    margin: 0 auto;
 }
 
 .org-chart-image.clickable {
@@ -3196,7 +3209,7 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ������ ��� */
+/* ������ ��� */
 .org-modal {
     display: none;
     position: fixed;
@@ -3246,7 +3259,7 @@
     font-size: 14px;
 }
 
-/* ��� �ִϸ��̼� */
+/* ��� �ִϸ��̼� */
 .org-modal-content,
 .org-modal-caption {
     animation: zoom 0.3s;
@@ -3257,9 +3270,250 @@
         transform: scale(0.8);
         opacity: 0;
     }
+
     to {
         transform: scale(1);
         opacity: 1;
     }
 }
 
+
+/* ===== HTML/CSS 조직도 스타일 (원본 이미지 기반) ===== */
+.org-chart-html-wrapper {
+    background: #f8f9fa;
+    padding: 40px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow-x: auto;
+    border: 1px solid #e0e0e0;
+}
+
+.org-chart-html-wrapper:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.org-chart-html-wrapper.clickable {
+    cursor: zoom-in;
+}
+
+.org-chart-html {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 750px;
+    padding: 20px;
+}
+
+.org-chart-html .chart-title {
+    display: none;
+}
+
+/* 레벨 공통 스타일 */
+.org-chart-html .org-level {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    width: 100%;
+    position: relative;
+}
+
+/* 박스 공통 스타일 */
+.org-chart-html .org-box {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    text-align: center;
+    min-width: 90px;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+/* 관장 - 파란색 원형 */
+.org-chart-html .org-box.president {
+    background: #2196F3;
+    color: white;
+    padding: 25px 35px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #1976D2;
+}
+
+/* 위원회 - 흰색 배경, 파란색 테두리 */
+.org-chart-html .org-box.committee.yellow {
+    background: #ffffff;
+    color: #1976D2;
+    border: 2px solid #2196F3;
+    font-weight: 500;
+}
+
+/* 지원 - 연한 파란색 배경 */
+.org-chart-html .org-box.support.gray-light {
+    background: #e3f2fd;
+    color: #333;
+    border: 1px solid #bbdefb;
+}
+
+/* 지원 - 중앙 (진한 파란색) */
+.org-chart-html .org-box.support.green-dark {
+    background: #1976D2;
+    color: white;
+    border: 1px solid #1565C0;
+}
+
+/* 부서 - 연한 노란색 */
+.org-chart-html .org-box.dept.yellow-light {
+    background: #fff9c4;
+    color: #333;
+    border: 1px solid #fff176;
+}
+
+/* 하위 부서 - 연한 녹색 */
+.org-chart-html .org-box.sub.green {
+    background: #e8f5e9;
+    color: #333;
+    border: 1px solid #c8e6c9;
+}
+
+/* 연결선 */
+.org-chart-html .org-connector.vertical {
+    width: 2px;
+    height: 20px;
+    background: #666;
+    margin: 3px 0;
+}
+
+/* 컬럼 */
+.org-chart-html .org-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Level 2, 3, 4 간격 */
+.org-chart-html .level-2,
+.org-chart-html .level-3 {
+    gap: 30px;
+}
+
+.org-chart-html .level-4 {
+    gap: 50px;
+}
+
+/* Level 5: 상세 박스 */
+.org-chart-html .level-5 {
+    gap: 12px;
+    align-items: stretch;
+}
+
+.org-chart-html .org-detail-box {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-width: 140px;
+    max-width: 170px;
+    overflow: hidden;
+}
+
+.org-chart-html .detail-header {
+    padding: 8px 12px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+}
+
+.org-chart-html .detail-header.green-header {
+    background: #4caf50;
+    color: white;
+}
+
+.org-chart-html .detail-content {
+    padding: 12px 10px;
+    background: #ffffff;
+}
+
+.org-chart-html .detail-content p {
+    margin: 0 0 4px 0;
+    font-size: 11px;
+    color: #555;
+    line-height: 1.4;
+}
+
+.org-chart-html .detail-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* 모달용 확대 조직도 */
+.org-modal-content-html {
+    background: white;
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow: auto;
+    margin: 20px auto;
+    animation: zoom 0.3s;
+}
+
+.org-chart-html.modal-size {
+    min-width: 850px;
+}
+
+.org-chart-html.modal-size .org-box {
+    padding: 12px 24px;
+    font-size: 14px;
+}
+
+.org-chart-html.modal-size .org-box.president {
+    padding: 30px 40px;
+    font-size: 18px;
+    width: 100px;
+    height: 100px;
+}
+
+.org-chart-html.modal-size .org-detail-box {
+    min-width: 160px;
+    max-width: 190px;
+}
+
+.org-chart-html.modal-size .detail-header {
+    font-size: 13px;
+    padding: 10px 14px;
+}
+
+.org-chart-html.modal-size .detail-content p {
+    font-size: 12px;
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+    .org-chart-html-wrapper {
+        padding: 20px 10px;
+    }
+
+    .org-chart-html {
+        min-width: 650px;
+        transform: scale(0.85);
+        transform-origin: center top;
+    }
+}
+
+/* 모바일 전용 표시 */
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+    }
+}

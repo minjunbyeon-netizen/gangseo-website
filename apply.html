@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>참여신청서 | 부산강서시니어클럽</title>
     <meta name="description" content="부산강서시니어클럽 노인일자리 사업 참여신청서">
@@ -83,9 +84,6 @@
         <div class="container">
             <h2 class="page-title">참여신청서</h2>
             <p class="page-subtitle">노인일자리 사업 참여를 신청합니다</p>
-            <div class="breadcrumb">
-                <a href="index.html">홈</a> <span>></span> <span>참여신청서</span>
-            </div>
         </div>
     </section>
 
@@ -120,28 +118,111 @@
                         <input type="tel" id="phone" name="phone" placeholder="예) 010-1234-5678" required>
                     </div>
 
-                    <!-- 나이(만)세 -->
+                    <!-- 생년월일 -->
                     <div class="form-group">
-                        <label for="age">나이(만)세</label>
-                        <input type="number" id="age" name="age" min="50" max="100" required>
+                        <label>생년월일</label>
+                        <div class="birth-date-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <select id="birthYear" name="birthYear" required style="flex: 1; min-width: 100px;">
+                                <option value="">년도</option>
+                                <script>
+                                    const currentYear = new Date().getFullYear();
+                                    for (let y = currentYear - 50; y >= 1930; y--) {
+                                        document.write('<option value="' + y + '">' + y + '년</option>');
+                                    }
+                                </script>
+                            </select>
+                            <select id="birthMonth" name="birthMonth" required style="flex: 1; min-width: 80px;">
+                                <option value="">월</option>
+                                <option value="1">1월</option>
+                                <option value="2">2월</option>
+                                <option value="3">3월</option>
+                                <option value="4">4월</option>
+                                <option value="5">5월</option>
+                                <option value="6">6월</option>
+                                <option value="7">7월</option>
+                                <option value="8">8월</option>
+                                <option value="9">9월</option>
+                                <option value="10">10월</option>
+                                <option value="11">11월</option>
+                                <option value="12">12월</option>
+                            </select>
+                            <select id="birthDay" name="birthDay" required style="flex: 1; min-width: 80px;">
+                                <option value="">일</option>
+                                <script>
+                                    for (let d = 1; d <= 31; d++) {
+                                        document.write('<option value="' + d + '">' + d + '일</option>');
+                                    }
+                                </script>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 기초생활 수급자 여부 -->
+                    <div class="form-group">
+                        <label>기초생활 수급자 여부 <span style="color: red;">*</span></label>
+                        <div class="radio-group" style="display: flex; gap: 20px; margin-top: 8px;">
+                            <label class="radio-label"
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 400;">
+                                <input type="radio" name="basicLiving" value="해당" required>
+                                <span style="font-size: 14px;">해당</span>
+                            </label>
+                            <label class="radio-label"
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 400;">
+                                <input type="radio" name="basicLiving" value="비해당">
+                                <span style="font-size: 14px;">비해당</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 기초연금 수급자 여부 -->
+                    <div class="form-group">
+                        <label>기초연금 수급자 여부 <span style="color: red;">*</span></label>
+                        <div class="radio-group" style="display: flex; gap: 20px; margin-top: 8px;">
+                            <label class="radio-label"
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 400;">
+                                <input type="radio" name="basicPension" value="수급" required>
+                                <span style="font-size: 14px;">수급</span>
+                            </label>
+                            <label class="radio-label"
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 400;">
+                                <input type="radio" name="basicPension" value="미수급">
+                                <span style="font-size: 14px;">미수급</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 차상위계층 해당 유무 -->
+                    <div class="form-group">
+                        <label>차상위계층 해당 유무 <span style="color: red;">*</span></label>
+                        <div class="radio-group" style="display: flex; gap: 20px; margin-top: 8px;">
+                            <label class="radio-label"
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 400;">
+                                <input type="radio" name="nearPoverty" value="해당" required>
+                                <span style="font-size: 14px;">해당</span>
+                            </label>
+                            <label class="radio-label"
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 400;">
+                                <input type="radio" name="nearPoverty" value="비해당">
+                                <span style="font-size: 14px;">비해당</span>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- 남기실 말씀 -->
                     <div class="form-group">
                         <label for="message">남기실 말씀</label>
-                        <textarea id="message" name="message" rows="8"
-                            placeholder="예) 필수입력사항 : 기초생활 수급자 여부(해당/비해당), 기초연금 수급자 여부(수급/미수급), 차상위계층 해당 유무(해당/비해당)"></textarea>
+                        <textarea id="message" name="message" rows="5" placeholder="기타 문의사항이 있으시면 작성해주세요."></textarea>
                     </div>
 
                     <!-- 개인정보 수집 및 이용 동의 -->
                     <div class="form-group privacy-section">
-                        <label>개인정보 수집 및 이용 동의</label>
+                        <label>개인정보 수집 및 이용 동의 <span style="color: red;">*</span></label>
                         <div class="privacy-content">
                             <p>'부산강서시니어클럽'(이하 '기관')은 참여 신청자의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호에 관한 법률"을 준수하고 있습니다.</p>
 
                             <h5>수집하는 개인정보 항목</h5>
                             <p>기관은 노인일자리 사업 참여 신청을 위해 아래와 같은 개인정보를 수집합니다.</p>
-                            <p><strong>수집항목:</strong> 이름, 연락처(휴대전화번호), 나이(만), 참여희망 사업명, 기타 문의사항</p>
+                            <p><strong>수집항목:</strong> 이름, 연락처(휴대전화번호), 생년월일, 참여희망 사업명, 수급자 여부, 기타 문의사항</p>
                             <p><strong>수집방법:</strong> 홈페이지 참여신청서</p>
 
                             <h5>개인정보의 수집 및 이용목적</h5>
@@ -171,20 +252,14 @@
                             <p>- 이메일: kss20150101@hanmail.net</p>
                             <p>- 주소: 부산광역시 강서구 공항로811번가길 30(대저 2동)</p>
                         </div>
-                        <!-- 🔧 동의함/동의안함 위치 조정 -->
-                        <!-- 글자를 위로 올리려면 아래 CSS를 추가하세요: -->
-                        <!-- .radio-label { align-items: flex-start; } 또는 -->
-                        <!-- .radio-label span { vertical-align: top; } 또는 -->
-                        <!-- .radio-label { display: flex; align-items: center; gap: 5px; } -->
-                        <!-- CSS 파일 위치: css/subpage.css 또는 인라인 스타일로 추가 가능 -->
                         <div class="privacy-agree">
                             <label class="radio-label" style="display: flex; align-items: center; gap: 5px;">
-                                <input type="radio" name="privacyAgree" value="agree" required>
-                                <span style="font-size: 14px; position: relative; top: -0.5px;">동의함</span>
+                                <input type="radio" name="privacyAgree" value="agree" id="privacyAgreeYes" required>
+                                <span style="font-size: 14px;">동의함</span>
                             </label>
                             <label class="radio-label" style="display: flex; align-items: center; gap: 5px;">
-                                <input type="radio" name="privacyAgree" value="disagree">
-                                <span style="font-size: 14px; position: relative; top: -0.5px;">동의안함</span>
+                                <input type="radio" name="privacyAgree" value="disagree" id="privacyAgreeNo">
+                                <span style="font-size: 14px;">동의안함</span>
                             </label>
                         </div>
                     </div>
@@ -194,6 +269,166 @@
                         <button type="submit" class="btn-submit">참여신청서 등록</button>
                     </div>
                 </form>
+
+                <script>
+                    // 폼 유효성 검사
+                    document.getElementById('applyForm').addEventListener('submit', function (e) {
+                        e.preventDefault();
+
+                        // 에러 메시지 배열
+                        let errors = [];
+                        let firstErrorField = null;
+
+                        // 1. 참여희망 사업명 확인
+                        const programType = document.getElementById('programType').value;
+                        if (!programType) {
+                            errors.push('• 참여희망 사업명');
+                            if (!firstErrorField) firstErrorField = document.getElementById('programType');
+                        }
+
+                        // 2. 이름 확인
+                        const nameInput = document.getElementById('name');
+                        const nameRaw = nameInput.value;
+                        const name = nameRaw.trim();
+                        const koreanRegex = /^[가-힣]+$/;
+
+                        if (!name) {
+                            errors.push('• 이름');
+                            if (!firstErrorField) firstErrorField = nameInput;
+                        } else {
+                            // 공백 체크 (trim 전 원본 값에서 중간 공백 체크)
+                            if (/\s/.test(name)) {
+                                errors.push('• 이름 (공백 포함 불가)');
+                                if (!firstErrorField) firstErrorField = nameInput;
+                            } else if (!koreanRegex.test(name)) {
+                                errors.push('• 이름 (한글만 입력 가능)');
+                                if (!firstErrorField) firstErrorField = nameInput;
+                            } else if (name.length < 2 || name.length > 7) {
+                                errors.push('• 이름 (2~7자 입력)');
+                                if (!firstErrorField) firstErrorField = nameInput;
+                            }
+                        }
+
+                        // 3. 연락처 확인
+                        const phoneInput = document.getElementById('phone');
+                        const phone = phoneInput.value.trim();
+                        const phoneClean = phone.replace(/-/g, '');
+                        // 010, 011, 016, 017, 018, 019로 시작하는 10~11자리
+                        const phoneRegex = /^01[016789][0-9]{7,8}$/;
+
+                        if (!phone) {
+                            errors.push('• 연락처');
+                            if (!firstErrorField) firstErrorField = phoneInput;
+                        } else if (!phoneRegex.test(phoneClean)) {
+                            errors.push('• 연락처 (올바른 형식: 010-1234-5678)');
+                            if (!firstErrorField) firstErrorField = phoneInput;
+                        }
+
+                        // 4. 생년월일 확인
+                        const birthYearElem = document.getElementById('birthYear');
+                        const birthMonthElem = document.getElementById('birthMonth');
+                        const birthDayElem = document.getElementById('birthDay');
+                        const birthYear = birthYearElem.value;
+                        const birthMonth = birthMonthElem.value;
+                        const birthDay = birthDayElem.value;
+
+                        if (!birthYear) {
+                            errors.push('• 생년월일 (년도)');
+                            if (!firstErrorField) firstErrorField = birthYearElem;
+                        }
+                        if (!birthMonth) {
+                            errors.push('• 생년월일 (월)');
+                            if (!firstErrorField) firstErrorField = birthMonthElem;
+                        }
+                        if (!birthDay) {
+                            errors.push('• 생년월일 (일)');
+                            if (!firstErrorField) firstErrorField = birthDayElem;
+                        }
+
+                        // 생년월일 유효성 체크 (년/월/일 모두 선택된 경우)
+                        if (birthYear && birthMonth && birthDay) {
+                            const year = parseInt(birthYear);
+                            const month = parseInt(birthMonth);
+                            const day = parseInt(birthDay);
+                            const daysInMonth = new Date(year, month, 0).getDate();
+
+                            if (day > daysInMonth) {
+                                errors.push('• 생년월일 (유효하지 않은 날짜)');
+                                if (!firstErrorField) firstErrorField = birthDayElem;
+                            }
+                        }
+
+                        // 5. 기초생활 수급자 여부 확인
+                        const basicLivingChecked = document.querySelector('input[name="basicLiving"]:checked');
+                        if (!basicLivingChecked) {
+                            errors.push('• 기초생활 수급자 여부');
+                            if (!firstErrorField) {
+                                const basicLivingFirst = document.querySelector('input[name="basicLiving"]');
+                                if (basicLivingFirst) firstErrorField = basicLivingFirst.closest('.form-group') || basicLivingFirst;
+                            }
+                        }
+
+                        // 6. 기초연금 수급자 여부 확인
+                        const basicPensionChecked = document.querySelector('input[name="basicPension"]:checked');
+                        if (!basicPensionChecked) {
+                            errors.push('• 기초연금 수급자 여부');
+                            if (!firstErrorField) {
+                                const basicPensionFirst = document.querySelector('input[name="basicPension"]');
+                                if (basicPensionFirst) firstErrorField = basicPensionFirst.closest('.form-group') || basicPensionFirst;
+                            }
+                        }
+
+                        // 7. 차상위계층 해당 유무 확인
+                        const nearPovertyChecked = document.querySelector('input[name="nearPoverty"]:checked');
+                        if (!nearPovertyChecked) {
+                            errors.push('• 차상위계층 해당 유무');
+                            if (!firstErrorField) {
+                                const nearPovertyFirst = document.querySelector('input[name="nearPoverty"]');
+                                if (nearPovertyFirst) firstErrorField = nearPovertyFirst.closest('.form-group') || nearPovertyFirst;
+                            }
+                        }
+
+                        // 8. 개인정보 동의 체크
+                        const privacyAgreeYes = document.getElementById('privacyAgreeYes');
+                        const privacyAgree = document.querySelector('input[name="privacyAgree"]:checked');
+                        if (!privacyAgree) {
+                            errors.push('• 개인정보 수집 및 이용 동의');
+                            if (!firstErrorField) firstErrorField = privacyAgreeYes;
+                        } else if (privacyAgree.value === 'disagree') {
+                            errors.push('• 개인정보 수집 및 이용 동의 (동의 필수)');
+                            if (!firstErrorField) firstErrorField = privacyAgreeYes;
+                        }
+
+                        // 에러가 있으면 메시지 표시
+                        if (errors.length > 0) {
+                            let errorMessage = '다음 항목을 확인해주세요:\n\n' + errors.join('\n');
+                            alert(errorMessage);
+                            if (firstErrorField) {
+                                // 스크롤 및 포커스
+                                firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                setTimeout(function () {
+                                    if (typeof firstErrorField.focus === 'function') {
+                                        firstErrorField.focus();
+                                    }
+                                }, 300);
+                            }
+                            return false;
+                        }
+
+                        // 모든 유효성 검사 통과 - 성공 메시지 표시
+                        alert('참여신청서가 등록되었습니다.\n담당자가 연락드리겠습니다.');
+                        document.getElementById('applyForm').reset();
+                        return false;
+                    });
+
+                    // 동의안함 선택시 경고
+                    document.getElementById('privacyAgreeNo').addEventListener('change', function () {
+                        if (this.checked) {
+                            alert('개인정보 수집 및 이용에 동의하셔야 참여신청이 가능합니다.');
+                            document.getElementById('privacyAgreeYes').checked = true;
+                        }
+                    });
+                </script>
             </div>
         </div>
     </section>
@@ -203,16 +438,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
-                    <p class="footer-title"><strong>부산강서시니어클럽</strong><br class="footer-br-mo">
-                        <span class="footer-mobile-row">대표 <span>배현옥</span> &nbsp;&nbsp; 대표번호 <span>051)
-                                973-1167</span></span>
-                        <span class="footer-mobile-row">팩스번호 <span>051) 973-1168</span></span>
+                    <p class="footer-line"><strong>부산강서시니어클럽</strong> | 대표 배현옥 | TEL 051) 973-1167 | FAX 051) 973-1168
                     </p>
-                    <p>
-                        <span class="footer-mobile-row">주소 부산광역시 강서구 공항로811번가길 30(대저 2동)</span>
-                        <span class="footer-mobile-row">사업자등록번호 <span>615-82-88196</span> &nbsp;&nbsp; 이메일
-                            <span>kss20150101@hanmail.net</span></span>
-                    </p>
+                    <p class="footer-line">주소 부산광역시 강서구 공항로811번가길 30(대저 2동)</p>
+                    <p class="footer-line">사업자등록번호 615-82-88196 | 이메일 kss20150101@hanmail.net</p>
                 </div>
                 <div class="footer-copyright">
                     <p>Copyright &copy; <span class="highlight">BUSAN Gangseo Senior Club</span> . All Rights Reserved.
@@ -226,18 +455,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/main.js?v=2.2"></script>
     <script>
-        document.getElementById('applyForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const privacyAgree = document.querySelector('input[name="privacyAgree"]:checked');
-            if (!privacyAgree || privacyAgree.value !== 'agree') {
-                alert('개인정보 수집 및 이용에 동의해주세요.');
-                return;
-            }
-
-            alert('참여신청서가 등록되었습니다. 담당자가 연락드리겠습니다.');
-            this.reset();
-        });
+        // 이 핸들러는 위에서 통합됨 - 중복 제거
     </script>
 </body>
 

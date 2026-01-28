@@ -946,10 +946,10 @@ img {
 
 /* 🔧 오시는길 - 오른쪽 정보 박스 */
 .location-info-box {
-    background: var(--bg-light);
-    /* 🔧 박스 배경색 */
-    padding: 1px;
-    /* 🔧 박스 내부 여백 (기본값: 35px) */
+    background: #ffffff;
+    /* 🔧 박스 배경색 - 흰색 */
+    padding: 30px;
+    /* 🔧 박스 내부 여백 */
     border-radius: 15px;
     /* 🔧 박스 모서리 둥글기 */
     height: 480px;
@@ -957,6 +957,8 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    /* 🔧 깔끔한 그림자 효과 */
 }
 
 /* 🔧 오시는길 - 정보 블록 (주소, 오시는길, 운영시간) */

@@ -1,4 +1,4 @@
-﻿/* =====================================================
+/* =====================================================
    Header & Navigation
    ===================================================== */
 .header {
@@ -93,20 +93,36 @@
 /* =====================================================
    Main Business Section
    ===================================================== */
+.section-header {
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
 .main-business {
-    padding: 40px 0;
+    padding: 30px 0;
 }
 
 .business-title {
     font-size: 22px;
     margin-bottom: 25px;
     text-align: center;
+    position: relative;
+    padding-left: 15px;
 }
 
+.business-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    background: #2e7d32;
+}
 .business-cards {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 0 15px;
+    gap: 15px;
+    padding: 0;
 }
 
 .business-card {
@@ -135,42 +151,51 @@
 }
 
 .news-media-section {
+    padding: 30px 0;
+}
+.news-media-section {
     padding: 5px 0;
-    }
+    overflow: hidden;
+}
 
 .news-media-wrapper {
-    grid-template-columns: 1fr;
-    gap: 10px;
-        padding: 0 15px;
-    }
+    gap: 30px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 .video-box,
 .notice-box,
 .job-box {
     border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
 
-/* 🔧 모든 박스 좌우 너비 제한 (모바일 전용) - 비디오, 알림사항, 구인구직 통일 */
 .video-box,
 .notice-box,
 .job-box {
-    max-width: 90%;
-    /* 🔧 최대 너비 (100% = 전체, 90% = 좁게, 80% = 더 좁게) */
+    max-width: 100%;
+    width: 100%;
     margin: 0;
-    /* 🔧 마진 - 전부 0 */
 }
 
 
+
+.btn-more {
+    background-color: #fff;
+    color: var(--primary-orange);
+}
 
 
 .article-list-box .box-header,
 .video-box .box-header,
 .notice-box .box-header,
 .job-box .box-header {
-    padding: 10px 12px;
-    /* 🔧 헤더 패딩 - 컴팩트 (모든 박스 통일) */
+    padding: 10px 12px 10px 0;
 }
 
 .article-list-box .box-header h3,
@@ -178,13 +203,14 @@
 .notice-box .box-header h3,
 .job-box .box-header h3 {
     font-size: 16px;
-    /* 🔧 헤더 제목 폰트 크기 (모든 박스 통일) */
 }
-
+.article-list-box .box-header h3, .video-box .box-header h3 {
+    margin-top: 0;
+}
 .video-box .video-wrapper {
     position: relative;
     padding-bottom: 56.25% !important;
-        height: 0;
+    height: 0;
     overflow: hidden;
     margin-top: 0 !important;
 }
@@ -199,25 +225,27 @@
 
 .article-list {
     padding: 10px 15px;
-    }
+}
 
 .article-list li a {
     padding: 12px 0;
-    }
+}
 
 .article-title {
     font-size: 13px;
-    }
+}
 
 .article-date {
     font-size: 11px;
-    }
+}
 
 
-/* 🔧 알림사항/구인구직 박스 스택 영역 */
 .notice-jobs-stack {
-    gap: 10px;
-    /* 🔧 알림/구인 박스 사이 간격 - 컴팩트 */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
 }
 
 
@@ -231,7 +259,7 @@
 
 .notice-jobs-stack .list li {
     padding: 6px 0;
-        border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .notice-jobs-stack .list li:last-child {
@@ -244,14 +272,14 @@
     justify-content: space-between !important;
     align-items: center !important;
     gap: 10px !important;
-        text-decoration: none !important;
+    text-decoration: none !important;
 }
 
 .notice-jobs-stack .list .title {
     flex: 1 !important;
     font-size: 13px !important;
-        color: #333 !important;
-        overflow: hidden !important;
+    color: #333 !important;
+    overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     display: block !important;
@@ -260,15 +288,13 @@
 .notice-jobs-stack .list .date {
     flex-shrink: 0 !important;
     font-size: 11px !important;
-        color: #999 !important;
-        white-space: nowrap !important;
+    color: #999 !important;
+    white-space: nowrap !important;
 }
 
-/* =====================================================
-   Gallery Section
-   ===================================================== */
+
 .gallery-section {
-    padding: 40px 0;
+    padding: 30px 0;
 }
 
 .bento-gallery {
@@ -287,7 +313,7 @@
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px !important;
-    padding: 0 15px !important;
+    padding: 0;
     width: 100% !important;
 }
 
@@ -302,11 +328,13 @@
 
 .gallery-grid-home .gallery-card-img {
     height: 130px;
-        overflow: hidden;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f5f5f5;
+    background: none;
+    aspect-ratio: unset;
+    border-radius: 0;
 }
 
 .gallery-grid-home .gallery-card-img img {
@@ -317,12 +345,14 @@
 }
 
 .gallery-grid-home .gallery-card-info {
-    padding: 8px;
+    padding: 0px 10px 10px;
     text-align: center;
 }
 
 .gallery-grid-home .gallery-card-title {
-    font-size: 11px;
+    font-size: 13px;
+    word-break: keep-all;
+    letter-spacing: -0.5px;
     line-height: 1.4;
     margin-bottom: 3px;
     display: -webkit-box;
@@ -380,7 +410,7 @@
    Location Section
    ===================================================== */
 .location-section {
-    padding: 50px 0;
+    padding: 30px 0;
 }
 
 .location-wrapper {
@@ -389,15 +419,45 @@
 }
 
 .location-info-box {
-    padding: 25px 20px;
+    padding: 25px 15px;
+    overflow: hidden;
 }
 
 .location-info-box h3 {
     font-size: 18px;
 }
 
+.location-info-box h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
 .location-info-box p {
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+.location-info-box p strong {
+    display: inline;
+    white-space: nowrap;
+}
+
+.info-block {
+    padding-bottom: 0px;
+    border-bottom: 1px solid #eee;
+}
+
+.info-block:last-child {
+    border-bottom: none;
+}
+
+.gallery-card-home {
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid lightgray;
+    overflow: hidden;
 }
 
 /* =====================================================
@@ -413,17 +473,38 @@
     text-align: center;
 }
 
-.footer-info p {
-    font-size: 12px;
+.footer-info p,
+.footer-line {
+    font-size: 11px !important;
     line-height: 1.8;
+    margin: 0;
+    padding: 2px 0;
+}
+
+.footer-line strong {
+    font-weight: 700;
 }
 
 .footer-title {
-    font-size: 14px;
+    font-size: 11px !important;
+    font-weight: normal;
+    line-height: 2;
+}
+
+.footer-title strong {
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.footer-title span,
+.footer-info span {
+    font-size: 11px !important;
 }
 
 .footer-copyright {
-    font-size: 11px;
+    font-size: 10px;
 }
 
 /* Footer mobile line breaks */
@@ -437,6 +518,7 @@
 
 .footer-mobile-row {
     display: block;
+    font-size: 11px !important;
 }
 
 .org-chart-wrapper {
@@ -563,51 +645,46 @@
    Subpage Navigation
    ===================================================== */
 .sub-nav {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: visible;
+    -webkit-overflow-scrolling: auto;
     background: #fff;
     border-bottom: 1px solid #e0e0e0;
     position: relative;
 }
 
 .sub-nav::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 40px;
-    height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9));
-    pointer-events: none;
+    display: none;
 }
 
 .sub-nav-list {
-    flex-wrap: nowrap;
-    gap: 8px;
-    padding: 12px 15px;
-    padding-right: 50px;
-        justify-content: flex-start;
-    min-width: max-content;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 10px;
+    justify-content: center;
+    min-width: auto;
 }
 
 .sub-nav-list li a {
-    font-size: 13px;
-    padding: 10px 16px;
-    white-space: nowrap;
-    border-radius: 25px;
-    background: #f5f5f5;
-    color: #555;
-    transition: all 0.2s ease;
+    font-size: 12px !important;
+    padding: 8px 12px !important;
+    white-space: nowrap !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+    color: #555 !important;
+    transition: all 0.2s ease !important;
+    border: 1px solid #ddd !important;
 }
 
 .sub-nav-list li a:hover {
-    background: #e8f5e9;
+    background: #e8f5e9 !important;
+    border-color: #4caf50 !important;
 }
 
 .sub-nav-list li a.active {
-    background: #4caf50;
+    background: #4caf50 !important;
     color: #fff !important;
-    font-weight: 500;
+    font-weight: 500 !important;
+    border-color: #4caf50 !important;
 }
 
 html,
@@ -624,7 +701,7 @@ body {
 .content-section {
     margin-bottom: 30px;
     padding-top: 100px;
-        overflow: visible;
+    overflow: visible;
 }
 
 .content-section .section-title {
@@ -654,7 +731,7 @@ body {
 
 .board-table thead {
     display: none;
-    }
+}
 
 .board-table tbody tr {
     display: flex;
@@ -766,7 +843,7 @@ body {
 
 .job-info {
     flex: 1 1 auto !important;
-        overflow: hidden !important;
+    overflow: hidden !important;
     display: block !important;
 }
 
@@ -793,8 +870,8 @@ body {
 
 .job-date {
     flex: 0 0 auto !important;
-        max-width: 60px !important;
-        font-size: 10px !important;
+    max-width: 60px !important;
+    font-size: 10px !important;
     color: #999 !important;
     white-space: nowrap !important;
     text-align: right !important;
@@ -1166,6 +1243,9 @@ body {
     padding: 0 15px;
     margin-top: 20px;
     margin-bottom: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .section-title {
