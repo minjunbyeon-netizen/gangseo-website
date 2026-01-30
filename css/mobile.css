@@ -503,7 +503,7 @@
 
 .footer-info p,
 .footer-line {
-    font-size: 11px !important;
+    font-size: 10px !important;
     line-height: 1.8;
     margin: 0;
     padding: 2px 0;
@@ -514,13 +514,13 @@
 }
 
 .footer-title {
-    font-size: 11px !important;
+    font-size: 10px !important;
     font-weight: normal;
     line-height: 2;
 }
 
 .footer-title strong {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 700;
     display: block;
     margin-bottom: 6px;
@@ -528,7 +528,7 @@
 
 .footer-title span,
 .footer-info span {
-    font-size: 11px !important;
+    font-size: 10px !important;
 }
 
 .footer-copyright {
@@ -546,7 +546,7 @@
 
 .footer-mobile-row {
     display: block;
-    font-size: 11px !important;
+    font-size: 10px !important;
 }
 
 .org-chart-wrapper {
@@ -659,6 +659,11 @@
     display: flex !important;
     align-items: flex-end !important;
     justify-content: center !important;
+}
+
+/* 🔧 참여신청서 페이지 히어로 숨김 (모바일) */
+.page-hero.hero-apply {
+    display: none !important;
 }
 
 .page-hero .container {

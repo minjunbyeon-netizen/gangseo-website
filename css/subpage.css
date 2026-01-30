@@ -1682,8 +1682,8 @@
     padding: 20px 40px;
     border-radius: 8px;
     margin-bottom: 40px;
-    font-size: 22px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 500;
     letter-spacing: 1px;
 }
 
@@ -3195,7 +3195,7 @@
 /* 조직도 이미지 */
 .org-chart-image {
     width: 100%;
-    max-width: 1200px;
+    max-width: 900px;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
