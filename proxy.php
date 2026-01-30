@@ -443,6 +443,9 @@ function fetchArticleDetail($boardNo, $articleId, $slug)
     // 이미지 URL을 절대 경로로 변환
     $content = convertToAbsoluteUrls($content, 'https://gs2015.kr');
 
+    // 🔒 보안: XSS 정화 적용
+    $content = sanitizeHtml($content);
+
     // 날짜 추출 - 다양한 셀렉터 순차 시도
     $date = '';
     $dateSelectors = [
@@ -622,6 +625,49 @@ function convertToAbsoluteUrls($html, $baseUrl)
         },
         $html
     );
+
+    return $html;
+}
+
+/**
+ * 🔒 보안: XSS 정화 - 위험한 태그/속성 제거
+ */
+function sanitizeHtml($html)
+{
+    // 스크립트 태그 완전 제거
+    $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
+
+    // 위험한 이벤트 핸들러 속성 제거
+    $dangerousAttrs = [
+        'onclick',
+        'onload',
+        'onerror',
+        'onmouseover',
+        'onmouseout',
+        'onfocus',
+        'onblur',
+        'onchange',
+        'onsubmit',
+        'onkeyup',
+        'onkeydown'
+    ];
+    foreach ($dangerousAttrs as $attr) {
+        $html = preg_replace('/\s*' . $attr . '\s*=\s*["\'][^"\']*["\']/i', '', $html);
+        $html = preg_replace('/\s*' . $attr . '\s*=\s*[^\s>]*/i', '', $html);
+    }
+
+    // javascript: 프로토콜 제거
+    $html = preg_replace('/href\s*=\s*["\']javascript:[^"\']*["\']/i', 'href="#"', $html);
+
+    // iframe 태그 제거 (외부 콘텐츠 삽입 방지)
+    $html = preg_replace('/<iframe\b[^>]*>(.*?)<\/iframe>/is', '', $html);
+
+    // object/embed 태그 제거
+    $html = preg_replace('/<object\b[^>]*>(.*?)<\/object>/is', '', $html);
+    $html = preg_replace('/<embed\b[^>]*\/?>/i', '', $html);
+
+    // style 태그 내 expression() 제거 (IE 취약점)
+    $html = preg_replace('/expression\s*\([^)]*\)/i', '', $html);
 
     return $html;
 }
