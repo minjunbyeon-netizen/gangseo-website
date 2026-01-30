@@ -684,7 +684,10 @@ function fetchUrl($url)
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_TIMEOUT => 30,
-        CURLOPT_SSL_VERIFYPEER => false,
+        // 🔒 보안: SSL 검증 활성화 (운영 서버에서는 true 권장)
+        // 로컬 개발 환경에서 인증서 오류 발생 시 false로 설정
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
         CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         CURLOPT_HTTPHEADER => [
             'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
