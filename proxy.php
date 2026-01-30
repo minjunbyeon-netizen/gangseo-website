@@ -5,7 +5,23 @@
  */
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
+
+// 🔒 보안: CORS 설정 - 허용된 도메인만
+$allowedOrigins = [
+    'https://gs2015.kr',
+    'http://localhost',
+    'http://127.0.0.1'
+];
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+if (in_array($origin, $allowedOrigins) || strpos($origin, 'localhost') !== false || strpos($origin, '127.0.0.1') !== false) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+} else {
+    header('Access-Control-Allow-Origin: https://gs2015.kr');
+}
+
+// 🔒 보안 헤더
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
 
 // 캐시 설정
 define('CACHE_DIR', __DIR__ . '/cache/');
