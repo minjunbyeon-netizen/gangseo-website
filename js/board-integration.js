@@ -36,7 +36,7 @@
     };
 
     const CONFIG = {
-        proxyUrl: 'https://gs2015.kr/proxy.php',
+        proxyUrl: 'https://gangseo-proxy.minjunbyeon.workers.dev',
         cachePrefix: 'board_cache_',
         listCacheTime: 3 * 60 * 1000,    // 목록 캐시: 3분
         articleCacheTime: 5 * 60 * 1000  // 글 캐시: 5분
