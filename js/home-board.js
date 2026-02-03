@@ -7,7 +7,7 @@
     'use strict';
 
     const CONFIG = {
-        proxyUrl: 'proxy.php',
+        proxyUrl: 'https://gangseo-proxy.minjunbyeon.workers.dev',
         noticeContainerId: 'home-notice-list',
         jobsContainerId: 'home-jobs-list',
         recentNoticeId: 'home-recent-notice-list',
