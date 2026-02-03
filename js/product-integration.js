@@ -15,7 +15,7 @@
     };
 
     const CONFIG = {
-        proxyUrl: 'proxy.php',
+        proxyUrl: 'https://gs2015.kr/proxy.php',
         cachePrefix: 'product_cache_',
         cacheTime: 5 * 60 * 1000  // 5분 캐시
     };

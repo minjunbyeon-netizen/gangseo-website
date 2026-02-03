@@ -9,6 +9,7 @@ header('Content-Type: application/json; charset=utf-8');
 // 🔒 보안: CORS 설정 - 허용된 도메인만
 $allowedOrigins = [
     'https://gs2015.kr',
+    'https://2026.gs2015.kr',
     'http://localhost',
     'http://127.0.0.1'
 ];
