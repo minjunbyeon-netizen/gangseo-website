@@ -71,6 +71,7 @@ async function fetchProducts(cateNo, page) {
     const html = await response.text();
     const products = [];
 
+    // anchorBoxId_N 패턴으로 상품 li 추출
     const liPattern = /<li[^>]*id="anchorBoxId_(\d+)"[^>]*>([\s\S]*?)<\/li>/gi;
     let liMatch;
 
@@ -78,26 +79,42 @@ async function fetchProducts(cateNo, page) {
         const productNo = liMatch[1];
         const liHtml = liMatch[2];
 
+        // 상품명 추출: <strong class="name"><a ...><span>상품명</span></a></strong>
         let name = '';
-        const nameMatch = liHtml.match(/<(?:strong|span)[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>([^<]+)<\/a>/i);
-        if (nameMatch) name = nameMatch[1].trim().replace(/상품명\s*:\s*/i, '');
+        const nameMatch = liHtml.match(/<strong[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>[\s\S]*?<span[^>]*>([^<]+)<\/span>[\s\S]*?<\/a>/i);
+        if (nameMatch) {
+            name = nameMatch[1].trim();
+        } else {
+            // 대체 패턴: 직접 텍스트
+            const altNameMatch = liHtml.match(/<strong[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>([^<]+)<\/a>/i);
+            if (altNameMatch) name = altNameMatch[1].trim();
+        }
         if (!name) continue;
 
+        // 이미지 추출
         let image = '';
-        const imgMatch = liHtml.match(/<div[^>]*class="[^"]*prdImg[^"]*"[^>]*>[\s\S]*?<img[^>]*src="([^"]+)"[^>]*>/i);
+        const imgMatch = liHtml.match(/<img[^>]*src="([^"]+)"[^>]*alt="[^"]*"/i) ||
+            liHtml.match(/<img[^>]*src="([^"]+)"[^>]*>/i);
         if (imgMatch) {
             image = imgMatch[1];
             if (image.startsWith('//')) image = 'https:' + image;
             else if (image.startsWith('/')) image = 'https://gs2015.kr' + image;
         }
 
+        // 가격 추출: <span>15,000원</span>
         let price = '';
-        const priceMatch = liHtml.match(/판매가[^:]*:\s*([\d,]+원)/i) || liHtml.match(/([\d,]+)\s*원/);
-        if (priceMatch) price = priceMatch[1].includes('원') ? priceMatch[1] : priceMatch[1] + '원';
+        const priceMatch = liHtml.match(/<li[^>]*rel="판매가"[^>]*>[\s\S]*?<span[^>]*>([\d,]+원)<\/span>/i) ||
+            liHtml.match(/([\d,]+)원/);
+        if (priceMatch) {
+            price = priceMatch[1].includes('원') ? priceMatch[1] : priceMatch[1] + '원';
+        }
 
+        // 링크 추출
         let link = '';
         const linkMatch = liHtml.match(/<a[^>]*href="([^"]*\/product\/[^"]+)"[^>]*>/i);
-        if (linkMatch) link = linkMatch[1].startsWith('http') ? linkMatch[1] : 'https://gs2015.kr' + linkMatch[1];
+        if (linkMatch) {
+            link = linkMatch[1].startsWith('http') ? linkMatch[1] : 'https://gs2015.kr' + linkMatch[1];
+        }
 
         products.push({ id: parseInt(productNo), name, image, price, link });
     }
