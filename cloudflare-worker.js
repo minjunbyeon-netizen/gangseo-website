@@ -46,6 +46,9 @@ export default {
 
             if (action === 'products') {
                 result = await fetchProducts(cateNo, page);
+            } else if (action === 'product_detail') {
+                const productNo = url.searchParams.get('product_no') || '';
+                result = await fetchProductDetail(productNo);
             } else if (action === 'list') {
                 result = await fetchBoardList(boardNo, page);
             } else if (action === 'view' && articleId) {
@@ -125,6 +128,82 @@ async function fetchProducts(cateNo, page) {
     }
 
     return { success: true, data: products, pagination: { current: parseInt(page), total: 1 } };
+}
+
+// 상품 상세 정보 가져오기
+async function fetchProductDetail(productNo) {
+    if (!productNo) {
+        return { success: false, error: 'Product number is required' };
+    }
+
+    const targetUrl = `https://gs2015.kr/product/detail.html?product_no=${productNo}`;
+    const response = await fetch(targetUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+    });
+    const html = await response.text();
+
+    // 상품명 추출: <h2>{$name}</h2>
+    let name = '';
+    const nameMatch = html.match(/<div[^>]*class="[^"]*headingArea[^"]*"[^>]*>[\s\S]*?<h2>([^<]+)<\/h2>/i) ||
+        html.match(/<h2[^>]*>([^<]+)<\/h2>/i);
+    if (nameMatch) name = nameMatch[1].trim();
+
+    // 이미지 추출: keyImg 내 img src
+    let image = '';
+    const imgMatch = html.match(/<div[^>]*class="[^"]*keyImg[^"]*"[^>]*>[\s\S]*?<img[^>]*src="([^"]+)"[^>]*>/i) ||
+        html.match(/<div[^>]*class="[^"]*thumbnail[^"]*"[^>]*>[\s\S]*?<img[^>]*src="([^"]+)"[^>]*>/i);
+    if (imgMatch) {
+        image = imgMatch[1];
+        if (image.startsWith('//')) image = 'https:' + image;
+        else if (image.startsWith('/')) image = 'https://gs2015.kr' + image;
+    }
+
+    // 가격 추출: 판매가
+    let price = '';
+    const priceMatch = html.match(/판매가[\s\S]*?<td[^>]*>([\d,]+)원/i) ||
+        html.match(/<li[^>]*rel="판매가"[^>]*>[\s\S]*?([\d,]+)원/i);
+    if (priceMatch) price = priceMatch[1] + '원';
+
+    // 요약 설명 추출
+    let summary = '';
+    const summaryMatch = html.match(/<div[^>]*class="[^"]*summary_desc[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+    if (summaryMatch) summary = summaryMatch[1].replace(/<[^>]+>/g, '').trim();
+
+    // 상세 설명 추출: product_detail 영역
+    let content = '';
+    const contentMatch = html.match(/<div[^>]*id="prdDetail"[^>]*>[\s\S]*?<div[^>]*class="[^"]*cont[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/i);
+    if (contentMatch) {
+        content = contentMatch[1];
+        // 이미지 URL 절대경로 변환
+        content = content.replace(/src="\/\//g, 'src="https://');
+        content = content.replace(/src="\//g, 'src="https://gs2015.kr/');
+    }
+
+    // 규격정보 추출 (테이블)
+    const specs = [];
+    const specPattern = /<tr[^>]*rel="([^"]+)"[^>]*>[\s\S]*?<th[^>]*>([^<]+)<\/th>[\s\S]*?<td[^>]*>([\s\S]*?)<\/td>/gi;
+    let specMatch;
+    while ((specMatch = specPattern.exec(html)) !== null) {
+        const title = specMatch[2].trim();
+        let value = specMatch[3].replace(/<[^>]+>/g, '').trim();
+        if (title && value) {
+            specs.push({ title, value });
+        }
+    }
+
+    return {
+        success: true,
+        data: {
+            id: parseInt(productNo),
+            name,
+            image,
+            price,
+            summary,
+            content,
+            specs,
+            url: targetUrl
+        }
+    };
 }
 
 async function fetchBoardList(boardNo, page) {

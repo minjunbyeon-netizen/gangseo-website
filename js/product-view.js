@@ -7,7 +7,7 @@
     'use strict';
 
     const CONFIG = {
-        proxyUrl: 'proxy.php',
+        proxyUrl: 'https://gangseo-proxy.minjunbyeon.workers.dev',
         containerId: 'product-detail-container',
         cachePrefix: 'product_view_',
         cacheTime: 10 * 60 * 1000 // 10분 캐시
@@ -77,8 +77,8 @@
             return;
         }
 
-        // AJAX 요청
-        fetch(`${CONFIG.proxyUrl}?action=product_view&product_id=${productId}`)
+        // AJAX 요청 - Cloudflare Worker API
+        fetch(`${CONFIG.proxyUrl}?action=product_detail&product_no=${productId}`)
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();
