@@ -1,10 +1,8 @@
 /**
- * Cloudflare Worker - Cafe24 Proxy
- * GitHub Pages에서 Cafe24 데이터를 가져오기 위한 프록시
- * 직접 Cafe24 페이지를 파싱하여 JSON으로 반환
+ * Cloudflare Worker - Cafe24 Scraper v6 (Final)
+ * 상품 + 게시판 + 갤러리 + 글 상세보기 + 페이지네이션 완전 지원
  */
 
-// 허용된 origin 목록
 const ALLOWED_ORIGINS = [
     'https://2026.gs2015.kr',
     'https://minjunbyeon-netizen.github.io',
@@ -12,9 +10,14 @@ const ALLOWED_ORIGINS = [
     'http://127.0.0.1'
 ];
 
-// CORS 헤더 설정
+const BOARD_SLUGS = {
+    '1': '알림사항',
+    '2': '구인구직',
+    '8': '갤러리'
+};
+
 function corsHeaders(origin) {
-    const allowedOrigin = ALLOWED_ORIGINS.find(o => origin?.startsWith(o.replace(/:\d+$/, ''))) || ALLOWED_ORIGINS[0];
+    const allowedOrigin = ALLOWED_ORIGINS.find(o => origin?.startsWith(o)) || ALLOWED_ORIGINS[0];
     return {
         'Access-Control-Allow-Origin': allowedOrigin,
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -27,222 +30,178 @@ export default {
     async fetch(request) {
         const origin = request.headers.get('Origin');
 
-        // OPTIONS 요청 (CORS preflight) 처리
         if (request.method === 'OPTIONS') {
             return new Response(null, { headers: corsHeaders(origin) });
         }
 
         const url = new URL(request.url);
-        const action = url.searchParams.get('action') || 'list';
-        const boardNo = url.searchParams.get('board_no') || '2';
-        const page = url.searchParams.get('page') || '1';
-        const articleId = url.searchParams.get('article_id') || '0';
+        const action = url.searchParams.get('action') || 'products';
         const cateNo = url.searchParams.get('cate_no') || '23';
-        const productId = url.searchParams.get('product_id') || '0';
+        const page = url.searchParams.get('page') || '1';
+        const boardNo = url.searchParams.get('board_no') || '2';
+        const articleId = url.searchParams.get('article_id') || '';
 
         try {
             let result;
 
             if (action === 'products') {
-                result = await fetchProductList(cateNo, page);
-            } else if (action === 'product_view' && productId !== '0') {
-                result = await fetchProductDetail(productId);
+                result = await fetchProducts(cateNo, page);
             } else if (action === 'list') {
                 result = await fetchBoardList(boardNo, page);
-            } else if (action === 'view' && articleId !== '0') {
+            } else if (action === 'view' && articleId) {
                 result = await fetchArticleDetail(boardNo, articleId);
-            } else if (action === 'gallery') {
-                result = await fetchGalleryList(page);
             } else {
-                result = { success: false, error: 'Invalid action' };
+                result = { success: false, error: 'Unknown action' };
             }
 
-            return new Response(JSON.stringify(result), {
-                headers: corsHeaders(origin)
-            });
+            return new Response(JSON.stringify(result), { headers: corsHeaders(origin) });
         } catch (error) {
-            return new Response(JSON.stringify({
-                success: false,
-                error: error.message
-            }), {
-                status: 500,
-                headers: corsHeaders(origin)
+            return new Response(JSON.stringify({ success: false, error: error.message }), {
+                status: 500, headers: corsHeaders(origin)
             });
         }
     }
 };
 
-/**
- * HTML에서 텍스트 추출
- */
-function extractText(html) {
-    return html.replace(/<[^>]*>/g, '').trim();
-}
-
-/**
- * 상품 목록 가져오기 - Cafe24 HTML 직접 파싱
- */
-async function fetchProductList(cateNo, page) {
+async function fetchProducts(cateNo, page) {
     const targetUrl = `https://gs2015.kr/product/list.html?cate_no=${cateNo}&page=${page}`;
-
     const response = await fetch(targetUrl, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8'
-        }
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch product list');
-    }
-
     const html = await response.text();
-    const items = [];
+    const products = [];
 
-    // 상품 링크 패턴: /product/상품명/상품번호/category/카테고리/display/1/
-    // 예: /product/강서참기름/9/category/24/display/1/
-    const productLinkRegex = /href="(\/product\/[^"]+\/(\d+)\/category\/\d+\/display\/\d+\/)"/g;
-    const productMatches = [...html.matchAll(productLinkRegex)];
+    const liPattern = /<li[^>]*id="anchorBoxId_(\d+)"[^>]*>([\s\S]*?)<\/li>/gi;
+    let liMatch;
 
-    // 유니크한 상품만 추출
-    const uniqueProducts = new Map();
-    for (const match of productMatches) {
-        const [, href, productId] = match;
-        if (!uniqueProducts.has(productId)) {
-            uniqueProducts.set(productId, href);
-        }
-    }
+    while ((liMatch = liPattern.exec(html)) !== null) {
+        const productNo = liMatch[1];
+        const liHtml = liMatch[2];
 
-    // 각 상품 정보 추출
-    for (const [productId, href] of uniqueProducts) {
-        // 상품명 추출 - "상품명 : XXX" 패턴
-        const nameRegex = new RegExp(`href="${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>\\s*상품명\\s*:\\s*([^<]+)`, 'i');
-        let nameMatch = html.match(nameRegex);
         let name = '';
-
-        if (nameMatch) {
-            name = nameMatch[1].trim();
-        } else {
-            // URL에서 상품명 추출 시도
-            const urlNameMatch = href.match(/\/product\/([^\/]+)\//);
-            if (urlNameMatch) {
-                name = decodeURIComponent(urlNameMatch[1]);
-            }
-        }
-
+        const nameMatch = liHtml.match(/<(?:strong|span)[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>([^<]+)<\/a>/i);
+        if (nameMatch) name = nameMatch[1].trim().replace(/상품명\s*:\s*/i, '');
         if (!name) continue;
 
-        // 가격 추출 - 해당 상품 근처의 "판매가 : XXX원" 패턴
-        let price = '';
-        const productSection = html.substring(
-            html.indexOf(href) - 500,
-            html.indexOf(href) + 1000
-        );
-        const priceMatch = productSection.match(/판매가\s*:?\s*([\d,]+)\s*원/);
-        if (priceMatch) {
-            price = priceMatch[1] + '원';
-        }
-
-        // 이미지 추출 - 상품 근처의 img 태그
         let image = '';
-        const imgMatch = productSection.match(/src="([^"]*(?:product|prd)[^"]*\.(jpg|jpeg|png|gif|webp))"/i);
+        const imgMatch = liHtml.match(/<div[^>]*class="[^"]*prdImg[^"]*"[^>]*>[\s\S]*?<img[^>]*src="([^"]+)"[^>]*>/i);
         if (imgMatch) {
             image = imgMatch[1];
-            if (image.startsWith('//')) {
-                image = 'https:' + image;
-            } else if (image.startsWith('/')) {
-                image = 'https://gs2015.kr' + image;
-            }
+            if (image.startsWith('//')) image = 'https:' + image;
+            else if (image.startsWith('/')) image = 'https://gs2015.kr' + image;
         }
 
-        items.push({
-            id: productId,
-            name: name,
-            price: price || '가격문의',
-            image: image || 'images/placeholder.png',
-            link: 'https://gs2015.kr' + href
-        });
+        let price = '';
+        const priceMatch = liHtml.match(/판매가[^:]*:\s*([\d,]+원)/i) || liHtml.match(/([\d,]+)\s*원/);
+        if (priceMatch) price = priceMatch[1].includes('원') ? priceMatch[1] : priceMatch[1] + '원';
+
+        let link = '';
+        const linkMatch = liHtml.match(/<a[^>]*href="([^"]*\/product\/[^"]+)"[^>]*>/i);
+        if (linkMatch) link = linkMatch[1].startsWith('http') ? linkMatch[1] : 'https://gs2015.kr' + linkMatch[1];
+
+        products.push({ id: parseInt(productNo), name, image, price, link });
     }
 
-    return {
-        success: true,
-        data: items,
-        pagination: {
-            current: parseInt(page),
-            total: 1
-        }
-    };
+    return { success: true, data: products, pagination: { current: parseInt(page), total: 1 } };
 }
 
-/**
- * 상품 상세 정보 가져오기
- */
-async function fetchProductDetail(productId) {
-    // 상품 상세는 일단 기본 정보만 반환
-    return {
-        success: true,
-        data: {
-            id: productId,
-            title: '',
-            content: '',
-            images: []
-        }
-    };
-}
-
-/**
- * 게시판 목록 가져오기
- */
 async function fetchBoardList(boardNo, page) {
     const targetUrl = `https://gs2015.kr/front/php/b/board_list.php?board_no=${boardNo}&page=${page}`;
-
     const response = await fetch(targetUrl, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8'
-        }
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch board list');
-    }
-
     const html = await response.text();
     const items = [];
+    let itemNum = 1;
 
-    // 게시글 링크 패턴: /article/슬러그/게시판번호/글번호/
-    const articleRegex = /href="(\/article\/[^\/]+\/\d+\/(\d+)\/)"/g;
-    const matches = [...html.matchAll(articleRegex)];
+    if (boardNo === '8') {
+        // 갤러리
+        const galleryPattern = /<li[^>]*>[\s\S]*?<a[^>]*href="([^"]*\/article\/[^/]+\/8\/(\d+)[^"]*)"[^>]*>([\s\S]*?)<\/a>[\s\S]*?<\/li>/gi;
+        let match;
+        while ((match = galleryPattern.exec(html)) !== null) {
+            const link = match[1].startsWith('http') ? match[1] : 'https://gs2015.kr' + match[1];
+            const id = match[2];
+            const content = match[3];
 
-    const uniqueArticles = new Map();
-    for (const match of matches) {
-        const [, href, articleId] = match;
-        if (!uniqueArticles.has(articleId)) {
-            uniqueArticles.set(articleId, href);
+            const titleMatch = content.match(/<p[^>]*>([^<]+)<\/p>/i) || content.match(/>([^<\n]{3,50})</);
+            let title = titleMatch ? titleMatch[1].trim() : '';
+
+            const dateMatch = content.match(/(\d{4}-\d{2}-\d{2})/);
+            let date = dateMatch ? dateMatch[1] : '';
+
+            if (date.includes('9999')) continue;
+
+            let thumbnail = '';
+            const imgMatch = content.match(/<img[^>]*(?:src|data-src)="([^"]+)"[^>]*>/i);
+            if (imgMatch) {
+                thumbnail = imgMatch[1];
+                if (thumbnail.startsWith('//')) thumbnail = 'https:' + thumbnail;
+                else if (thumbnail.startsWith('/')) thumbnail = 'https://gs2015.kr' + thumbnail;
+            }
+
+            if (title && !items.find(i => i.id === id)) {
+                items.push({ id, num: itemNum++, title, date, type: '', views: 0, thumbnail, link });
+            }
+        }
+    } else {
+        // 일반 게시판 (테이블)
+        const trPattern = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
+        let trMatch;
+
+        while ((trMatch = trPattern.exec(html)) !== null) {
+            const trHtml = trMatch[1];
+            if (trHtml.includes('<th')) continue;
+
+            // 번호 추출
+            const numMatch = trHtml.match(/<td[^>]*>\s*(\d+)\s*<\/td>/i);
+            const num = numMatch ? parseInt(numMatch[1]) : itemNum;
+
+            // 링크와 제목
+            const linkMatch = trHtml.match(/<a[^>]*href="[^"]*(?:no=|article\/[^\/]+\/\d+\/)(\d+)[^"]*"[^>]*>([^<]+)<\/a>/i);
+            if (!linkMatch) continue;
+
+            const id = linkMatch[1];
+            let title = linkMatch[2].trim();
+
+            // 날짜
+            const dateMatch = trHtml.match(/(\d{4}[-./]\d{2}[-./]\d{2})/);
+            let date = dateMatch ? dateMatch[1] : '';
+            if (date.includes('9999')) continue;
+
+            // 조회수 - 마지막 td에서 숫자만 추출
+            let views = 0;
+            const allTds = trHtml.match(/<td[^>]*>[^<]*<\/td>/gi) || [];
+            for (let i = allTds.length - 1; i >= 0; i--) {
+                const tdContent = allTds[i].replace(/<[^>]+>/g, '').trim();
+                if (/^\d+$/.test(tdContent) && parseInt(tdContent) < 100000) {
+                    views = parseInt(tdContent);
+                    break;
+                }
+            }
+
+            // 타입 (구인/구직 판별 - 구직이 명시되면 구직, 그 외(모집/구인 등)는 구인)
+            let type = '';
+            if (boardNo === '2') {
+                if (title.includes('구직')) {
+                    type = '구직';
+                } else {
+                    type = '구인';
+                }
+            }
+
+            if (!items.find(i => i.id === id)) {
+                items.push({ id, num: num || itemNum++, title, date, type, views });
+            }
         }
     }
 
-    for (const [articleId, href] of uniqueArticles) {
-        // 제목 추출
-        const titleRegex = new RegExp(`href="${href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>([^<]+)`, 'i');
-        const titleMatch = html.match(titleRegex);
-        let title = titleMatch ? titleMatch[1].trim() : '';
-
-        if (!title || title.length < 2) continue;
-
-        // 날짜 추출
-        const dateRegex = /(\d{4}-\d{2}-\d{2})/g;
-        const dateMatches = [...html.matchAll(dateRegex)];
-        let date = dateMatches.length > 0 ? dateMatches[0][1] : '';
-
-        items.push({
-            id: articleId,
-            title: title,
-            date: date,
-            link: 'https://gs2015.kr' + href
-        });
+    // 페이지네이션 정보 추출
+    let maxPage = parseInt(page);
+    const pagePattern = /page=(\d+)/g;
+    let pageMatch;
+    while ((pageMatch = pagePattern.exec(html)) !== null) {
+        const pageNum = parseInt(pageMatch[1]);
+        if (pageNum > maxPage) maxPage = pageNum;
     }
 
     return {
@@ -250,63 +209,56 @@ async function fetchBoardList(boardNo, page) {
         data: items,
         pagination: {
             current: parseInt(page),
-            total: 1
+            total: maxPage,
+            hasNext: parseInt(page) < maxPage,
+            hasPrev: parseInt(page) > 1
         }
     };
 }
 
-/**
- * 게시글 상세 가져오기
- */
 async function fetchArticleDetail(boardNo, articleId) {
-    const slugMap = {
-        '1': '알림사항',
-        '2': '구인구직',
-        '8': '갤러리'
-    };
-    const slug = slugMap[boardNo] || '구인구직';
+    const slug = BOARD_SLUGS[boardNo] || '구인구직';
     const targetUrl = `https://gs2015.kr/article/${encodeURIComponent(slug)}/${boardNo}/${articleId}/`;
 
     const response = await fetch(targetUrl, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8'
-        }
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch article detail');
-    }
-
     const html = await response.text();
 
     // 제목 추출
     let title = '';
-    const titleMatch = html.match(/<h[12][^>]*>([^<]+)<\/h[12]>/i);
-    if (titleMatch) {
-        title = titleMatch[1].trim();
-    }
+    const titleMatch = html.match(/<td[^>]*class="[^"]*subject[^"]*"[^>]*>([^<]+)<\/td>/i) ||
+        html.match(/<th[^>]*>제목<\/th>[\s\S]*?<td[^>]*>([^<]+)<\/td>/i) ||
+        html.match(/<h[12][^>]*>([^<]+)<\/h[12]>/i);
+    if (titleMatch) title = titleMatch[1].trim();
 
-    // 본문 내용 추출 - fr-view 클래스 또는 detail 클래스
+    // 본문 추출
     let content = '';
-    const contentMatch = html.match(/<div[^>]*class="[^"]*(?:fr-view|detail)[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+    const contentMatch = html.match(/<div[^>]*class="[^"]*fr-view[^"]*"[^>]*>([\s\S]*?)<\/div>/i) ||
+        html.match(/<div[^>]*class="[^"]*detail[^"]*"[^>]*>([\s\S]*?)<\/div>/i) ||
+        html.match(/<div[^>]*class="[^"]*view_content[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
     if (contentMatch) {
         content = contentMatch[1];
-        // 이미지 URL 절대경로 변환
-        content = content.replace(/src="([^"]+)"/g, (match, src) => {
-            if (src.startsWith('http')) return match;
-            if (src.startsWith('//')) return `src="https:${src}"`;
-            if (src.startsWith('/')) return `src="https://gs2015.kr${src}"`;
-            return `src="https://gs2015.kr/${src}"`;
-        });
+        content = content.replace(/src="\/\//g, 'src="https://');
+        content = content.replace(/src="\//g, 'src="https://gs2015.kr/');
     }
 
     // 날짜 추출
     let date = '';
-    const dateMatch = html.match(/(\d{4}-\d{2}-\d{2})/);
-    if (dateMatch) {
-        date = dateMatch[1];
+    const dateMatch = html.match(/작성일[\s\S]*?(\d{4}-\d{2}-\d{2})/i) ||
+        html.match(/(\d{4}-\d{2}-\d{2})/);
+    if (dateMatch) date = dateMatch[1];
+    if (date.includes('9999')) date = new Date().toISOString().split('T')[0];
+
+    // 첨부파일 추출
+    const attachments = [];
+    const attachPattern = /file_download\(['"]([^'"]+)['"]\)[^>]*>([^<]+)</gi;
+    let attachMatch;
+    while ((attachMatch = attachPattern.exec(html)) !== null) {
+        attachments.push({
+            name: attachMatch[2].trim(),
+            url: 'https://gs2015.kr' + attachMatch[1].replace(/&amp;/g, '&')
+        });
     }
 
     return {
@@ -316,14 +268,8 @@ async function fetchArticleDetail(boardNo, articleId) {
             title: title,
             content: content,
             date: date,
+            attachments: attachments,
             url: targetUrl
         }
     };
-}
-
-/**
- * 갤러리 목록 가져오기
- */
-async function fetchGalleryList(page) {
-    return await fetchBoardList('8', page);
 }
