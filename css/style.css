@@ -294,8 +294,11 @@ img {
     z-index: 2;
     max-width: var(--container-width);
     width: 100%;
-    padding: 0 60px;
+    padding: 0 160px;
     text-align: left;
+    /* 🔧 PC 히어로 텍스트 위치 조정 (상하) */
+    /* 양수: 아래로 이동 (예: 100px), 음수: 위로 이동 (예: -50px) */
+    margin-top: 80px;
 }
 
 .sub-title {

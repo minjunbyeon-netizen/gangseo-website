@@ -79,15 +79,20 @@ async function fetchProducts(cateNo, page) {
         const productNo = liMatch[1];
         const liHtml = liMatch[2];
 
-        // 상품명 추출: <strong class="name"><a ...><span>상품명</span></a></strong>
+        // 상품명 추출: <strong class="name"><a>...<span>상품명</span></a></strong>
+        // 마지막 span 안의 텍스트가 실제 상품명
         let name = '';
-        const nameMatch = liHtml.match(/<strong[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>[\s\S]*?<span[^>]*>([^<]+)<\/span>[\s\S]*?<\/a>/i);
-        if (nameMatch) {
-            name = nameMatch[1].trim();
-        } else {
-            // 대체 패턴: 직접 텍스트
-            const altNameMatch = liHtml.match(/<strong[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>([^<]+)<\/a>/i);
-            if (altNameMatch) name = altNameMatch[1].trim();
+        // 방법 1: strong.name 안의 모든 span 중 마지막 span의 텍스트
+        const allSpansMatch = liHtml.match(/<strong[^>]*class="[^"]*name[^"]*"[^>]*>[\s\S]*?<a[^>]*>([\s\S]*?)<\/a>/i);
+        if (allSpansMatch) {
+            const aContent = allSpansMatch[1];
+            // 마지막 span의 내용 추출
+            const spans = aContent.match(/<span[^>]*>([^<]*)<\/span>/gi);
+            if (spans && spans.length > 0) {
+                const lastSpan = spans[spans.length - 1];
+                const textMatch = lastSpan.match(/<span[^>]*>([^<]*)<\/span>/i);
+                if (textMatch) name = textMatch[1].trim();
+            }
         }
         if (!name) continue;
 
