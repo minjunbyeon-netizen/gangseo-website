@@ -67,7 +67,8 @@
 }
 
 .page-title {
-    font-size: 36px;
+    font-size: 72px;
+    /* 기존 36px → 2배 */
     font-weight: 900;
     color: #ffffff;
     margin-bottom: 10px;
@@ -76,7 +77,8 @@
 }
 
 .page-subtitle {
-    font-size: 14px;
+    font-size: 28px;
+    /* 기존 14px → 2배 */
     font-weight: 600;
     color: #ffffff;
     margin-bottom: 15px;
