@@ -270,7 +270,7 @@ img {
     /* 🔧 히어로 슬라이더 높이 설정 (PC 화면) */
     /* 현재값: 600px - 이 값을 변경하면 슬라이더 높이가 조정됩니다 */
     /* 예시: 500px (낮게), 700px (높게), 800px (더 높게) */
-    min-height: 700px;
+    min-height: 600px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
