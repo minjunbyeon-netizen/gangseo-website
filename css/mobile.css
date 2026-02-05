@@ -80,11 +80,10 @@
     display: none;
 }
 
-/* Slider navigation arrows */
+/* 🔧 모바일에서 슬라이더 화살표 버튼 숨김 */
 .slick-prev,
 .slick-next {
-    width: 35px;
-    height: 35px;
+    display: none !important;
 }
 
 .slick-prev {
@@ -101,9 +100,9 @@
 .slide-right .slide-content {
     align-items: flex-end;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 115px;
     /* 🔧 이 값을 늘리면 글자가 아래로 내려감 */
-    padding-left: 1px;
+    padding-left: 0px;
     padding-right: 0px;
 }
 
