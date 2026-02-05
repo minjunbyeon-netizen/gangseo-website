@@ -130,7 +130,8 @@ img {
 }
 
 .logo-img {
-    height: 51px;
+    height: 46px;
+    /* 🔧 PC 로고 크기 (10% 축소: 51px → 46px) */
     width: auto;
     object-fit: contain;
 }
