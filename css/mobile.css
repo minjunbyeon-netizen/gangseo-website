@@ -90,14 +90,14 @@
     right: 10px;
 }
 
-/* Slide-specific text alignment for mobile - 모든 슬라이드 좌측 정렬 통일 */
+/* 🔧 모바일 메인 히어로 글자 위치 조정 - 모든 슬라이드 좌측 정렬 통일 */
 .slide-left .slide-content,
 .slide-center .slide-content,
 .slide-right .slide-content {
     align-items: flex-end;
     text-align: left;
-    padding-top: 1px;
-    /* 위로 올림 (기존 60px) */
+    padding-top: 70px;
+    /* 🔧 이 값을 늘리면 글자가 아래로 내려감 */
     padding-left: 1px;
     padding-right: 0px;
 }
