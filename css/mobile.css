@@ -96,7 +96,7 @@
 .slide-right .slide-content {
     align-items: flex-end;
     text-align: left;
-    padding-top: 60px;
+    padding-top: 40px;
     /* 🔧 이 값을 늘리면 글자가 아래로 내려감 */
     padding-left: 1px;
     padding-right: 0px;
