@@ -295,7 +295,11 @@ img {
     z-index: 2;
     max-width: var(--container-width);
     width: 100%;
-    padding: 0 160px;
+    /* 🔧 PC 히어로 좌우 위치 조정 */
+    /* padding: 상하 좌우 형식. 왼쪽으로 보내려면 왼쪽 값을 줄이세요 */
+    /* 예: padding: 0 160px 0 60px; (위:0, 오른쪽:160px, 아래:0, 왼쪽:60px) */
+    padding: 0 60px 0 60px;
+    /* 🔧 왼쪽 여백 60px, 오른쪽 여백 160px */
     text-align: left;
     /* 🔧 PC 히어로 텍스트 위치 조정 (상하) */
     /* 양수: 아래로 이동 (예: 100px), 음수: 위로 이동 (예: -50px) */
