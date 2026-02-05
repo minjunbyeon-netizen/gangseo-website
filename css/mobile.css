@@ -68,7 +68,7 @@
 
 /* 🔧 모바일 메인 히어로 - 메인 타이틀 (큰 글자) */
 .main-title {
-    font-size: 20px !important;
+    font-size: 24px !important;
     /* 🔧 메인 타이틀 글자 크기 */
     line-height: 0.1;
     /* 🔧 줄 간격 */
@@ -101,7 +101,7 @@
 .slide-right .slide-content {
     align-items: flex-end;
     text-align: center;
-    padding-top: 115px;
+    padding-top: 5px;
     /* 🔧 이 값을 늘리면 글자가 아래로 내려감 */
     padding-left: 0px;
     padding-right: 0px;
