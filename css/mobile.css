@@ -70,7 +70,7 @@
 .main-title {
     font-size: 20px !important;
     /* 🔧 메인 타이틀 글자 크기 */
-    line-height: 0.3;
+    line-height: 0.1;
     /* 🔧 줄 간격 */
 }
 
@@ -100,7 +100,7 @@
 .slide-center .slide-content,
 .slide-right .slide-content {
     align-items: flex-end;
-    text-align: left;
+    text-align: center;
     padding-top: 40px;
     /* 🔧 이 값을 늘리면 글자가 아래로 내려감 */
     padding-left: 1px;
