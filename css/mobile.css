@@ -80,11 +80,16 @@
     display: none;
 }
 
-/* 🔧 모바일에서 슬라이더 화살표/dot 버튼 숨김 */
-.slick-prev,
-.slick-next,
+/* 🔧 모바일에서 슬라이더 dot 버튼만 숨김 (화살표는 표시) */
 .slick-dots {
     display: none !important;
+}
+
+/* 🔧 모바일 슬라이더 화살표 크기 조정 */
+.slick-prev,
+.slick-next {
+    width: 35px;
+    height: 35px;
 }
 
 .slick-prev {
