@@ -80,9 +80,10 @@
     display: none;
 }
 
-/* 🔧 모바일에서 슬라이더 화살표 버튼 숨김 */
+/* 🔧 모바일에서 슬라이더 화살표/dot 버튼 숨김 */
 .slick-prev,
-.slick-next {
+.slick-next,
+.slick-dots {
     display: none !important;
 }
 
