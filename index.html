@@ -17,7 +17,7 @@
     <!-- 🔧 og:image: SNS에서 보여질 대표 이미지 (절대 URL 필요) -->
     <!-- 현재: OG 전용 이미지 사용 - 다른 이미지로 변경하려면 이 URL을 수정하세요 -->
     <!-- 권장 크기: 1200x630px (Facebook/KakaoTalk 최적 크기) -->
-    <meta property="og:image" content="https://2026.gs2015.kr/images/logo/og2.png">
+    <meta property="og:image" content="https://2026.gs2015.kr/images/logo/origin_og.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="부산강서시니어클럽 - 행복한 가정, 든든한 노후">
@@ -28,7 +28,7 @@
     <meta name="twitter:title" content="부산강서시니어클럽 | BUSAN Gangseo Senior Club">
     <meta name="twitter:description" content="행복한 가정, 든든한 노후 - 부산강서시니어클럽에서 새로운 시작을 함께하세요">
     <!-- 🔧 twitter:image: 트위터에서 보여질 이미지 (절대 URL 필요) -->
-    <meta name="twitter:image" content="https://gs2015.kr/images/logo/og2.png">
+    <meta name="twitter:image" content="https://2026.gs2015.kr/images/logo/origin_og.png">
     <meta name="twitter:image:alt" content="부산강서시니어클럽 - 행복한 가정, 든든한 노후">
 
     <!-- Google Fonts -->
@@ -45,10 +45,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Custom CSS (Minified) -->
+    <link rel="stylesheet" href="css/style.min.css">
     <!-- 모바일 전용 스타일 (768px 이하에서만 로드) -->
-    <link rel="stylesheet" href="css/mobile.css" media="(max-width: 768px)">
+    <link rel="stylesheet" href="css/mobile.min.css" media="(max-width: 768px)">
+
+    <!-- Preload Critical Images -->
+    <link rel="preload" href="images/hero-1.webp" as="image" type="image/webp">
+
+    <!-- Naver Maps API (deferred) -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s3xkypxgsa"
+        defer></script>
 </head>
 
 <body>
@@ -57,7 +64,7 @@
         <div class="header-inner">
             <h1 class="logo">
                 <a href="index.html">
-                    <img src="images/logo/og2.png" alt="부산강서시니어클럽" class="logo-img">
+                    <img src="images/logo/origin.jpg" alt="부산강서시니어클럽" class="logo-img">
                 </a>
             </h1>
             <nav class="gnb">
@@ -112,7 +119,7 @@
     <section class="hero-slider">
         <div class="slider-container">
             <!-- Slide 1: 행복한 가정, 든든한 노후 -->
-            <div class="slide slide-left" style="background-image: url('images/hero-1.png');">
+            <div class="slide slide-left" style="background-image: url('images/hero-1.webp');">
                 <div class="slide-overlay"></div>
                 <div class="slide-content" style="position: absolute; top: 180px; left: 60px; margin-top: 0;">
                     <!-- 메인 제목 크기 증가: 기본 48px → 56px -->
@@ -124,7 +131,7 @@
                 </div>
             </div>
             <!-- Slide 2: 건강하고 활기찬 노년 -->
-            <div class="slide slide-center" style="background-image: url('images/hero-2.png');">
+            <div class="slide slide-center" style="background-image: url('images/hero-2.webp');">
                 <div class="slide-overlay"></div>
                 <div class="slide-content" style="position: absolute; top: 180px; left: 60px; margin-top: 0;">
                     <!-- 메인 제목 크기 증가: 기본 48px → 56px -->
@@ -136,7 +143,7 @@
                 </div>
             </div>
             <!-- Slide 3: 새로운 일을 하는 노인 -->
-            <div class="slide slide-right" style="background-image: url('images/hero-3.png');">
+            <div class="slide slide-right" style="background-image: url('images/hero-3.webp');">
                 <div class="slide-overlay"></div>
                 <div class="slide-content" style="position: absolute; top: 180px; left: 60px; margin-top: 0;">
                     <!-- 메인 제목 크기 증가: 기본 48px → 56px -->
@@ -258,17 +265,11 @@
                 <!-- Left: Map -->
                 <div class="location-map">
                     <h3 class="section-title">오시는길</h3>
-                    <div class="map-container">
+                    <div class="map-container" style="position: relative;">
+                        <div id="naver-map" style="width: 100%; height: 350px; border-radius: 15px;"></div>
                         <a href="https://naver.me/xVBrOjat" target="_blank" rel="noopener noreferrer"
-                            style="display: block; position: relative;">
-                            <iframe src="https://map.naver.com/p/entry/place/36002143?c=15.00,0,0,0,dh" width="100%"
-                                height="350" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                            <div
-                                style="position: absolute; bottom: 15px; right: 15px; background: #03C75A; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-                                네이버 지도로 보기 →
-                            </div>
+                            style="position: absolute; bottom: 15px; right: 15px; background: #03C75A; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.2); text-decoration: none; z-index: 10;">
+                            네이버 지도로 보기 →
                         </a>
                     </div>
                 </div>
@@ -292,7 +293,7 @@
 
                     <div class="info-block">
                         <h4>운영시간</h4>
-                        <p><strong>운영시간:</strong> 평일 오전 09시 ~ 오후 06시</p>
+                        <p><strong>평 일:</strong> 오전 09시 ~ 오후 06시</p>
                         <p><strong>점심시간:</strong> 오후 12시 ~ 오후 01시</p>
                     </div>
                 </div>
@@ -317,11 +318,11 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Scripts (Minified) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer></script>
-    <script src="js/main.js?v=2.2"></script>
-    <script src="js/home-board.js" defer></script>
+    <script src="js/main.min.js" defer></script>
+    <script src="js/home-board.min.js" defer></script>
 
     <!-- Image Error Handling -->
     <script>
@@ -336,6 +337,56 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <!-- Naver Map Initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 부산강서시니어클럽 좌표
+            var position = new naver.maps.LatLng(35.10732, 128.94145);
+
+            var map = new naver.maps.Map('naver-map', {
+                center: position,
+                zoom: 16,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: naver.maps.Position.TOP_RIGHT,
+                    style: naver.maps.ZoomControlStyle.SMALL
+                }
+            });
+
+            // 마커 생성
+            var marker = new naver.maps.Marker({
+                position: position,
+                map: map,
+                title: '부산강서시니어클럽',
+                animation: naver.maps.Animation.DROP
+            });
+
+            // 인포윈도우 생성
+            var infoWindow = new naver.maps.InfoWindow({
+                content: '<div style="padding: 15px; min-width: 200px; text-align: center;">' +
+                    '<strong style="font-size: 14px; color: #333;">부산강서시니어클럽</strong><br>' +
+                    '<span style="font-size: 12px; color: #666;">부산광역시 강서구 공항로811번가길 30</span><br>' +
+                    '<span style="font-size: 12px; color: #666;">TEL: 051) 973-1167</span>' +
+                    '</div>',
+                borderWidth: 1,
+                borderColor: '#03C75A',
+                backgroundColor: '#fff'
+            });
+
+            // 마커 클릭시 인포윈도우 토글
+            naver.maps.Event.addListener(marker, 'click', function () {
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    infoWindow.open(map, marker);
+                }
+            });
+
+            // 초기 인포윈도우 열기
+            infoWindow.open(map, marker);
         });
     </script>
 </body>
