@@ -59,14 +59,19 @@
     padding: 0 0px;
 }
 
+/* 🔧 모바일 메인 히어로 - 서브타이틀 (작은 글자) */
 .sub-title {
-    font-size: 8px;
+    font-size: 7px;
+    /* 🔧 서브타이틀 글자 크기 */
     margin-bottom: 10px;
 }
 
+/* 🔧 모바일 메인 히어로 - 메인 타이틀 (큰 글자) */
 .main-title {
-    font-size: 24px !important;
-    line-height: 0.1;
+    font-size: 20px !important;
+    /* 🔧 메인 타이틀 글자 크기 */
+    line-height: 0.3;
+    /* 🔧 줄 간격 */
 }
 
 /* .slide-desc { display: none; } */
