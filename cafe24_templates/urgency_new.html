@@ -1,452 +1,540 @@
 <!--@layout(/layout/basic/layout.html)-->
-<!--
-    ============================================================
-    Cafe24 참여신청서 페이지 - 2026 리뉴얼 버전
-    파일명: urgency_new.html
-    백업용 원본: urgency.html
-    ============================================================
-    
-    ⚠️ 주의사항:
-    - module="Mall_Urgencycall" 삭제 금지
-    - {$form.xxx} 변수들 삭제 금지
-    - {$action_send} 삭제 금지
-    ============================================================
--->
-
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
-    rel="stylesheet">
+<!--@css(/css/style.css)-->
+<!--@css(/css/subpage.css)-->
 
 <style>
-    /* ============================================
-   2026 리뉴얼 스타일 - 참여신청서 페이지
-   ============================================ */
-
-    /* 기본 리셋 */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Noto Sans KR', sans-serif;
-        color: #333;
-        line-height: 1.6;
-    }
-
-    /* 헤더 스타일 */
-    .new-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: #fff;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        height: 80px;
-    }
-
-    .header-inner {
-        max-width: 1200px;
-        margin: 0 auto;
+    /* 폼 컨테이너 */
+    .apply-container {
+        max-width: 800px;
+        margin: 60px auto 100px;
         padding: 0 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 100%;
     }
 
-    .logo img {
-        height: 50px;
-    }
-
-    .gnb ul {
-        display: flex;
-        list-style: none;
-        gap: 40px;
-    }
-
-    .gnb a {
-        text-decoration: none;
-        color: #333;
-        font-weight: 500;
-        font-size: 16px;
-        transition: color 0.3s;
-    }
-
-    .gnb a:hover {
-        color: #03552d;
-    }
-
-    .btn-apply-nav {
-        background: linear-gradient(135deg, #03552d 0%, #047a3e 100%);
-        color: #fff !important;
-        padding: 10px 20px;
-        border-radius: 25px;
-        font-weight: 600;
-    }
-
-    /* 페이지 히어로 */
-    .page-hero {
-        margin-top: 80px;
-        height: 300px;
-        background: linear-gradient(135deg, #03552d 0%, #047a3e 50%, #059849 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .apply-title {
         text-align: center;
-        color: #fff;
-        position: relative;
+        margin-bottom: 50px;
     }
 
-    .page-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('/images/pattern.png') repeat;
-        opacity: 0.1;
-    }
-
-    .page-hero h2 {
-        font-size: 48px;
+    .apply-title h2 {
+        font-size: 36px;
         font-weight: 700;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
+        color: #1a1a1a;
+        margin-bottom: 15px;
     }
 
-    .page-hero p {
-        font-size: 18px;
-        opacity: 0.9;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* 페이지 컨텐츠 */
-    .page-content {
-        max-width: 900px;
-        margin: 60px auto;
-        padding: 0 20px;
-    }
-
-    .section-title {
-        font-size: 28px;
-        font-weight: 600;
-        color: #03552d;
-        margin-bottom: 30px;
-        padding-bottom: 15px;
-        border-bottom: 3px solid #03552d;
+    .apply-title p {
+        font-size: 16px;
+        color: #666;
     }
 
     /* 폼 스타일 */
-    .apply-form-wrap {
+    .apply-form {
         background: #fff;
-        border-radius: 15px;
-        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         padding: 40px;
     }
 
-    .ec-base-table {
-        width: 100%;
-        border-collapse: collapse;
+    .form-group {
+        margin-bottom: 25px;
     }
 
-    .ec-base-table th,
-    .ec-base-table td {
-        padding: 20px;
-        border-bottom: 1px solid #eee;
-        text-align: left;
-        vertical-align: top;
-    }
-
-    .ec-base-table th {
-        width: 180px;
+    .form-group>label {
+        display: block;
+        font-size: 15px;
         font-weight: 600;
         color: #333;
-        background: #f8f9fa;
-        font-size: 15px;
-    }
-
-    .ec-base-table td {
-        font-size: 15px;
-    }
-
-    .ec-base-table input[type="text"],
-    .ec-base-table input[type="tel"],
-    .ec-base-table input[type="email"],
-    .ec-base-table select,
-    .ec-base-table textarea {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 15px;
-        font-family: 'Noto Sans KR', sans-serif;
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
-
-    .ec-base-table input:focus,
-    .ec-base-table select:focus,
-    .ec-base-table textarea:focus {
-        outline: none;
-        border-color: #03552d;
-        box-shadow: 0 0 0 3px rgba(3, 85, 45, 0.1);
-    }
-
-    .ec-base-table textarea {
-        min-height: 150px;
-        resize: vertical;
-    }
-
-    .gBlank5 {
-        margin-top: 8px;
-        font-size: 13px;
-        color: #888;
-    }
-
-    /* 첨부파일 숨김 (필요시 표시) */
-    .file-upload-section {
-        display: none;
-    }
-
-    /* 보안문자 */
-    .captcha img {
-        border-radius: 5px;
         margin-bottom: 10px;
     }
 
+    .form-group input[type="text"],
+    .form-group input[type="tel"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #03552d;
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-hint {
+        font-size: 13px;
+        color: #888;
+        margin-top: 6px;
+    }
+
+    /* 생년월일 그룹 */
+    .birth-date-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .birth-date-group select {
+        flex: 1;
+        min-width: 100px;
+        padding: 14px 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    /* 라디오 버튼 그룹 */
+    .radio-group {
+        display: flex;
+        gap: 25px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .radio-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-weight: 400;
+    }
+
+    .radio-label input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .radio-label span {
+        font-size: 15px;
+        color: #333;
+    }
+
     /* 개인정보 동의 */
-    .privacy-box {
+    .privacy-section {
         background: #f8f9fa;
-        border: 1px solid #eee;
-        border-radius: 10px;
+        border-radius: 12px;
+        padding: 25px;
+        margin-top: 30px;
+    }
+
+    .privacy-section h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .privacy-content {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
         padding: 20px;
         max-height: 200px;
         overflow-y: auto;
         font-size: 13px;
         line-height: 1.8;
-        color: #666;
+        color: #555;
         margin-bottom: 15px;
     }
 
+    .privacy-content h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin: 15px 0 8px;
+    }
+
+    .privacy-content h5:first-child {
+        margin-top: 0;
+    }
+
+    .privacy-agree {
+        display: flex;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
     /* 제출 버튼 */
-    .ec-base-button {
+    .btn-submit-wrap {
         text-align: center;
         margin-top: 40px;
-        padding-top: 30px;
-        border-top: 1px solid #eee;
     }
 
-    .ec-base-button a {
+    .btn-submit {
         display: inline-block;
+        padding: 16px 60px;
         background: linear-gradient(135deg, #03552d 0%, #047a3e 100%);
-        color: #fff;
-        padding: 18px 60px;
-        border-radius: 50px;
-        font-size: 18px;
+        color: #fff !important;
+        font-size: 17px;
         font-weight: 600;
-        text-decoration: none;
-        transition: transform 0.3s, box-shadow 0.3s;
-        box-shadow: 0 5px 20px rgba(3, 85, 45, 0.3);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none !important;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(3, 85, 45, 0.3);
     }
 
-    .ec-base-button a:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(3, 85, 45, 0.4);
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(3, 85, 45, 0.4);
     }
 
-    /* 푸터 */
-    .new-footer {
-        background: #2a2a2a;
-        color: #999;
-        padding: 40px 20px;
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.8;
-        margin-top: 80px;
+    /* 닫기 버튼 */
+    .close-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: #fff;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
     }
 
-    .new-footer strong {
-        color: #fff;
+    .close-btn:hover {
+        background: #f5f5f5;
+        border-color: #ccc;
+        color: #333;
     }
 
-    /* 모바일 반응형 */
+    /* 카페24 기본 입력 필드 숨김 */
+    .cafe24-hidden {
+        display: none !important;
+    }
+
+    /* 반응형 */
     @media (max-width: 768px) {
-        .header-inner {
-            padding: 0 15px;
+        .apply-container {
+            margin: 40px auto 60px;
         }
 
-        .gnb {
-            display: none;
+        .apply-form {
+            padding: 25px 20px;
         }
 
-        .page-hero {
-            height: 200px;
-            margin-top: 60px;
+        .apply-title h2 {
+            font-size: 28px;
         }
 
-        .page-hero h2 {
-            font-size: 32px;
-        }
-
-        .page-content {
-            margin: 30px auto;
-            padding: 0 15px;
-        }
-
-        .apply-form-wrap {
-            padding: 20px;
-        }
-
-        .ec-base-table th,
-        .ec-base-table td {
-            display: block;
-            width: 100%;
-            padding: 15px;
-        }
-
-        .ec-base-table th {
-            background: transparent;
-            border-bottom: none;
-            padding-bottom: 5px;
-        }
-
-        .ec-base-table td {
-            padding-top: 0;
-        }
-
-        .ec-base-button a {
-            width: 100%;
-            padding: 15px 30px;
+        .radio-group {
+            gap: 15px;
         }
     }
 </style>
 
-<!-- 헤더 -->
-<header class="new-header">
-    <div class="header-inner">
-        <h1 class="logo">
-            <a href="/">
-                <img src="/images/logo/origin.jpg" alt="부산강서시니어클럽">
-            </a>
-        </h1>
-        <nav class="gnb">
-            <ul>
-                <li><a href="/about.html">기관소개</a></li>
-                <li><a href="/service1.html">노인일자리 사업</a></li>
-                <li><a href="/product/list.html?cate_no=23">생산판매</a></li>
-                <li><a href="/front/php/b/board_list.php?board_no=1">게시판</a></li>
-                <li><a href="/board/urgency/urgency.html" class="btn-apply-nav">참여신청서</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
+<div module="Mall_Urgencycall">
+    <!-- 닫기 버튼 -->
+    <button class="close-btn" onclick="closeWindow()" title="닫기">&times;</button>
 
-<!-- 페이지 히어로 -->
-<section class="page-hero">
-    <div>
-        <h2>참여신청서</h2>
-        <p>노인일자리 사업 참여를 신청합니다</p>
-    </div>
-</section>
+    <div class="apply-container">
+        <div class="apply-title">
+            <h2>참여신청서</h2>
+            <p>노인일자리 사업 참여를 신청합니다</p>
+        </div>
 
-<!-- 페이지 컨텐츠 -->
-<section class="page-content">
-    <h3 class="section-title">참여신청서 작성</h3>
-
-    <div class="apply-form-wrap">
-        <!-- ⚠️ Cafe24 폼 모듈 - 삭제 금지 -->
-        <div module="Mall_Urgencycall">
-            <!--@css(/css/module/board/urgencycall.css)-->
-            <!--
-                $login_page = /member/login.html
-            -->
-
-            <div class="ec-base-table typeWrite">
-                <table border="0" summary="">
-                    <caption style="display:none;">참여신청서</caption>
-                    <colgroup>
-                        <col style="width:180px;" />
-                        <col />
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th scope="row">참여희망 사업명 <span style="color:#e74c3c;">*</span></th>
-                            <td>{$form.question}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">이름 <span style="color:#e74c3c;">*</span></th>
-                            <td>{$form.writer}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">연락처 <span style="color:#e74c3c;">*</span></th>
-                            <td>
-                                {$form.mobile}
-                                <p class="gBlank5">예) 010-1234-5678</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">나이(만)세 <span style="color:#e74c3c;">*</span></th>
-                            <td>{$form.title}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">남기실 말씀</th>
-                            <td>
-                                {$form.content}
-                                <p class="gBlank5">예) 필수입력사항 : 기초생활 수급자 여부(해당/비해당), 기초연금 수급자 여부(수급/미수급), 차상위계층 해당
-                                    유무(해당/비해당)</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <!-- 첨부파일 (필요시 활성화) -->
-                    <tbody class="file-upload-section {$file_attatch_display|display}">
-                        <tr>
-                            <th scope="row">첨부파일</th>
-                            <td>{$form.attach_file}</td>
-                        </tr>
-                    </tbody>
-                    <!-- 보안문자 -->
-                    <tbody class="captcha {$config.use_captcha_write|display}">
-                        <tr>
-                            <th scope="row">보안문자 <span style="color:#e74c3c;">*</span></th>
-                            <td>
-                                {$captcha_image} {$captcha_refresh}
-                                <p class="gBlank5">{$form.captcha} <span style="color:#888;">영문, 숫자 조합을 공백없이
-                                        입력하세요(대소문자구분)</span></p>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <!-- 개인정보 동의 -->
-                    <tbody class="{$privacy_agreement_display|display}">
-                        <tr>
-                            <th scope="row">개인정보 수집 및<br>이용 동의 <span style="color:#e74c3c;">*</span></th>
-                            <td>
-                                {$form.privacy_agreement}
-                                <p class="gBlank5">{$form.privacy_agreement_radio}</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="apply-form">
+            <!-- 참여희망 사업명 -->
+            <div class="form-group">
+                <label>참여희망 사업명 <span style="color: #e74c3c;">*</span></label>
+                {$form.question}
             </div>
 
-            <!-- ⚠️ 제출 버튼 - {$action_send} 삭제 금지 -->
-            <div class="ec-base-button">
-                <a href="#none" onclick="{$action_send}">참여신청서 등록</a>
+            <!-- 이름 (커스텀) -->
+            <div class="form-group">
+                <label>이름 <span style="color: #e74c3c;">*</span></label>
+                <input type="text" id="customName" name="customName" placeholder="이름을 입력해주세요" required>
+            </div>
+            <!-- 카페24 이름 필드 숨김 -->
+            <div class="cafe24-hidden">{$form.writer}</div>
+
+            <!-- 연락처 -->
+            <div class="form-group">
+                <label>연락처 <span style="color: #e74c3c;">*</span></label>
+                {$form.mobile}
+                <p class="form-hint">예) 010-1234-5678</p>
+            </div>
+
+            <!-- 생년월일 -->
+            <div class="form-group">
+                <label>생년월일 <span style="color: #e74c3c;">*</span></label>
+                <div class="birth-date-group">
+                    <select id="birthYear" required>
+                        <option value="">년도</option>
+                        <script>
+                            for (let y = new Date().getFullYear() - 50; y >= 1930; y--) {
+                                document.write('<option value="' + y + '">' + y + '년</option>');
+                            }
+                        </script>
+                    </select>
+                    <select id="birthMonth" required>
+                        <option value="">월</option>
+                        <option value="1">1월</option>
+                        <option value="2">2월</option>
+                        <option value="3">3월</option>
+                        <option value="4">4월</option>
+                        <option value="5">5월</option>
+                        <option value="6">6월</option>
+                        <option value="7">7월</option>
+                        <option value="8">8월</option>
+                        <option value="9">9월</option>
+                        <option value="10">10월</option>
+                        <option value="11">11월</option>
+                        <option value="12">12월</option>
+                    </select>
+                    <select id="birthDay" required>
+                        <option value="">일</option>
+                        <script>
+                            for (let d = 1; d <= 31; d++) {
+                                document.write('<option value="' + d + '">' + d + '일</option>');
+                            }
+                        </script>
+                    </select>
+                </div>
+            </div>
+            <!-- 카페24 나이 필드 숨김 (생년월일 데이터로 대체) -->
+            <div class="cafe24-hidden">{$form.title}</div>
+
+            <!-- 기초생활 수급자 여부 -->
+            <div class="form-group">
+                <label>기초생활 수급자 여부 <span style="color: #e74c3c;">*</span></label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="basicLiving" value="해당" required>
+                        <span>해당</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="basicLiving" value="비해당">
+                        <span>비해당</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 기초연금 수급자 여부 -->
+            <div class="form-group">
+                <label>기초연금 수급자 여부 <span style="color: #e74c3c;">*</span></label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="basicPension" value="수급" required>
+                        <span>수급</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="basicPension" value="미수급">
+                        <span>미수급</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 차상위계층 해당 유무 -->
+            <div class="form-group">
+                <label>차상위계층 해당 유무 <span style="color: #e74c3c;">*</span></label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="nearPoverty" value="해당" required>
+                        <span>해당</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="nearPoverty" value="비해당">
+                        <span>비해당</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 남기실 말씀 -->
+            <div class="form-group">
+                <label>남기실 말씀</label>
+                {$form.content}
+                <p class="form-hint">기타 문의사항이 있으시면 작성해주세요.</p>
+            </div>
+
+            <!-- 보안문자 -->
+            <div class="form-group">
+                <label>보안문자 <span style="color: #e74c3c;">*</span></label>
+                <div style="margin-bottom: 10px;">
+                    {$captcha_image} {$captcha_refresh}
+                </div>
+                {$form.captcha}
+                <p class="form-hint">위 이미지에 보이는 영문, 숫자를 입력하세요 (대소문자 구분)</p>
+            </div>
+
+            <!-- 개인정보 동의 -->
+            <div class="privacy-section">
+                <h4>개인정보 수집 및 이용 동의 <span style="color: #e74c3c;">*</span></h4>
+                <div class="privacy-content">
+                    <p>'부산강서시니어클럽'(이하 '기관')은 참여 신청자의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호에 관한 법률"을 준수하고 있습니다.</p>
+
+                    <h5>수집하는 개인정보 항목</h5>
+                    <p>기관은 노인일자리 사업 참여 신청을 위해 아래와 같은 개인정보를 수집합니다.</p>
+                    <p><strong>수집항목:</strong> 이름, 연락처(휴대전화번호), 생년월일, 참여희망 사업명, 수급자 여부, 기타 문의사항</p>
+                    <p><strong>수집방법:</strong> 홈페이지 참여신청서</p>
+
+                    <h5>개인정보의 수집 및 이용목적</h5>
+                    <p>- 노인일자리 사업 참여 신청 접수 및 처리</p>
+                    <p>- 참여자 본인 확인 및 연락</p>
+                    <p>- 사업 안내 및 필요한 고지사항 전달</p>
+
+                    <h5>개인정보의 보유 및 이용기간</h5>
+                    <p>참여신청서는 접수 후 <strong>1년간 보관</strong>하며, 보관 기간이 경과하면 지체 없이 파기합니다.</p>
+
+                    <h5>개인정보 관련 문의</h5>
+                    <p><strong>부산강서시니어클럽</strong></p>
+                    <p>- 전화번호: 051) 973-1167</p>
+                    <p>- 이메일: kss20150101@hanmail.net</p>
+                </div>
+                <div class="privacy-agree">
+                    <label class="radio-label">
+                        <input type="radio" name="privacyAgree" value="agree" id="privacyAgreeYes" required>
+                        <span>동의함</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="privacyAgree" value="disagree" id="privacyAgreeNo">
+                        <span>동의안함</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 숨겨진 카페24 기본 제출 버튼 -->
+            <div style="display: none;">
+                <a href="#none" onclick="{$action_send}" id="cafe24Submit">제출</a>
+            </div>
+
+            <!-- 제출 버튼 -->
+            <div class="btn-submit-wrap">
+                <a href="#none" onclick="validateAndSubmit(); return false;" class="btn-submit">참여신청서 등록</a>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- 푸터 -->
-<footer class="new-footer">
-    <p><strong>부산강서시니어클럽</strong> | 대표 배현옥 | TEL 051) 973-1167 | FAX 051) 973-1168</p>
-    <p>주소 부산광역시 강서구 공항로811번가길 30(대저 2동)</p>
-    <p>사업자등록번호 615-82-88196 | 이메일 kss20150101@hanmail.net</p>
-    <p style="margin-top:20px;">Copyright © BUSAN Gangseo Senior Club. All Rights Reserved.</p>
-</footer>
+<script>
+    // 유효성 검사 및 데이터 통합
+    function validateAndSubmit() {
+        var errors = [];
+
+        // 이름 검사
+        var name = document.getElementById('customName').value.trim();
+        if (!name) {
+            errors.push('이름을 입력해주세요.');
+        } else if (!/^[가-힣]{2,7}$/.test(name)) {
+            errors.push('이름은 한글 2~7자로 입력해주세요.');
+        }
+
+        // 생년월일 검사
+        var birthYear = document.getElementById('birthYear').value;
+        var birthMonth = document.getElementById('birthMonth').value;
+        var birthDay = document.getElementById('birthDay').value;
+        if (!birthYear || !birthMonth || !birthDay) {
+            errors.push('생년월일을 선택해주세요.');
+        }
+
+        // 수급자 여부 검사
+        if (!document.querySelector('input[name="basicLiving"]:checked')) {
+            errors.push('기초생활 수급자 여부를 선택해주세요.');
+        }
+        if (!document.querySelector('input[name="basicPension"]:checked')) {
+            errors.push('기초연금 수급자 여부를 선택해주세요.');
+        }
+        if (!document.querySelector('input[name="nearPoverty"]:checked')) {
+            errors.push('차상위계층 해당 유무를 선택해주세요.');
+        }
+
+        // 개인정보 동의 검사
+        var privacyAgree = document.querySelector('input[name="privacyAgree"]:checked');
+        if (!privacyAgree) {
+            errors.push('개인정보 수집 및 이용 동의를 선택해주세요.');
+        } else if (privacyAgree.value === 'disagree') {
+            errors.push('개인정보 수집 및 이용에 동의해야 신청이 가능합니다.');
+        }
+
+        // 에러가 있으면 표시
+        if (errors.length > 0) {
+            alert('다음 항목을 확인해주세요:\n\n' + errors.join('\n'));
+            return false;
+        }
+
+        // 카페24 숨겨진 필드에 데이터 입력
+        // 이름 필드 찾아서 값 설정
+        var writerInputs = document.querySelectorAll('input[name="writer"], input[id*="writer"]');
+        writerInputs.forEach(function (input) {
+            input.value = name;
+        });
+
+        // 나이/생년월일 필드에 생년월일 입력
+        var titleInputs = document.querySelectorAll('input[name="title"], input[id*="title"]');
+        var birthDate = birthYear + '년 ' + birthMonth + '월 ' + birthDay + '일생';
+        titleInputs.forEach(function (input) {
+            input.value = birthDate;
+        });
+
+        // 내용 필드에 추가 정보 병합
+        var contentArea = document.querySelector('textarea[name="content"], textarea[id*="content"]');
+        if (contentArea) {
+            var basicLiving = document.querySelector('input[name="basicLiving"]:checked').value;
+            var basicPension = document.querySelector('input[name="basicPension"]:checked').value;
+            var nearPoverty = document.querySelector('input[name="nearPoverty"]:checked').value;
+
+            var extraInfo = '\n\n--- 추가 정보 ---\n';
+            extraInfo += '기초생활 수급자 여부: ' + basicLiving + '\n';
+            extraInfo += '기초연금 수급자 여부: ' + basicPension + '\n';
+            extraInfo += '차상위계층 해당 유무: ' + nearPoverty;
+
+            contentArea.value = contentArea.value + extraInfo;
+        }
+
+        // 성공 메시지 표시 후 제출
+        alert('등록이 완료되었습니다.');
+
+        // 카페24 기본 제출 버튼 클릭
+        var cafe24SubmitBtn = document.getElementById('cafe24Submit');
+        if (cafe24SubmitBtn) {
+            cafe24SubmitBtn.click();
+        }
+
+        // 메인 페이지로 이동
+        setTimeout(function () {
+            window.location.href = 'https://2026.gs2015.kr/';
+        }, 500);
+    }
+
+    // 동의안함 선택시 경고
+    document.getElementById('privacyAgreeNo').addEventListener('change', function () {
+        if (this.checked) {
+            alert('개인정보 수집 및 이용에 동의하셔야 참여신청이 가능합니다.');
+            document.getElementById('privacyAgreeYes').checked = true;
+        }
+    });
+
+    // 닫기 버튼 함수
+    function closeWindow() {
+        // 새 창으로 열렸으면 창 닫기
+        if (window.opener) {
+            window.close();
+        } else {
+            // 직접 접속했으면 메인 페이지로 이동
+            window.location.href = 'https://2026.gs2015.kr/';
+        }
+    }
+</script>
