@@ -504,19 +504,13 @@
             contentArea.value = contentArea.value + extraInfo;
         }
 
-        // 성공 메시지 표시 후 제출
-        alert('등록이 완료되었습니다.');
-
-        // 카페24 기본 제출 버튼 클릭
+        // 카페24 기본 제출 버튼 클릭 (보안문자 검증은 카페24가 처리)
         var cafe24SubmitBtn = document.getElementById('cafe24Submit');
         if (cafe24SubmitBtn) {
             cafe24SubmitBtn.click();
         }
 
-        // 메인 페이지로 이동
-        setTimeout(function () {
-            window.location.href = 'https://2026.gs2015.kr/';
-        }, 500);
+        return true;
     }
 
     // 동의안함 선택시 경고
