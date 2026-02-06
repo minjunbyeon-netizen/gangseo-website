@@ -827,6 +827,22 @@ CAFE24.ROUTE = {"is_mobile":false,"is_need_route":false,"language_code":"ZZ","pa
 <div class="ec-base-button gBlank10">
         <a href="#none" onclick="UrgencyCall.SendUrgencyCall();">참여신청서 등록</a>
     </div>
+
+<script>
+// 등록 완료 후 팝업 자동 닫기
+(function() {
+    var originalAlert = window.alert;
+    window.alert = function(message) {
+        originalAlert(message);
+        // 성공 메시지가 표시되면 팝업 닫기
+        if (message && (message.indexOf('완료') !== -1 || message.indexOf('등록') !== -1 || message.indexOf('접수') !== -1)) {
+            setTimeout(function() {
+                window.close();
+            }, 500);
+        }
+    };
+})();
+</script>
 </div>
 </form></div>
         

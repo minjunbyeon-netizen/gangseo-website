@@ -417,7 +417,20 @@
                         }
 
                         // 모든 유효성 검사 통과 - Cafe24 참여신청서 페이지로 이동
-                        window.open('https://gs2015.kr/board/urgency/urgency.html', '_blank');
+                        var popup = window.open('https://gs2015.kr/board/urgency/urgency.html', '_blank', 'width=1000,height=800,scrollbars=yes,resizable=yes');
+
+                        // 팝업창 상태 체크 - 등록 완료 후 자동 닫기
+                        if (popup) {
+                            var checkClosed = setInterval(function () {
+                                if (popup.closed) {
+                                    clearInterval(checkClosed);
+                                    // 팝업이 닫히면 성공 메시지 표시
+                                    alert('참여신청서가 접수되었습니다. 담당자가 곧 연락드리겠습니다.');
+                                    // 폼 초기화
+                                    document.getElementById('applyForm').reset();
+                                }
+                            }, 1000);
+                        }
                         return false;
                     });
 
