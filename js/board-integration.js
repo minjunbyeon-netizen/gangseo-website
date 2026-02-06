@@ -357,12 +357,53 @@
     }
 
     /**
+     * 이미지 파일 확장자 확인
+     */
+    function isImageFile(filename) {
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg'];
+        const lowerName = (filename || '').toLowerCase();
+        return imageExtensions.some(ext => lowerName.endsWith(ext));
+    }
+
+    /**
      * 게시글 상세 렌더링
      */
     function renderArticleDetail(container, article) {
-        // 첨부파일 섹션 생성
-        let attachmentsHtml = '';
+        // 첨부파일을 이미지와 기타 파일로 분류
+        let imageFiles = [];
+        let otherFiles = [];
+
         if (article.attachments && article.attachments.length > 0) {
+            article.attachments.forEach(file => {
+                if (isImageFile(file.name) || isImageFile(file.url)) {
+                    imageFiles.push(file);
+                } else {
+                    otherFiles.push(file);
+                }
+            });
+        }
+
+        // 이미지 갤러리 섹션 생성
+        let imagesHtml = '';
+        if (imageFiles.length > 0) {
+            imagesHtml = `
+                <div class="article-images">
+                    <div class="article-images-grid">
+                        ${imageFiles.map(file => `
+                            <div class="article-image-item">
+                                <a href="${file.url}" target="_blank" rel="noopener noreferrer">
+                                    <img src="${file.url}" alt="${escapeHtml(file.name)}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                                </a>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 기타 다운로드 파일 섹션 생성
+        let attachmentsHtml = '';
+        if (otherFiles.length > 0) {
             attachmentsHtml = `
                 <div class="article-attachments">
                     <h4 class="attachments-title">
@@ -372,7 +413,7 @@
                         첨부파일
                     </h4>
                     <ul class="attachments-list">
-                        ${article.attachments.map(file => `
+                        ${otherFiles.map(file => `
                             <li class="attachment-item">
                                 <a href="${file.url}" target="_blank" rel="noopener noreferrer" class="attachment-link">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -399,6 +440,7 @@
             <div class="article-content">
                 ${article.content || '<p>내용이 없습니다.</p>'}
             </div>
+            ${imagesHtml}
             ${attachmentsHtml}
         `;
 
