@@ -1,0 +1,452 @@
+<!--@layout(/layout/basic/layout.html)-->
+<!--
+    ============================================================
+    Cafe24 참여신청서 페이지 - 2026 리뉴얼 버전
+    파일명: urgency_new.html
+    백업용 원본: urgency.html
+    ============================================================
+    
+    ⚠️ 주의사항:
+    - module="Mall_Urgencycall" 삭제 금지
+    - {$form.xxx} 변수들 삭제 금지
+    - {$action_send} 삭제 금지
+    ============================================================
+-->
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
+
+<style>
+    /* ============================================
+   2026 리뉴얼 스타일 - 참여신청서 페이지
+   ============================================ */
+
+    /* 기본 리셋 */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* 헤더 스타일 */
+    .new-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        height: 80px;
+    }
+
+    .header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .gnb ul {
+        display: flex;
+        list-style: none;
+        gap: 40px;
+    }
+
+    .gnb a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s;
+    }
+
+    .gnb a:hover {
+        color: #03552d;
+    }
+
+    .btn-apply-nav {
+        background: linear-gradient(135deg, #03552d 0%, #047a3e 100%);
+        color: #fff !important;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+    }
+
+    /* 페이지 히어로 */
+    .page-hero {
+        margin-top: 80px;
+        height: 300px;
+        background: linear-gradient(135deg, #03552d 0%, #047a3e 50%, #059849 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #fff;
+        position: relative;
+    }
+
+    .page-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('/images/pattern.png') repeat;
+        opacity: 0.1;
+    }
+
+    .page-hero h2 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-hero p {
+        font-size: 18px;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* 페이지 컨텐츠 */
+    .page-content {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #03552d;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #03552d;
+    }
+
+    /* 폼 스타일 */
+    .apply-form-wrap {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+    }
+
+    .ec-base-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .ec-base-table th,
+    .ec-base-table td {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .ec-base-table th {
+        width: 180px;
+        font-weight: 600;
+        color: #333;
+        background: #f8f9fa;
+        font-size: 15px;
+    }
+
+    .ec-base-table td {
+        font-size: 15px;
+    }
+
+    .ec-base-table input[type="text"],
+    .ec-base-table input[type="tel"],
+    .ec-base-table input[type="email"],
+    .ec-base-table select,
+    .ec-base-table textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: 'Noto Sans KR', sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .ec-base-table input:focus,
+    .ec-base-table select:focus,
+    .ec-base-table textarea:focus {
+        outline: none;
+        border-color: #03552d;
+        box-shadow: 0 0 0 3px rgba(3, 85, 45, 0.1);
+    }
+
+    .ec-base-table textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .gBlank5 {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #888;
+    }
+
+    /* 첨부파일 숨김 (필요시 표시) */
+    .file-upload-section {
+        display: none;
+    }
+
+    /* 보안문자 */
+    .captcha img {
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    /* 개인정보 동의 */
+    .privacy-box {
+        background: #f8f9fa;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 20px;
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 13px;
+        line-height: 1.8;
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    /* 제출 버튼 */
+    .ec-base-button {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid #eee;
+    }
+
+    .ec-base-button a {
+        display: inline-block;
+        background: linear-gradient(135deg, #03552d 0%, #047a3e 100%);
+        color: #fff;
+        padding: 18px 60px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 5px 20px rgba(3, 85, 45, 0.3);
+    }
+
+    .ec-base-button a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(3, 85, 45, 0.4);
+    }
+
+    /* 푸터 */
+    .new-footer {
+        background: #2a2a2a;
+        color: #999;
+        padding: 40px 20px;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.8;
+        margin-top: 80px;
+    }
+
+    .new-footer strong {
+        color: #fff;
+    }
+
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+        .header-inner {
+            padding: 0 15px;
+        }
+
+        .gnb {
+            display: none;
+        }
+
+        .page-hero {
+            height: 200px;
+            margin-top: 60px;
+        }
+
+        .page-hero h2 {
+            font-size: 32px;
+        }
+
+        .page-content {
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .apply-form-wrap {
+            padding: 20px;
+        }
+
+        .ec-base-table th,
+        .ec-base-table td {
+            display: block;
+            width: 100%;
+            padding: 15px;
+        }
+
+        .ec-base-table th {
+            background: transparent;
+            border-bottom: none;
+            padding-bottom: 5px;
+        }
+
+        .ec-base-table td {
+            padding-top: 0;
+        }
+
+        .ec-base-button a {
+            width: 100%;
+            padding: 15px 30px;
+        }
+    }
+</style>
+
+<!-- 헤더 -->
+<header class="new-header">
+    <div class="header-inner">
+        <h1 class="logo">
+            <a href="/">
+                <img src="/images/logo/origin.jpg" alt="부산강서시니어클럽">
+            </a>
+        </h1>
+        <nav class="gnb">
+            <ul>
+                <li><a href="/about.html">기관소개</a></li>
+                <li><a href="/service1.html">노인일자리 사업</a></li>
+                <li><a href="/product/list.html?cate_no=23">생산판매</a></li>
+                <li><a href="/front/php/b/board_list.php?board_no=1">게시판</a></li>
+                <li><a href="/board/urgency/urgency.html" class="btn-apply-nav">참여신청서</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- 페이지 히어로 -->
+<section class="page-hero">
+    <div>
+        <h2>참여신청서</h2>
+        <p>노인일자리 사업 참여를 신청합니다</p>
+    </div>
+</section>
+
+<!-- 페이지 컨텐츠 -->
+<section class="page-content">
+    <h3 class="section-title">참여신청서 작성</h3>
+
+    <div class="apply-form-wrap">
+        <!-- ⚠️ Cafe24 폼 모듈 - 삭제 금지 -->
+        <div module="Mall_Urgencycall">
+            <!--@css(/css/module/board/urgencycall.css)-->
+            <!--
+                $login_page = /member/login.html
+            -->
+
+            <div class="ec-base-table typeWrite">
+                <table border="0" summary="">
+                    <caption style="display:none;">참여신청서</caption>
+                    <colgroup>
+                        <col style="width:180px;" />
+                        <col />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="row">참여희망 사업명 <span style="color:#e74c3c;">*</span></th>
+                            <td>{$form.question}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">이름 <span style="color:#e74c3c;">*</span></th>
+                            <td>{$form.writer}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">연락처 <span style="color:#e74c3c;">*</span></th>
+                            <td>
+                                {$form.mobile}
+                                <p class="gBlank5">예) 010-1234-5678</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">나이(만)세 <span style="color:#e74c3c;">*</span></th>
+                            <td>{$form.title}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">남기실 말씀</th>
+                            <td>
+                                {$form.content}
+                                <p class="gBlank5">예) 필수입력사항 : 기초생활 수급자 여부(해당/비해당), 기초연금 수급자 여부(수급/미수급), 차상위계층 해당
+                                    유무(해당/비해당)</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- 첨부파일 (필요시 활성화) -->
+                    <tbody class="file-upload-section {$file_attatch_display|display}">
+                        <tr>
+                            <th scope="row">첨부파일</th>
+                            <td>{$form.attach_file}</td>
+                        </tr>
+                    </tbody>
+                    <!-- 보안문자 -->
+                    <tbody class="captcha {$config.use_captcha_write|display}">
+                        <tr>
+                            <th scope="row">보안문자 <span style="color:#e74c3c;">*</span></th>
+                            <td>
+                                {$captcha_image} {$captcha_refresh}
+                                <p class="gBlank5">{$form.captcha} <span style="color:#888;">영문, 숫자 조합을 공백없이
+                                        입력하세요(대소문자구분)</span></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- 개인정보 동의 -->
+                    <tbody class="{$privacy_agreement_display|display}">
+                        <tr>
+                            <th scope="row">개인정보 수집 및<br>이용 동의 <span style="color:#e74c3c;">*</span></th>
+                            <td>
+                                {$form.privacy_agreement}
+                                <p class="gBlank5">{$form.privacy_agreement_radio}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ⚠️ 제출 버튼 - {$action_send} 삭제 금지 -->
+            <div class="ec-base-button">
+                <a href="#none" onclick="{$action_send}">참여신청서 등록</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 푸터 -->
+<footer class="new-footer">
+    <p><strong>부산강서시니어클럽</strong> | 대표 배현옥 | TEL 051) 973-1167 | FAX 051) 973-1168</p>
+    <p>주소 부산광역시 강서구 공항로811번가길 30(대저 2동)</p>
+    <p>사업자등록번호 615-82-88196 | 이메일 kss20150101@hanmail.net</p>
+    <p style="margin-top:20px;">Copyright © BUSAN Gangseo Senior Club. All Rights Reserved.</p>
+</footer>
