@@ -437,10 +437,10 @@
                     <span class="article-date">${article.date}</span>
                 </div>
             </div>
+            ${imagesHtml}
             <div class="article-content">
                 ${article.content || '<p>내용이 없습니다.</p>'}
             </div>
-            ${imagesHtml}
             ${attachmentsHtml}
         `;
 
