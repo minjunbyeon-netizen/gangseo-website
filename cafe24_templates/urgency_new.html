@@ -461,6 +461,12 @@
             errors.push('차상위계층 해당 유무를 선택해주세요.');
         }
 
+        // 보안문자 검사 (입력 여부만 확인 - 실제 검증은 서버에서 처리)
+        var captchaInput = document.querySelector('input[name="captcha"], input[id*="captcha"]');
+        if (captchaInput && !captchaInput.value.trim()) {
+            errors.push('보안문자를 입력해주세요.');
+        }
+
         // 개인정보 동의 검사
         var privacyAgree = document.querySelector('input[name="privacyAgree"]:checked');
         if (!privacyAgree) {
