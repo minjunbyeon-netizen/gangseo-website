@@ -415,9 +415,8 @@
                             return false;
                         }
 
-                        // 모든 유효성 검사 통과 - 성공 메시지 표시
-                        alert('참여신청서가 등록되었습니다.\n담당자가 연락드리겠습니다.');
-                        document.getElementById('applyForm').reset();
+                        // 모든 유효성 검사 통과 - Cafe24 참여신청서 페이지로 이동
+                        window.open('https://gs2015.kr/board/urgency/urgency.html', '_blank');
                         return false;
                     });
 
