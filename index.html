@@ -53,9 +53,9 @@
     <!-- Preload Critical Images -->
     <link rel="preload" href="images/hero-1.webp" as="image" type="image/webp">
 
-    <!-- Naver Maps API -->
+    <!-- Kakao Maps API -->
     <script type="text/javascript"
-        src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=s3xkypxgsa"></script>
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d0d7b9f6a1e6db6c5ec649e09f7eb8e7"></script>
 </head>
 
 <body>
@@ -266,10 +266,11 @@
                 <div class="location-map">
                     <h3 class="section-title">오시는길</h3>
                     <div class="map-container" style="position: relative;">
-                        <div id="naver-map" style="width: 100%; height: 350px; border-radius: 15px;"></div>
-                        <a href="https://naver.me/xVBrOjat" target="_blank" rel="noopener noreferrer"
-                            style="position: absolute; bottom: 15px; right: 15px; background: #03C75A; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.2); text-decoration: none; z-index: 10;">
-                            네이버 지도로 보기 →
+                        <div id="kakao-map" style="width: 100%; height: 350px; border-radius: 15px;"></div>
+                        <a href="https://map.kakao.com/link/map/부산강서시니어클럽,35.10732,128.94145" target="_blank"
+                            rel="noopener noreferrer"
+                            style="position: absolute; bottom: 15px; right: 15px; background: #FEE500; color: #191919; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.2); text-decoration: none; z-index: 10;">
+                            카카오맵으로 보기 →
                         </a>
                     </div>
                 </div>
@@ -340,53 +341,50 @@
         });
     </script>
 
-    <!-- Naver Map Initialization -->
+    <!-- Kakao Map Initialization -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // 부산강서시니어클럽 좌표
-            var position = new naver.maps.LatLng(35.10732, 128.94145);
+            var position = new kakao.maps.LatLng(35.10732, 128.94145);
 
-            var map = new naver.maps.Map('naver-map', {
+            var mapContainer = document.getElementById('kakao-map');
+            var mapOption = {
                 center: position,
-                zoom: 16,
-                zoomControl: true,
-                zoomControlOptions: {
-                    position: naver.maps.Position.TOP_RIGHT,
-                    style: naver.maps.ZoomControlStyle.SMALL
-                }
-            });
+                level: 3
+            };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 줌 컨트롤 추가
+            var zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
             // 마커 생성
-            var marker = new naver.maps.Marker({
+            var marker = new kakao.maps.Marker({
                 position: position,
-                map: map,
-                title: '부산강서시니어클럽',
-                animation: naver.maps.Animation.DROP
+                map: map
             });
 
             // 인포윈도우 생성
-            var infoWindow = new naver.maps.InfoWindow({
+            var infowindow = new kakao.maps.InfoWindow({
                 content: '<div style="padding: 15px; min-width: 200px; text-align: center;">' +
                     '<strong style="font-size: 14px; color: #333;">부산강서시니어클럽</strong><br>' +
                     '<span style="font-size: 12px; color: #666;">부산광역시 강서구 공항로811번가길 30</span><br>' +
                     '<span style="font-size: 12px; color: #666;">TEL: 051) 973-1167</span>' +
-                    '</div>',
-                borderWidth: 1,
-                borderColor: '#03C75A',
-                backgroundColor: '#fff'
+                    '</div>'
             });
 
             // 마커 클릭시 인포윈도우 토글
-            naver.maps.Event.addListener(marker, 'click', function () {
-                if (infoWindow.getMap()) {
-                    infoWindow.close();
+            kakao.maps.event.addListener(marker, 'click', function () {
+                if (infowindow.getMap()) {
+                    infowindow.close();
                 } else {
-                    infoWindow.open(map, marker);
+                    infowindow.open(map, marker);
                 }
             });
 
             // 초기 인포윈도우 열기
-            infoWindow.open(map, marker);
+            infowindow.open(map, marker);
         });
     </script>
 </body>
