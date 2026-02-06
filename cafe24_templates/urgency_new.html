@@ -510,11 +510,31 @@
             contentArea.value = contentArea.value + extraInfo;
         }
 
-        // 카페24 기본 제출 버튼 클릭 (보안문자 검증은 카페24가 처리)
+        // 제출 버튼 비활성화 (중복 클릭 방지)
+        var submitBtn = document.querySelector('.btn-submit');
+        if (submitBtn) {
+            submitBtn.textContent = '등록 중...';
+            submitBtn.style.pointerEvents = 'none';
+            submitBtn.style.opacity = '0.7';
+        }
+
+        // 카페24 기본 제출 버튼 클릭
+        // 카페24 시스템이 보안문자를 검증하고 결과를 alert로 표시합니다.
+        // - 보안문자 틀림: "보안문자가 일치하지 않습니다" 등의 메시지
+        // - 성공: 등록 완료 메시지 또는 목록 페이지로 이동
         var cafe24SubmitBtn = document.getElementById('cafe24Submit');
         if (cafe24SubmitBtn) {
             cafe24SubmitBtn.click();
         }
+
+        // 버튼 상태 복구 (에러 발생 시를 위해)
+        setTimeout(function () {
+            if (submitBtn) {
+                submitBtn.textContent = '참여신청서 등록';
+                submitBtn.style.pointerEvents = 'auto';
+                submitBtn.style.opacity = '1';
+            }
+        }, 3000);
 
         return true;
     }
