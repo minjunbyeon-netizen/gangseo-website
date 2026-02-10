@@ -1,5 +1,5 @@
 /**
- * Seoul Senior Club Association - Main JavaScript
+ * Busan Gangseo Senior Club - Main JavaScript
  */
 
 $(document).ready(function () {
@@ -27,11 +27,11 @@ $(document).ready(function () {
  * 이렇게 하면 폼 제출 후에도 원래 페이지에 남아있음
  */
 function initApplyFormPopup() {
-    $(document).on('click', '.btn-apply', function(e) {
+    $(document).on('click', '.btn-apply', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
         if (url && url.indexOf('urgency') !== -1) {
-            window.open(url, 'applyForm', 'width=900,height=800,scrollbars=yes,resizable=yes,top=100,left=' + (screen.width/2 - 450));
+            window.open(url, 'applyForm', 'width=900,height=800,scrollbars=yes,resizable=yes,top=100,left=' + (screen.width / 2 - 450));
         }
     });
 }
