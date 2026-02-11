@@ -1,0 +1,54 @@
+{
+    "cate_no": 25,
+    "name": "액상차즙",
+    "products": [
+        {
+            "id": 17,
+            "name": "기억뿌리",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/7cfa8887b2cc097baa79926e334d77cb.jpg",
+            "price": "",
+            "summary": "깜빡할 땐 기억뿌리 초석잠즙 LTMS 공법",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EAB8B0EC96B5EBBF8CEBA6AC.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EAB8B0EC96B5EBBF8CEBA6AC.png\" size=\"860px\/573px\" filesize=\"708,30 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=17",
+            "list_info": {
+                "id": 17,
+                "name": "상품명 : 기억뿌리",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/524765b89968528e70fcc73a33765c92.jpg",
+                "price": "40,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_17_main"
+        },
+        {
+            "id": 16,
+            "name": "미세먼지컷",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/373917c4bbc2499c2afe6c1b32bbdd78.jpg",
+            "price": "",
+            "summary": "배·도라지 저온추출 LTMS공법",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EBAFB8EC84B8EBA8BCECA780ECBBB7.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EBAFB8EC84B8EBA8BCECA780ECBBB7.png\" size=\"860px\/574px\" filesize=\"689,80 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=16",
+            "list_info": {
+                "id": 16,
+                "name": "상품명 : 미세먼지컷",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/2169f2f93f8fc03e6d4880d9e918a7db.jpg",
+                "price": "40,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_16_main"
+        },
+        {
+            "id": 15,
+            "name": "강서토마토",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/f74e8b4f7a371147e1810c48eb957dc1.jpg",
+            "price": "",
+            "summary": "저온추출공법 국내산 100% 토마토즙",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EAB095EC849CED86A0EBA788ED86A0.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EAB095EC849CED86A0EBA788ED86A0.png\" size=\"860px\/580px\" filesize=\"741,28 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=15",
+            "list_info": {
+                "id": 15,
+                "name": "상품명 : 강서토마토",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/00977753165fb7df516388440057cfb8.jpg",
+                "price": "40,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_15_main"
+        }
+    ]
+}

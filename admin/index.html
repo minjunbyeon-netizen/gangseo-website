@@ -77,6 +77,11 @@
                     <span class="nav-count" id="count-products">0</span>
                 </a>
                 <div class="sidebar-divider"></div>
+                <div class="sidebar-title">사이트 관리</div>
+                <a href="#" class="nav-item" onclick="switchToPopupManager(this)">
+                    <span class="nav-text">팝업 관리</span>
+                </a>
+                <div class="sidebar-divider"></div>
                 <div class="sidebar-title">신청 관리</div>
                 <a href="#" class="nav-item" data-board="applications" onclick="switchToApplications(this)">
                     <span class="nav-text">참여신청서</span>
@@ -133,6 +138,71 @@
                         <h2>신청서 상세</h2>
                     </div>
                     <div id="appDetailContent" class="app-detail-content"></div>
+                </div>
+
+                <!-- 팝업 관리 뷰 -->
+                <div id="popupManagerView" style="display:none">
+                    <div class="content-header">
+                        <h2>팝업 배너 관리</h2>
+                    </div>
+                    <div class="write-form">
+                        <table class="form-table">
+                            <tbody>
+                                <tr>
+                                    <th>상태</th>
+                                    <td>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="popupEnabled">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                        <span id="popupStatusText" style="margin-left:10px;color:#999;">비활성</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>팝업 제목</th>
+                                    <td><input type="text" id="popupTitle" class="form-input" placeholder="팝업 제목 (관리용)">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>배너 이미지</th>
+                                    <td>
+                                        <input type="file" id="popupImageFile" accept="image/*"
+                                            onchange="previewPopupImage(this)">
+                                        <div id="popupImagePreview" style="margin-top:10px;max-width:300px;">
+                                            <img id="popupPreviewImg" src="" alt=""
+                                                style="width:100%;display:none;border:1px solid #ddd;border-radius:4px;">
+                                        </div>
+                                        <input type="hidden" id="popupImageUrl" value="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>클릭 링크</th>
+                                    <td><input type="text" id="popupLink" class="form-input"
+                                            placeholder="배너 클릭 시 이동할 URL (선택)"></td>
+                                </tr>
+                                <tr>
+                                    <th>노출 시작일</th>
+                                    <td><input type="datetime-local" id="popupStartDate" class="form-input"></td>
+                                </tr>
+                                <tr>
+                                    <th>노출 종료일</th>
+                                    <td><input type="datetime-local" id="popupEndDate" class="form-input"></td>
+                                </tr>
+                                <tr>
+                                    <th>팝업 크기</th>
+                                    <td>
+                                        가로 <input type="number" id="popupWidth" class="form-input"
+                                            style="width:80px;display:inline-block" value="550"> px
+                                        &nbsp; 세로 <input type="number" id="popupHeight" class="form-input"
+                                            style="width:80px;display:inline-block" value="800"> px
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-actions">
+                            <button class="btn-submit" onclick="savePopupSettings()">저장</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 글 작성/수정 폼 -->
@@ -828,11 +898,12 @@
             } catch (e) { /* 무시 */ }
         }
 
-        // switchBoard 오버라이드 - 신청서 뷰 숨기기
+        // switchBoard 오버라이드 - 다른 뷰 숨기기
         const _origSwitchBoard = switchBoard;
         switchBoard = function (board, el) {
             document.getElementById('applicationsView').style.display = 'none';
             document.getElementById('appDetailView').style.display = 'none';
+            document.getElementById('popupManagerView').style.display = 'none';
             _origSwitchBoard(board, el);
         };
 
@@ -843,6 +914,125 @@
                 loadAppCount();
             }
         });
+
+        // ===================== 팝업 관리 =====================
+
+        function switchToPopupManager(el) {
+            // 사이드바 활성화
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            // 모든 뷰 숨기기
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('writeView').style.display = 'none';
+            document.getElementById('applicationsView').style.display = 'none';
+            document.getElementById('appDetailView').style.display = 'none';
+            document.getElementById('popupManagerView').style.display = 'block';
+
+            loadPopupSettings();
+        }
+
+        async function loadPopupSettings() {
+            try {
+                const doc = await db.collection('settings').doc('popup').get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('popupEnabled').checked = data.enabled || false;
+                    document.getElementById('popupTitle').value = data.title || '';
+                    document.getElementById('popupLink').value = data.link || '';
+                    document.getElementById('popupWidth').value = data.width || 550;
+                    document.getElementById('popupHeight').value = data.height || 800;
+
+                    if (data.startDate) {
+                        document.getElementById('popupStartDate').value = data.startDate;
+                    }
+                    if (data.endDate) {
+                        document.getElementById('popupEndDate').value = data.endDate;
+                    }
+                    if (data.imageUrl) {
+                        document.getElementById('popupImageUrl').value = data.imageUrl;
+                        const preview = document.getElementById('popupPreviewImg');
+                        preview.src = data.imageUrl;
+                        preview.style.display = 'block';
+                    }
+
+                    updatePopupStatusText(data.enabled);
+                }
+            } catch (e) {
+                console.error('팝업 설정 로드 실패:', e);
+            }
+
+            // 토글 이벤트
+            document.getElementById('popupEnabled').addEventListener('change', function () {
+                updatePopupStatusText(this.checked);
+            });
+        }
+
+        function updatePopupStatusText(enabled) {
+            const el = document.getElementById('popupStatusText');
+            if (enabled) {
+                el.textContent = '활성';
+                el.style.color = '#2e9e5e';
+            } else {
+                el.textContent = '비활성';
+                el.style.color = '#999';
+            }
+        }
+
+        function previewPopupImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById('popupPreviewImg');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function savePopupSettings() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '저장 중...';
+
+            try {
+                let imageUrl = document.getElementById('popupImageUrl').value;
+                const fileInput = document.getElementById('popupImageFile');
+
+                // 새 이미지 업로드
+                if (fileInput.files && fileInput.files[0]) {
+                    const file = fileInput.files[0];
+                    const ext = file.name.split('.').pop();
+                    const ref = storage.ref(`popup/banner_${Date.now()}.${ext}`);
+                    const snapshot = await ref.put(file);
+                    imageUrl = await snapshot.ref.getDownloadURL();
+                }
+
+                const settings = {
+                    enabled: document.getElementById('popupEnabled').checked,
+                    title: document.getElementById('popupTitle').value,
+                    imageUrl: imageUrl,
+                    link: document.getElementById('popupLink').value,
+                    startDate: document.getElementById('popupStartDate').value,
+                    endDate: document.getElementById('popupEndDate').value,
+                    width: parseInt(document.getElementById('popupWidth').value) || 550,
+                    height: parseInt(document.getElementById('popupHeight').value) || 800,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await db.collection('settings').doc('popup').set(settings);
+                document.getElementById('popupImageUrl').value = imageUrl;
+
+                alert('팝업 설정이 저장되었습니다.');
+            } catch (e) {
+                console.error('팝업 저장 실패:', e);
+                alert('저장 실패: ' + e.message);
+            }
+
+            btn.disabled = false;
+            btn.textContent = '저장';
+        }
     </script>
 </body>
 

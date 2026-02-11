@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cafe24 → Firebase 데이터 업로드 (NoAuth)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #ffc107;
+            margin: 30px 0 15px;
+            font-size: 1.2em;
+        }
+
+        .subtitle {
+            color: #8b949e;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            background: #484f58;
+            cursor: not-allowed;
+        }
+
+        .log {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 10px 0;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .ok {
+            color: #3fb950;
+        }
+
+        .err {
+            color: #f85149;
+        }
+
+        .info {
+            color: #58a6ff;
+        }
+
+        .warn {
+            color: #d29922;
+        }
+
+        .progress {
+            background: #21262d;
+            border-radius: 10px;
+            height: 28px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #238636, #58a6ff);
+            height: 100%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 40px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2em;
+            font-weight: bold;
+            color: #58a6ff;
+        }
+
+        .stat-label {
+            color: #8b949e;
+            margin-top: 5px;
+        }
+
+        .section {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background: #1c1305;
+            border: 1px solid #d29922;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 15px 0;
+            color: #d29922;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔄 Cafe24 → Firebase 데이터 업로드</h1>
+    <p class="subtitle">수집된 게시글 + 상품 데이터를 Firestore에 업로드합니다 (인증 없음 - 임시 규칙 사용)</p>
+
+    <div class="warning-box">
+        ⚠️ <strong>중요:</strong> 이 도구는 Firestore 규칙이 임시로 열려 있을 때만 작동합니다.
+        업로드 완료 후 반드시 보안 규칙을 복원하세요.
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-num" id="stat-total">0</div>
+            <div class="stat-label">전체</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num ok" id="stat-success">0</div>
+            <div class="stat-label">성공</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num err" id="stat-error">0</div>
+            <div class="stat-label">실패</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num warn" id="stat-skip">0</div>
+            <div class="stat-label">건너뜀</div>
+        </div>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar" style="width:0%">0%</div>
+    </div>
+
+    <div class="section">
+        <h2>📋 업로드 대상</h2>
+        <p>✅ 알림사항 (board_no=1)<br>✅ 구인구직 (board_no=2)<br>✅ 갤러리 (board_no=8)<br>✅ 상품 (3개
+            카테고리: 정일품참기름, 액상차즙, 더치커피)</p>
+        <br>
+        <button id="btnStart" onclick="startUpload()">🚀 전체 업로드 시작</button>
+        <button id="btnVerify" onclick="verifyData()" style="background:linear-gradient(135deg,#1f6feb,#58a6ff)">🔍 업로드
+            검증</button>
+        <button id="btnClear" onclick="clearFirestore()" style="background:linear-gradient(135deg,#da3633,#f85149)">🗑️
+            기존 데이터 삭제</button>
+    </div>
+
+    <h2>📝 진행 로그</h2>
+    <div class="log" id="logArea"></div>
+
+    <!-- Firebase SDK (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        // Firebase 초기화 (인증 없이)
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let stats = { total: 0, success: 0, error: 0, skip: 0 };
+
+        // 보드 매핑 (파일명에 한글 포함)
+        const BOARD_MAP = {
+            1: { collection: 'notice', name: '알림사항', fileName: 'board_1_알림사항.json' },
+            2: { collection: 'jobs', name: '구인구직', fileName: 'board_2_구인구직.json' },
+            8: { collection: 'gallery', name: '갤러리', fileName: 'board_8_갤러리.json' }
+        };
+
+        // 상품 카테고리 매핑
+        const PRODUCT_MAP = [
+            { cateNo: 23, name: '정일품참기름', fileName: 'products_23_정일품참기름.json' },
+            { cateNo: 25, name: '액상차즙', fileName: 'products_25_액상차즙.json' },
+            { cateNo: 53, name: '더치커피', fileName: 'products_53_더치커피.json' }
+        ];
+
+        function log(msg, type = '') {
+            const el = document.getElementById('logArea');
+            el.innerHTML += `<div class="${type}">${new Date().toLocaleTimeString()} | ${msg}</div>`;
+            el.scrollTop = el.scrollHeight;
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').textContent = stats.total;
+            document.getElementById('stat-success').textContent = stats.success;
+            document.getElementById('stat-error').textContent = stats.error;
+            document.getElementById('stat-skip').textContent = stats.skip;
+            const pct = stats.total > 0 ? Math.round((stats.success + stats.error + stats.skip) / stats.total * 100) : 0;
+            const bar = document.getElementById('progressBar');
+            bar.style.width = pct + '%';
+            bar.textContent = pct + '%';
+        }
+
+        // ===== 메인 업로드 =====
+        async function startUpload() {
+            const btn = document.getElementById('btnStart');
+            btn.disabled = true;
+            btn.textContent = '⏳ 업로드 중...';
+            stats = { total: 0, success: 0, error: 0, skip: 0 };
+
+            try {
+                log('🚀 데이터 업로드를 시작합니다...', 'info');
+
+                // 1) 게시판 데이터 업로드
+                for (const [boardNo, boardInfo] of Object.entries(BOARD_MAP)) {
+                    await uploadBoard(parseInt(boardNo), boardInfo);
+                }
+
+                // 2) 상품 데이터 업로드
+                await uploadProducts();
+
+                log('', '');
+                log('═══════════════════════════════════════', 'ok');
+                log(`🎉 업로드 완료! 성공: ${stats.success}건, 실패: ${stats.error}건, 건너뜀: ${stats.skip}건`, 'ok');
+                log('═══════════════════════════════════════', 'ok');
+            } catch (error) {
+                log(`❌ 치명적 오류: ${error.message}`, 'err');
+                console.error(error);
+            }
+
+            btn.disabled = false;
+            btn.textContent = '🚀 전체 업로드 시작';
+        }
+
+        // ===== 게시판 업로드 =====
+        async function uploadBoard(boardNo, boardInfo) {
+            log(`📋 [${boardInfo.name}] 데이터 로드 중...`, 'info');
+
+            try {
+                const response = await fetch(`migration_data/${boardInfo.fileName}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: 파일 로드 실패`);
+                }
+                const data = await response.json();
+
+                if (!data.articles || data.articles.length === 0) {
+                    log(`  ⚠️ ${boardInfo.name}: 데이터 없음`, 'warn');
+                    return;
+                }
+
+                const articles = data.articles;
+                log(`  📊 ${boardInfo.name}: ${articles.length}건 발견`, 'info');
+                stats.total += articles.length;
+                updateStats();
+
+                // 게시판 메타문서 생성
+                await db.collection('boards').doc(boardInfo.collection).set({
+                    name: boardInfo.name,
+                    boardNo: boardNo,
+                    totalArticles: articles.length,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                log(`  📁 ${boardInfo.name} 메타문서 생성 완료`, 'ok');
+
+                // Batch write (400개 단위 - Firestore 제한 500)
+                const batchSize = 400;
+
+                for (let i = 0; i < articles.length; i += batchSize) {
+                    const batch = db.batch();
+                    const chunk = articles.slice(i, i + batchSize);
+
+                    for (const article of chunk) {
+                        const docRef = db.collection('boards')
+                            .doc(boardInfo.collection)
+                            .collection('articles')
+                            .doc(String(article.id));
+
+                        const docData = {
+                            title: article.title || '',
+                            content_html: article.content_html || '',
+                            content_text: article.content_text || '',
+                            date: article.date || '',
+                            attachments: (article.attachments || []).map(att => ({
+                                name: att.name || '',
+                                url: att.url || ''
+                            })),
+                            source_url: article.source_url || '',
+                            boardNo: boardNo,
+                            boardName: boardInfo.name,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+
+                        // 갤러리 썸네일
+                        if (article.list_info && article.list_info.thumbnail) {
+                            docData.thumbnail = article.list_info.thumbnail;
+                        }
+
+                        // 구인/구직 타입
+                        if (article.list_info && article.list_info.type) {
+                            docData.type = article.list_info.type;
+                        }
+
+                        batch.set(docRef, docData);
+                    }
+
+                    await batch.commit();
+                    stats.success += chunk.length;
+                    updateStats();
+                    log(`  ✅ ${boardInfo.name}: ${Math.min(i + batchSize, articles.length)}/${articles.length}건 완료`, 'ok');
+
+                    // 짧은 딜레이 (Firestore rate limit 방지)
+                    await new Promise(r => setTimeout(r, 200));
+                }
+
+                log(`✅ [${boardInfo.name}] 총 ${articles.length}건 업로드 완료!`, 'ok');
+            } catch (error) {
+                log(`❌ [${boardInfo.name}] 업로드 실패: ${error.message}`, 'err');
+                stats.error++;
+                updateStats();
+            }
+        }
+
+        // ===== 상품 업로드 =====
+        async function uploadProducts() {
+            log('🛍️ 상품 데이터 업로드 시작...', 'info');
+
+            for (const cat of PRODUCT_MAP) {
+                try {
+                    const response = await fetch(`migration_data/${cat.fileName}`);
+                    if (!response.ok) {
+                        log(`  ⚠️ ${cat.name}: 파일 없음 (HTTP ${response.status})`, 'warn');
+                        continue;
+                    }
+                    const data = await response.json();
+
+                    if (!data.products || data.products.length === 0) {
+                        log(`  ⚠️ ${cat.name}: 상품 없음`, 'warn');
+                        continue;
+                    }
+
+                    stats.total += data.products.length;
+                    updateStats();
+
+                    const batch = db.batch();
+
+                    for (const product of data.products) {
+                        const docRef = db.collection('products').doc(String(product.id));
+                        batch.set(docRef, {
+                            name: product.name || '',
+                            price: product.price || '',
+                            image: product.image || '',
+                            summary: product.summary || '',
+                            content_html: product.content_html || '',
+                            category: cat.name,
+                            cateNo: cat.cateNo,
+                            source_url: product.source_url || '',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+
+                    await batch.commit();
+                    stats.success += data.products.length;
+                    updateStats();
+                    log(`  ✅ ${cat.name}: ${data.products.length}건 완료`, 'ok');
+                } catch (error) {
+                    log(`  ❌ ${cat.name} 실패: ${error.message}`, 'err');
+                    stats.error++;
+                    updateStats();
+                }
+            }
+        }
+
+        // ===== 업로드 검증 =====
+        async function verifyData() {
+            log('🔍 Firestore 데이터 검증 시작...', 'info');
+
+            try {
+                let totalDocs = 0;
+
+                // 게시판 검증
+                for (const [, boardInfo] of Object.entries(BOARD_MAP)) {
+                    const snapshot = await db.collection('boards')
+                        .doc(boardInfo.collection)
+                        .collection('articles')
+                        .get();
+                    totalDocs += snapshot.size;
+                    log(`  📊 ${boardInfo.name}: ${snapshot.size}건`, snapshot.size > 0 ? 'ok' : 'warn');
+
+                    // 첫 문서 샘플 출력
+                    if (snapshot.size > 0) {
+                        const firstDoc = snapshot.docs[0].data();
+                        log(`     └─ 샘플: "${firstDoc.title}" (${firstDoc.date})`, 'info');
+                    }
+                }
+
+                // 상품 검증
+                const prodSnap = await db.collection('products').get();
+                totalDocs += prodSnap.size;
+                log(`  📊 상품: ${prodSnap.size}건`, prodSnap.size > 0 ? 'ok' : 'warn');
+
+                if (prodSnap.size > 0) {
+                    const firstProd = prodSnap.docs[0].data();
+                    log(`     └─ 샘플: "${firstProd.name}" (${firstProd.category})`, 'info');
+                }
+
+                // boards 메타문서 검증
+                const boardsMeta = await db.collection('boards').get();
+                log(`  📁 게시판 메타문서: ${boardsMeta.size}건`, 'info');
+
+                log('', '');
+                log(`🔍 검증 완료: 총 ${totalDocs}건 확인 (게시글 + 상품)`, totalDocs > 0 ? 'ok' : 'err');
+            } catch (error) {
+                log(`❌ 검증 실패: ${error.message}`, 'err');
+                console.error(error);
+            }
+        }
+
+        // ===== 데이터 삭제 =====
+        async function clearFirestore() {
+            if (!confirm('⚠️ Firestore의 모든 게시판 + 상품 데이터를 삭제합니다.\n계속하시겠습니까?')) return;
+
+            try {
+                log('🗑️ 데이터 삭제 시작...', 'warn');
+
+                for (const [, boardInfo] of Object.entries(BOARD_MAP)) {
+                    log(`  🗑️ ${boardInfo.name} 삭제 중...`, 'warn');
+                    const snapshot = await db.collection('boards').doc(boardInfo.collection).collection('articles').get();
+
+                    // 400개 단위 batch 삭제
+                    const docs = snapshot.docs;
+                    for (let i = 0; i < docs.length; i += 400) {
+                        const batch = db.batch();
+                        docs.slice(i, i + 400).forEach(doc => batch.delete(doc.ref));
+                        await batch.commit();
+                    }
+
+                    // 메타문서 삭쿠
+                    await db.collection('boards').doc(boardInfo.collection).delete();
+                    log(`  ✅ ${boardInfo.name}: ${snapshot.size}건 삭제`, 'ok');
+                }
+
+                log('  🗑️ 상품 삭제 중...', 'warn');
+                const prodSnap = await db.collection('products').get();
+                const docs = prodSnap.docs;
+                for (let i = 0; i < docs.length; i += 400) {
+                    const batch = db.batch();
+                    docs.slice(i, i + 400).forEach(doc => batch.delete(doc.ref));
+                    await batch.commit();
+                }
+                log(`  ✅ 상품: ${prodSnap.size}건 삭제`, 'ok');
+
+                log('✅ 전체 삭제 완료', 'ok');
+            } catch (error) {
+                log(`❌ 삭제 실패: ${error.message}`, 'err');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+
+</html>

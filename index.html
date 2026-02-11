@@ -62,8 +62,8 @@
     <!-- 팝업 배너 -->
     <div id="popupBanner" class="popup-banner-overlay">
         <div class="popup-banner-container">
-            <a href="https://gs2015.kr" target="_blank" rel="noopener">
-                <img src="images/pop/ED9CB4EAB480.jpg" alt="공지 배너" class="popup-banner-img">
+            <a id="popupBannerLink" href="#" target="_blank" rel="noopener">
+                <img id="popupBannerImg" src="" alt="공지 배너" class="popup-banner-img">
             </a>
             <div class="popup-bottom-bar">
                 <button class="popup-today-btn" onclick="closePopupToday()">오늘 하루 열지않음</button>
@@ -412,9 +412,6 @@
 
     <!-- 팝업 배너 스크립트 -->
     <script>
-        // 팝업 노출 기한: 2026년 2월 20일 19:00까지
-        const POPUP_EXPIRY = new Date('2026-02-20T19:00:00+09:00');
-
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -439,18 +436,71 @@
             closePopup();
         }
 
-        function showPopup() {
-            // 기한 체크
-            if (new Date() > POPUP_EXPIRY) return;
+        async function loadAndShowPopup() {
             // 오늘 하루 열지않음 체크
             if (getCookie('popup_hide') === 'true') return;
+
+            try {
+                const popupDb = firebase.firestore();
+                const doc = await popupDb.collection('settings').doc('popup').get();
+                if (!doc.exists) {
+                    // Firestore에 설정 없으면 기본 로컬 이미지로 폴백
+                    showFallbackPopup();
+                    return;
+                }
+
+                const data = doc.data();
+
+                // 비활성 체크
+                if (!data.enabled) return;
+
+                // 노출 기간 체크
+                const now = new Date();
+                if (data.startDate && new Date(data.startDate) > now) return;
+                if (data.endDate && new Date(data.endDate) < now) return;
+
+                // 이미지 URL 체크
+                if (!data.imageUrl) return;
+
+                // 팝업 설정 적용
+                document.getElementById('popupBannerImg').src = data.imageUrl;
+                document.getElementById('popupBannerLink').href = data.link || '#';
+
+                // 크기 적용
+                if (data.width) {
+                    document.querySelector('.popup-banner-container').style.maxWidth = data.width + 'px';
+                }
+
+                const popup = document.getElementById('popupBanner');
+                popup.style.display = 'flex';
+                setTimeout(() => { popup.style.opacity = '1'; }, 10);
+
+            } catch (e) {
+                console.log('팝업 설정 로드 실패, 기본 이미지 사용');
+                showFallbackPopup();
+            }
+        }
+
+        function showFallbackPopup() {
+            // Firestore 연결 실패 시 로컬 이미지로 폴백 (2026-02-20 19:00까지)
+            if (new Date() > new Date('2026-02-20T19:00:00+09:00')) return;
+
+            document.getElementById('popupBannerImg').src = 'images/pop/ED9CB4EAB480.jpg';
+            document.getElementById('popupBannerLink').href = 'https://gs2015.kr';
 
             const popup = document.getElementById('popupBanner');
             popup.style.display = 'flex';
             setTimeout(() => { popup.style.opacity = '1'; }, 10);
         }
 
-        document.addEventListener('DOMContentLoaded', showPopup);
+        document.addEventListener('DOMContentLoaded', function () {
+            // Firebase 초기화 후 팝업 로드
+            if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                loadAndShowPopup();
+            } else {
+                showFallbackPopup();
+            }
+        });
     </script>
 </body>
 

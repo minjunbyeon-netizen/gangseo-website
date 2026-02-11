@@ -1,0 +1,150 @@
+{
+    "cate_no": 23,
+    "name": "정일품참기름",
+    "products": [
+        {
+            "id": 21,
+            "name": "품질확인서",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220915\/6837621beb300bba8a78e4c01af229c6.jpg",
+            "price": "",
+            "summary": "품질확인서",
+            "content_html": "<div class=\"cont\">\n            <div style=\"text-align: center;\"><br><\/div><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/1652992407139.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"1652992407139.png\" size=\"609px\/780px\" filesize=\"251,30 kB\" error=\"\"><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220915\/ECA09CED9288ED9995EC9DB8EC849C.jpg\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center; width: 604px;\" result=\"success\" name=\"ECA09CED9288ED9995EC9DB8EC849C.jpg\" size=\"500px\/500px\" filesize=\"145,83 kB\" error=\"\"><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div style=\"text-align: center;\">품질확인서<\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div>        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=21",
+            "list_info": {
+                "id": 21,
+                "name": "상품명 : 품질확인서",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220915\/2aee9f4ecf7d90cdfbe675d04165e807.jpg",
+                "price": ""
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_21_main"
+        },
+        {
+            "id": 19,
+            "name": "공항더치커피",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220915\/7331c6bcf7f4b70c16a7f80fa00395f9.jpg",
+            "price": "",
+            "summary": "스페셜티 공항더치커피 원액 콜드브루",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/Screenshot202022-06-1020at2006.48.26.JPG\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"Screenshot202022-06-1020at2006.48.26.JPG\" size=\"860px\/568px\" filesize=\"121,45 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=19",
+            "list_info": {
+                "id": 19,
+                "name": "상품명 : 공항더치커피",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220915\/4f289d083e3703355c3b7f978108fd36.jpg",
+                "price": "15,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_19_main"
+        },
+        {
+            "id": 17,
+            "name": "기억뿌리",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/7cfa8887b2cc097baa79926e334d77cb.jpg",
+            "price": "",
+            "summary": "깜빡할 땐 기억뿌리 초석잠즙 LTMS 공법",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EAB8B0EC96B5EBBF8CEBA6AC.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EAB8B0EC96B5EBBF8CEBA6AC.png\" size=\"860px\/573px\" filesize=\"708,30 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=17",
+            "list_info": {
+                "id": 17,
+                "name": "상품명 : 기억뿌리",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/524765b89968528e70fcc73a33765c92.jpg",
+                "price": "40,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_17_main"
+        },
+        {
+            "id": 16,
+            "name": "미세먼지컷",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/373917c4bbc2499c2afe6c1b32bbdd78.jpg",
+            "price": "",
+            "summary": "배·도라지 저온추출 LTMS공법",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EBAFB8EC84B8EBA8BCECA780ECBBB7.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EBAFB8EC84B8EBA8BCECA780ECBBB7.png\" size=\"860px\/574px\" filesize=\"689,80 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=16",
+            "list_info": {
+                "id": 16,
+                "name": "상품명 : 미세먼지컷",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/2169f2f93f8fc03e6d4880d9e918a7db.jpg",
+                "price": "40,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_16_main"
+        },
+        {
+            "id": 15,
+            "name": "강서토마토",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/f74e8b4f7a371147e1810c48eb957dc1.jpg",
+            "price": "",
+            "summary": "저온추출공법 국내산 100% 토마토즙",
+            "content_html": "<div class=\"cont\">\n            <img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EAB095EC849CED86A0EBA788ED86A0.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EAB095EC849CED86A0EBA788ED86A0.png\" size=\"860px\/580px\" filesize=\"741,28 kB\" error=\"\">        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=15",
+            "list_info": {
+                "id": 15,
+                "name": "상품명 : 강서토마토",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/00977753165fb7df516388440057cfb8.jpg",
+                "price": "40,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_15_main"
+        },
+        {
+            "id": 12,
+            "name": "프리미엄 선물세트",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/15f3ff0db0049c0676a0a6291ab397a6.jpg",
+            "price": "",
+            "summary": "통깨100% 저온압착 정일품 참기름 프리미엄 선물세트",
+            "content_html": "<div class=\"cont\">\n            <p style=\"text-align: center;\"><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/1652992407139.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"1652992407139.png\" size=\"609px\/780px\" filesize=\"251,30 kB\" error=\"\"><\/p>\r\n<br><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/Screenshot202022-06-1020at2005.56.27.JPG\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"Screenshot202022-06-1020at2005.56.27.JPG\" size=\"860px\/574px\" filesize=\"47,88 kB\" error=\"\">\r\n<br>\r\n<div style=\"text-align: center;\"><br><\/div><div style=\"text-align: center;\">강서참기름 300ml + 강서참기름 300ml + 볶음참깨 250g<\/div>\r\n<div data-empty=\"true\" style=\"text-align: center;\">\r\n<br>\r\n<\/div>        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=12",
+            "list_info": {
+                "id": 12,
+                "name": "상품명 : 프리미엄 선물세트",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/39dd5519d642fb4e665d16433d2e20e4.jpg",
+                "price": "32,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_12_main"
+        },
+        {
+            "id": 11,
+            "name": "강서참기름 참깨세트",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/bb925a776e6869c19cfc63782e34c264.jpg",
+            "price": "",
+            "summary": "통깨100% 저온압착 정일품 로템참기름",
+            "content_html": "<div class=\"cont\">\n            <p style=\"text-align: center;\"><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/1652992407139.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"1652992407139.png\" size=\"609px\/780px\" filesize=\"251,30 kB\" error=\"\"><\/p><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/Screenshot202022-06-1020at2005.52.41.JPG\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"Screenshot202022-06-1020at2005.52.41.JPG\" size=\"860px\/585px\" filesize=\"35,32 kB\" error=\"\"><br><br><div style=\"text-align: center;\">강서참기름 300ml + 볶음참깨 250g<\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div>        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=11",
+            "list_info": {
+                "id": 11,
+                "name": "상품명 : 강서참기름 참깨세트",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/54f6cd3259bdcda6330e5f0b3736a2bf.jpg",
+                "price": "20,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_11_main"
+        },
+        {
+            "id": 10,
+            "name": "로템참기름",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/ca4f6258a56316305d6d00c3e657102c.jpg",
+            "price": "",
+            "summary": "통깨100% 저온압착 정일품 로템참기름",
+            "content_html": "<div class=\"cont\">\n            <p style=\"text-align: center;\"><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/1652992407139.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"1652992407139.png\" size=\"609px\/780px\" filesize=\"251,30 kB\" error=\"\"><\/p><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/1652995020853.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"1652995020853.png\" size=\"860px\/573px\" filesize=\"196,58 kB\" error=\"\"><br><br><div style=\"text-align: center;\">정일품 A+ LOTEM 참기름 300ml<\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div>        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=10",
+            "list_info": {
+                "id": 10,
+                "name": "상품명 : 로템참기름",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/90f55e28446b6e1911377e119334258b.jpg",
+                "price": "30,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_10_main"
+        },
+        {
+            "id": 9,
+            "name": "강서참기름",
+            "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/big\/20220610\/f0439c86c101db6538d9745517469690.jpg",
+            "price": "",
+            "summary": "통깨100% 저온압착 정일품 강서참기름",
+            "content_html": "<div class=\"cont\">\n            <div style=\"text-align: center;\"><\/div><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/1652992407139.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"1652992407139.png\" size=\"609px\/780px\" filesize=\"251,30 kB\" error=\"\"><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><img ec-data-src=\"https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/upload\/NNEditor\/20220610\/EAB095EC849CECB0B8EAB8B0EBA68420300ml.png\" style=\"display: block; vertical-align: top; margin: 0px auto; text-align: center;\" result=\"success\" name=\"EAB095EC849CECB0B8EAB8B0EBA68420300ml.png\" size=\"860px\/573px\" filesize=\"234,19 kB\" error=\"\"><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div style=\"text-align: center;\">강서참기름 300ml<\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div><div data-empty=\"true\" style=\"text-align: center;\"><br><\/div>        <\/div>",
+            "source_url": "https:\/\/gs2015.kr\/product\/detail.html?product_no=9",
+            "list_info": {
+                "id": 9,
+                "name": "상품명 : 강서참기름",
+                "image": "https:\/\/ecimg.cafe24img.com\/pg33b96378243041\/kss2015010\/web\/product\/medium\/20220610\/6a1c96c602c8d3c6c142bf25d284766d.jpg",
+                "price": "15,000원"
+            },
+            "local_image": "C:\\xampp\\htdocs\\01_work\\01_gangseo\/migration_data\/images\/product_9_main"
+        }
+    ]
+}
