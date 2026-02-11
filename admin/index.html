@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 - 부산강서시니어클럽</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 로그인 화면 -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="../images/logo/origin.jpg" alt="부산강서시니어클럽" onerror="this.style.display='none'">
+            </div>
+            <h1>부산강서시니어클럽</h1>
+            <p class="login-subtitle">관리자 페이지</p>
+            <button id="btnGoogleLogin" class="btn-google" onclick="googleLogin()">
+                <svg viewBox="0 0 24 24" width="18" height="18">
+                    <path fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" />
+                    <path fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                    <path fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                Google 계정으로 로그인
+            </button>
+            <p class="login-hint">허용된 관리자 계정으로만 접근 가능합니다</p>
+        </div>
+    </div>
+
+    <!-- 메인 관리자 화면 -->
+    <div id="adminScreen" class="admin-screen" style="display:none">
+
+        <!-- 상단 헤더 -->
+        <header class="admin-header">
+            <div class="header-left">
+                <img src="../images/logo/origin.jpg" alt="로고" class="header-logo-img"
+                    onerror="this.style.display='none'">
+                <h1>부산강서시니어클럽 <span>관리자</span></h1>
+            </div>
+            <div class="header-right">
+                <a href="../index.html" target="_blank" class="btn-site">사이트 보기 ↗</a>
+                <span id="userEmail" class="user-email"></span>
+                <button class="btn-logout" onclick="logout()">로그아웃</button>
+            </div>
+        </header>
+
+        <!-- 사이드바 + 콘텐츠 -->
+        <div class="admin-body">
+            <nav class="sidebar">
+                <div class="sidebar-title">게시판 관리</div>
+                <a href="#" class="nav-item active" data-board="notice" onclick="switchBoard('notice', this)">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">알림사항</span>
+                    <span class="nav-count" id="count-notice">0</span>
+                </a>
+                <a href="#" class="nav-item" data-board="jobs" onclick="switchBoard('jobs', this)">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">구인구직</span>
+                    <span class="nav-count" id="count-jobs">0</span>
+                </a>
+                <a href="#" class="nav-item" data-board="gallery" onclick="switchBoard('gallery', this)">
+                    <span class="nav-icon">📷</span>
+                    <span class="nav-text">갤러리</span>
+                    <span class="nav-count" id="count-gallery">0</span>
+                </a>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-title">신청 관리</div>
+                <a href="#" class="nav-item" data-board="applications" onclick="switchToApplications(this)">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">참여신청서</span>
+                    <span class="nav-count nav-count-new" id="count-applications">0</span>
+                </a>
+            </nav>
+
+            <main class="content">
+                <!-- 목록 뷰 -->
+                <div id="listView">
+                    <div class="content-header">
+                        <h2 id="boardTitle">전체 게시물 목록</h2>
+                        <div class="header-actions">
+                            <button class="btn-primary" onclick="showWriteForm()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                글 작성
+                            </button>
+                        </div>
+                    </div>
+                    <div class="list-info">
+                        <span id="totalCount">총 <strong>0</strong>건</span>
+                    </div>
+                    <div class="article-list" id="articleList">
+                        <div class="loading">데이터를 불러오는 중...</div>
+                    </div>
+                </div>
+
+                <!-- 참여신청서 확인 뷰 -->
+                <div id="applicationsView" style="display:none">
+                    <div class="content-header">
+                        <h2>참여신청서 확인목록</h2>
+                        <div class="header-actions">
+                            <span id="appTotalCount">총 <strong>0</strong>건</span>
+                            <select id="appStatusFilter" onchange="filterApplications()">
+                                <option value="all">전체</option>
+                                <option value="new">신규</option>
+                                <option value="checked">확인완료</option>
+                                <option value="contacted">연락완료</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="article-list" id="applicationsList">
+                        <div class="loading">데이터를 불러오는 중...</div>
+                    </div>
+                </div>
+
+                <!-- 신청서 상세 뷰 -->
+                <div id="appDetailView" style="display:none">
+                    <div class="content-header">
+                        <h2>신청서 상세</h2>
+                    </div>
+                    <div id="appDetailContent" class="app-detail-content"></div>
+                </div>
+
+                <!-- 글 작성/수정 폼 -->
+                <div id="writeView" style="display:none">
+                    <div class="content-header">
+                        <h2 id="formTitle">알림사항</h2>
+                    </div>
+                    <div class="write-form">
+                        <input type="hidden" id="editId" value="">
+                        <table class="form-table">
+                            <tbody>
+                                <tr>
+                                    <th>제목</th>
+                                    <td>
+                                        <input type="text" id="articleTitle" placeholder="글 제목을 입력하세요"
+                                            class="form-input">
+                                        <label class="checkbox-label" id="noticeCheckWrap" style="display:none">
+                                            <input type="checkbox" id="isNotice"> 공지사항
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr id="typeRow" style="display:none">
+                                    <th>유형</th>
+                                    <td>
+                                        <select id="articleType" class="form-select">
+                                            <option value="구인">구인</option>
+                                            <option value="구직">구직</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 에디터 -->
+                        <div class="editor-wrap">
+                            <div class="editor-toolbar">
+                                <select class="toolbar-select" onchange="execFontSize(this.value)">
+                                    <option value="3">12</option>
+                                    <option value="4" selected>14</option>
+                                    <option value="5">18</option>
+                                    <option value="6">24</option>
+                                    <option value="7">36</option>
+                                </select>
+                                <span class="toolbar-sep"></span>
+                                <button type="button" onclick="execCmd('bold')" title="굵게"><b>B</b></button>
+                                <button type="button" onclick="execCmd('italic')" title="기울임"><i>I</i></button>
+                                <button type="button" onclick="execCmd('underline')" title="밑줄"><u>U</u></button>
+                                <button type="button" onclick="execFontColor()" title="글자색">A<span
+                                        class="color-bar"></span></button>
+                                <span class="toolbar-sep"></span>
+                                <button type="button" onclick="execCmd('insertUnorderedList')" title="글머리 기호">☰</button>
+                                <button type="button" onclick="execCmd('insertOrderedList')" title="번호 목록">☷</button>
+                                <span class="toolbar-sep"></span>
+                                <button type="button" onclick="execCmd('justifyLeft')" title="왼쪽 정렬">≡</button>
+                                <button type="button" onclick="execCmd('justifyCenter')" title="가운데 정렬">≡</button>
+                                <button type="button" onclick="execCmd('justifyRight')" title="오른쪽 정렬">≡</button>
+                                <span class="toolbar-sep"></span>
+                                <button type="button" onclick="insertImage()" title="이미지 삽입" class="btn-img">🖼️
+                                    이미지</button>
+                            </div>
+                            <div id="articleContent" class="editor" contenteditable="true"></div>
+                            <div class="editor-footer">
+                                <span class="char-count">글자 : <span id="charCount">0</span></span>
+                            </div>
+                        </div>
+
+                        <!-- 첨부파일 -->
+                        <table class="form-table attach-table">
+                            <tbody>
+                                <tr>
+                                    <th>첨부파일1</th>
+                                    <td>
+                                        <input type="file" id="imageUpload1" accept="image/*"
+                                            onchange="handleFileSelect(this, 1)">
+                                        <span class="file-name" id="fileName1">선택된 파일 없음</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>첨부파일2</th>
+                                    <td>
+                                        <input type="file" id="imageUpload2" accept="image/*"
+                                            onchange="handleFileSelect(this, 2)">
+                                        <span class="file-name" id="fileName2">선택된 파일 없음</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 하단 버튼 -->
+                        <div class="form-actions">
+                            <button class="btn-cancel" onclick="cancelWrite()">취소</button>
+                            <button class="btn-submit" onclick="saveArticle()">저장</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+
+    <script>
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+
+        // 허용된 관리자 이메일 목록
+        const ALLOWED_ADMINS = [
+            'minjunbyeon@gmail.com',
+            // 여기에 담당자 이메일 추가
+        ];
+
+        let currentBoard = 'notice';
+        let currentArticles = [];
+        let uploadedFiles = [null, null];
+
+        const BOARD_TITLES = {
+            notice: '알림사항',
+            jobs: '구인구직',
+            gallery: '갤러리'
+        };
+
+        // ===== 인증 =====
+        auth.onAuthStateChanged(user => {
+            if (user && ALLOWED_ADMINS.includes(user.email)) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminScreen').style.display = 'flex';
+                document.getElementById('userEmail').textContent = user.email;
+                loadArticles(currentBoard);
+                loadCounts();
+            } else if (user) {
+                alert('관리자 권한이 없는 계정입니다.');
+                auth.signOut();
+            } else {
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('adminScreen').style.display = 'none';
+            }
+        });
+
+        async function googleLogin() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                alert('로그인 실패: ' + error.message);
+            }
+        }
+
+        function logout() {
+            auth.signOut();
+        }
+
+        // ===== 게시판 전환 =====
+        function switchBoard(board, el) {
+            currentBoard = board;
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            document.getElementById('boardTitle').textContent = '전체 게시물 목록';
+            document.getElementById('listView').style.display = 'block';
+            document.getElementById('writeView').style.display = 'none';
+
+            // 구인구직 유형 표시
+            const typeRow = document.getElementById('typeRow');
+            if (typeRow) typeRow.style.display = board === 'jobs' ? '' : 'none';
+
+            // 공지 체크박스 - 알림사항만
+            const noticeWrap = document.getElementById('noticeCheckWrap');
+            if (noticeWrap) noticeWrap.style.display = board === 'notice' ? 'inline-flex' : 'none';
+
+            loadArticles(board);
+        }
+
+        // ===== 글 목록 로드 =====
+        async function loadArticles(board) {
+            const container = document.getElementById('articleList');
+            container.innerHTML = '<div class="loading">불러오는 중...</div>';
+
+            try {
+                const snapshot = await db.collection('boards').doc(board).collection('articles')
+                    .orderBy('date', 'desc')
+                    .limit(50)
+                    .get();
+
+                currentArticles = [];
+                snapshot.forEach(doc => {
+                    currentArticles.push({ id: doc.id, ...doc.data() });
+                });
+
+                document.getElementById('totalCount').innerHTML =
+                    `총 <strong>${currentArticles.length}</strong>건`;
+                renderArticleList(container, currentArticles);
+            } catch (error) {
+                container.innerHTML = `<div class="error">불러오기 실패: ${error.message}</div>`;
+            }
+        }
+
+        async function loadCounts() {
+            for (const board of ['notice', 'jobs', 'gallery']) {
+                try {
+                    const snapshot = await db.collection('boards').doc(board).collection('articles').get();
+                    document.getElementById(`count-${board}`).textContent = snapshot.size;
+                } catch (e) {
+                    // 무시
+                }
+            }
+        }
+
+        function renderArticleList(container, articles) {
+            if (articles.length === 0) {
+                container.innerHTML = '<div class="empty">등록된 글이 없습니다.</div>';
+                return;
+            }
+
+            let html = `
+                <table class="article-table">
+                    <thead>
+                        <tr>
+                            <th class="col-check"><input type="checkbox" id="checkAll" onchange="toggleCheckAll(this)"></th>
+                            <th class="col-num">번호</th>
+                            <th class="col-category">분류</th>
+                            <th class="col-title">제목</th>
+                            <th class="col-preview">간편보기</th>
+                            <th class="col-date">작성일</th>
+                            <th class="col-actions">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            articles.forEach((article, index) => {
+                const typeTag = article.type
+                    ? `<span class="type-tag type-${article.type === '구인' ? 'hiring' : 'seeking'}">${article.type}</span>`
+                    : `<span class="type-tag type-default">${BOARD_TITLES[currentBoard]}</span>`;
+                const isNotice = article.isNotice ? '<span class="badge-notice">공지</span>' : '';
+                const num = articles.length - index;
+
+                html += `
+                    <tr>
+                        <td class="col-check"><input type="checkbox" class="article-check" value="${article.id}"></td>
+                        <td class="col-num">${num}</td>
+                        <td class="col-category">${typeTag}</td>
+                        <td class="col-title">
+                            ${isNotice}
+                            <a href="#" onclick="previewArticle('${article.id}'); return false;">${escapeHtml(article.title)}</a>
+                        </td>
+                        <td class="col-preview">
+                            <button class="btn-preview" onclick="previewArticle('${article.id}')">미리보기</button>
+                        </td>
+                        <td class="col-date">${article.date || '-'}</td>
+                        <td class="col-actions">
+                            <button class="btn-edit" onclick="editArticle('${article.id}')">수정</button>
+                            <button class="btn-delete" onclick="deleteArticle('${article.id}')">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function toggleCheckAll(el) {
+            document.querySelectorAll('.article-check').forEach(cb => cb.checked = el.checked);
+        }
+
+        // ===== 미리보기 =====
+        function previewArticle(id) {
+            const article = currentArticles.find(a => a.id === id);
+            if (!article) return;
+
+            const win = window.open('', '_blank', 'width=700,height=600,scrollbars=yes');
+            win.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${escapeHtml(article.title)}</title>
+                    <style>
+                        body { font-family: 'Noto Sans KR', sans-serif; padding: 30px; line-height: 1.7; color: #333; max-width: 700px; margin: 0 auto; }
+                        h1 { font-size: 20px; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 8px; }
+                        .meta { color: #888; font-size: 13px; margin-bottom: 20px; }
+                        .content { font-size: 14px; }
+                        .content img { max-width: 100%; height: auto; }
+                    </style>
+                </head>
+                <body>
+                    <h1>${escapeHtml(article.title)}</h1>
+                    <div class="meta">작성일: ${article.date || '-'}</div>
+                    <div class="content">${article.content_html || article.content || '<p>내용이 없습니다.</p>'}</div>
+                </body>
+                </html>
+            `);
+        }
+
+        // ===== 글 작성 =====
+        function showWriteForm() {
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('writeView').style.display = 'block';
+            document.getElementById('formTitle').textContent = BOARD_TITLES[currentBoard];
+            document.getElementById('editId').value = '';
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleContent').innerHTML = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('fileName1').textContent = '선택된 파일 없음';
+            document.getElementById('fileName2').textContent = '선택된 파일 없음';
+            uploadedFiles = [null, null];
+
+            document.getElementById('typeRow').style.display = currentBoard === 'jobs' ? '' : 'none';
+            document.getElementById('noticeCheckWrap').style.display = currentBoard === 'notice' ? 'inline-flex' : 'none';
+            document.getElementById('isNotice').checked = false;
+        }
+
+        function cancelWrite() {
+            document.getElementById('listView').style.display = 'block';
+            document.getElementById('writeView').style.display = 'none';
+        }
+
+        async function saveArticle() {
+            const title = document.getElementById('articleTitle').value.trim();
+            const contentHtml = document.getElementById('articleContent').innerHTML;
+            const contentText = document.getElementById('articleContent').innerText.trim();
+            const editId = document.getElementById('editId').value;
+
+            if (!title) { alert('제목을 입력하세요'); return; }
+            if (!contentText) { alert('내용을 입력하세요'); return; }
+
+            // 저장 버튼 비활성화
+            const saveBtn = document.querySelector('.btn-submit');
+            saveBtn.disabled = true;
+            saveBtn.textContent = '저장 중...';
+
+            const data = {
+                title,
+                content_html: contentHtml,
+                content_text: contentText,
+                date: new Date().toISOString().split('T')[0],
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (currentBoard === 'jobs') {
+                data.type = document.getElementById('articleType').value;
+            }
+
+            if (currentBoard === 'notice') {
+                data.isNotice = document.getElementById('isNotice').checked;
+            }
+
+            // 첨부파일 업로드
+            const attachments = [];
+            for (let i = 0; i < uploadedFiles.length; i++) {
+                if (uploadedFiles[i]) {
+                    try {
+                        const file = uploadedFiles[i];
+                        const path = `board_images/${currentBoard}/${Date.now()}_${file.name}`;
+                        const ref = storage.ref(path);
+                        const snapshot = await ref.put(file);
+                        const url = await snapshot.ref.getDownloadURL();
+                        attachments.push({ name: file.name, url });
+                    } catch (err) {
+                        console.error('File upload error:', err);
+                    }
+                }
+            }
+            if (attachments.length > 0) {
+                data.attachments = attachments;
+            }
+
+            try {
+                if (editId) {
+                    await db.collection('boards').doc(currentBoard).collection('articles').doc(editId).update(data);
+                    alert('수정되었습니다.');
+                } else {
+                    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('boards').doc(currentBoard).collection('articles').add(data);
+                    alert('등록되었습니다.');
+                }
+
+                cancelWrite();
+                loadArticles(currentBoard);
+                loadCounts();
+            } catch (error) {
+                alert('저장 실패: ' + error.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = '저장';
+            }
+        }
+
+        // ===== 글 수정 =====
+        async function editArticle(id) {
+            const article = currentArticles.find(a => a.id === id);
+            if (!article) return;
+
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('writeView').style.display = 'block';
+            document.getElementById('formTitle').textContent = BOARD_TITLES[currentBoard] + ' 수정';
+            document.getElementById('editId').value = id;
+            document.getElementById('articleTitle').value = article.title;
+            document.getElementById('articleContent').innerHTML = article.content_html || '';
+            document.getElementById('typeRow').style.display = currentBoard === 'jobs' ? '' : 'none';
+            document.getElementById('noticeCheckWrap').style.display = currentBoard === 'notice' ? 'inline-flex' : 'none';
+
+            if (article.type) {
+                document.getElementById('articleType').value = article.type;
+            }
+            if (currentBoard === 'notice') {
+                document.getElementById('isNotice').checked = article.isNotice || false;
+            }
+
+            updateCharCount();
+        }
+
+        // ===== 글 삭제 =====
+        async function deleteArticle(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+
+            try {
+                await db.collection('boards').doc(currentBoard).collection('articles').doc(id).delete();
+                alert('삭제되었습니다.');
+                loadArticles(currentBoard);
+                loadCounts();
+            } catch (error) {
+                alert('삭제 실패: ' + error.message);
+            }
+        }
+
+        // ===== 에디터 기능 =====
+        function execCmd(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('articleContent').focus();
+        }
+
+        function execFontSize(size) {
+            document.execCommand('fontSize', false, size);
+            document.getElementById('articleContent').focus();
+        }
+
+        function execFontColor() {
+            const color = prompt('색상 코드를 입력하세요 (예: #ff0000, red)', '#000000');
+            if (color) {
+                document.execCommand('foreColor', false, color);
+                document.getElementById('articleContent').focus();
+            }
+        }
+
+        async function insertImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                    const path = `board_images/${currentBoard}/${Date.now()}_${file.name}`;
+                    const ref = storage.ref(path);
+                    const snapshot = await ref.put(file);
+                    const url = await snapshot.ref.getDownloadURL();
+                    document.execCommand('insertImage', false, url);
+                } catch (err) {
+                    alert('이미지 업로드 실패: ' + err.message);
+                }
+            };
+            input.click();
+        }
+
+        function handleFileSelect(input, index) {
+            const file = input.files[0];
+            const nameSpan = document.getElementById(`fileName${index}`);
+            if (file) {
+                uploadedFiles[index - 1] = file;
+                nameSpan.textContent = file.name;
+            } else {
+                uploadedFiles[index - 1] = null;
+                nameSpan.textContent = '선택된 파일 없음';
+            }
+        }
+
+        // 글자수 카운트
+        function updateCharCount() {
+            const text = document.getElementById('articleContent').innerText;
+            document.getElementById('charCount').textContent = text.length;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = document.getElementById('articleContent');
+            if (editor) {
+                editor.addEventListener('input', updateCharCount);
+            }
+        });
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ===== 참여신청서 관리 =====
+        let allApplications = [];
+
+        function switchToApplications(el) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('writeView').style.display = 'none';
+            document.getElementById('applicationsView').style.display = 'block';
+            document.getElementById('appDetailView').style.display = 'none';
+
+            loadApplications();
+        }
+
+        async function loadApplications() {
+            const container = document.getElementById('applicationsList');
+            container.innerHTML = '<div class="loading">불러오는 중...</div>';
+
+            try {
+                const snapshot = await db.collection('applications')
+                    .orderBy('submittedAt', 'desc')
+                    .limit(100)
+                    .get();
+
+                allApplications = [];
+                snapshot.forEach(doc => {
+                    allApplications.push({ id: doc.id, ...doc.data() });
+                });
+
+                filterApplications();
+            } catch (error) {
+                container.innerHTML = `<div class="error">불러오기 실패: ${error.message}</div>`;
+            }
+        }
+
+        function filterApplications() {
+            const filter = document.getElementById('appStatusFilter').value;
+            let filtered = allApplications;
+            if (filter !== 'all') {
+                filtered = allApplications.filter(a => a.status === filter);
+            }
+
+            document.getElementById('appTotalCount').innerHTML =
+                `총 <strong>${filtered.length}</strong>건`;
+            renderApplicationsList(document.getElementById('applicationsList'), filtered);
+        }
+
+        function renderApplicationsList(container, apps) {
+            if (apps.length === 0) {
+                container.innerHTML = '<div class="empty">접수된 신청서가 없습니다.</div>';
+                return;
+            }
+
+            const statusLabels = {
+                'new': '<span class="app-badge app-new">신규</span>',
+                'checked': '<span class="app-badge app-checked">확인</span>',
+                'contacted': '<span class="app-badge app-contacted">연락완료</span>'
+            };
+
+            let html = `
+                <table class="article-table">
+                    <thead>
+                        <tr>
+                            <th class="col-num">번호</th>
+                            <th class="col-status">상태</th>
+                            <th class="col-program">사업명</th>
+                            <th class="col-name">이름</th>
+                            <th class="col-phone">연락처</th>
+                            <th class="col-date">접수일</th>
+                            <th class="col-actions">관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            apps.forEach((app, index) => {
+                const badge = statusLabels[app.status] || statusLabels['new'];
+                const num = apps.length - index;
+
+                html += `
+                    <tr class="${app.status === 'new' ? 'row-new' : ''}">
+                        <td class="col-num">${num}</td>
+                        <td class="col-status">${badge}</td>
+                        <td class="col-program">${escapeHtml(app.programType)}</td>
+                        <td class="col-name"><a href="#" onclick="viewApplication('${app.id}'); return false;">${escapeHtml(app.name)}</a></td>
+                        <td class="col-phone">${escapeHtml(app.phone)}</td>
+                        <td class="col-date">${app.date || '-'}</td>
+                        <td class="col-actions">
+                            <button class="btn-edit" onclick="viewApplication('${app.id}')">상세</button>
+                            <button class="btn-delete" onclick="deleteApplication('${app.id}')">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function viewApplication(id) {
+            const app = allApplications.find(a => a.id === id);
+            if (!app) return;
+
+            document.getElementById('applicationsView').style.display = 'none';
+            document.getElementById('appDetailView').style.display = 'block';
+
+            const statusOptions = ['new', 'checked', 'contacted'];
+            const statusLabels = { 'new': '신규', 'checked': '확인완료', 'contacted': '연락완료' };
+            const statusSelect = statusOptions.map(s =>
+                `<option value="${s}" ${app.status === s ? 'selected' : ''}>${statusLabels[s]}</option>`
+            ).join('');
+
+            document.getElementById('appDetailContent').innerHTML = `
+                <table class="form-table">
+                    <tbody>
+                        <tr><th>접수일시</th><td>${app.submittedAt || app.date || '-'}</td></tr>
+                        <tr><th>상태</th><td>
+                            <select id="appStatusSelect" class="status-select">${statusSelect}</select>
+                            <button class="btn-status-save" onclick="updateAppStatus('${app.id}')">저장</button>
+                        </td></tr>
+                        <tr><th>참여희망 사업명</th><td><strong>${escapeHtml(app.programType)}</strong></td></tr>
+                        <tr><th>이름</th><td>${escapeHtml(app.name)}</td></tr>
+                        <tr><th>연락처</th><td><a href="tel:${app.phone}">${escapeHtml(app.phone)}</a></td></tr>
+                        <tr><th>생년월일</th><td>${escapeHtml(app.birthDate || '-')}</td></tr>
+                        <tr><th>기초생활 수급자</th><td>${escapeHtml(app.basicLiving || '-')}</td></tr>
+                        <tr><th>기초연금 수급자</th><td>${escapeHtml(app.basicPension || '-')}</td></tr>
+                        <tr><th>차상위계층</th><td>${escapeHtml(app.nearPoverty || '-')}</td></tr>
+                        <tr><th>남기신 말씀</th><td>${escapeHtml(app.message) || '<span style="color:#999">없음</span>'}</td></tr>
+                    </tbody>
+                </table>
+                <div class="form-actions" style="margin-top:20px;">
+                    <button class="btn-cancel" onclick="backToAppList()">← 목록으로</button>
+                    <button class="btn-delete" onclick="deleteApplication('${app.id}')">삭제</button>
+                </div>
+            `;
+
+            // 신규인 경우 자동으로 '확인완료'로 변경
+            if (app.status === 'new') {
+                db.collection('applications').doc(app.id).update({ status: 'checked' })
+                    .then(() => {
+                        app.status = 'checked';
+                        document.getElementById('appStatusSelect').value = 'checked';
+                        loadAppCount();
+                    }).catch(() => { });
+            }
+        }
+
+        async function updateAppStatus(id) {
+            const newStatus = document.getElementById('appStatusSelect').value;
+            try {
+                await db.collection('applications').doc(id).update({ status: newStatus });
+                const app = allApplications.find(a => a.id === id);
+                if (app) app.status = newStatus;
+                alert('상태가 변경되었습니다.');
+                loadAppCount();
+            } catch (error) {
+                alert('상태 변경 실패: ' + error.message);
+            }
+        }
+
+        async function deleteApplication(id) {
+            if (!confirm('이 신청서를 삭제하시겠습니까?')) return;
+            try {
+                await db.collection('applications').doc(id).delete();
+                alert('삭제되었습니다.');
+                backToAppList();
+                loadApplications();
+                loadAppCount();
+            } catch (error) {
+                alert('삭제 실패: ' + error.message);
+            }
+        }
+
+        function backToAppList() {
+            document.getElementById('appDetailView').style.display = 'none';
+            document.getElementById('applicationsView').style.display = 'block';
+        }
+
+        async function loadAppCount() {
+            try {
+                const snapshot = await db.collection('applications').where('status', '==', 'new').get();
+                const countEl = document.getElementById('count-applications');
+                countEl.textContent = snapshot.size;
+                countEl.classList.toggle('has-new', snapshot.size > 0);
+            } catch (e) { /* 무시 */ }
+        }
+
+        // switchBoard 오버라이드 - 신청서 뷰 숨기기
+        const _origSwitchBoard = switchBoard;
+        switchBoard = function (board, el) {
+            document.getElementById('applicationsView').style.display = 'none';
+            document.getElementById('appDetailView').style.display = 'none';
+            _origSwitchBoard(board, el);
+        };
+
+        // 페이지 로드시 신청서 카운트도 로드
+        const _origOnAuth = auth.onAuthStateChanged;
+        auth.onAuthStateChanged(user => {
+            if (user && ALLOWED_ADMINS.includes(user.email)) {
+                loadAppCount();
+            }
+        });
+    </script>
+</body>
+
+</html>

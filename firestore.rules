@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 게시판 메타문서
+    match /boards/{boardId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // 게시글 - 읽기 자유, 조회수 증가 허용, 나머지 쓰기는 인증 필요
+    match /boards/{boardId}/articles/{articleId} {
+      allow read: if true;
+      // 조회수 업데이트만 비인증 허용 (views 필드만 변경 시)
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']);
+      allow create, delete: if request.auth != null;
+      // 인증된 사용자는 모든 쓰기 가능
+      allow update: if request.auth != null;
+    }
+
+    // 참여신청서 - 누구나 접수 가능, 관리(수정/삭제)는 인증 필요
+    match /applications/{applicationId} {
+      allow read: if request.auth != null;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
+    }
+
+    // 상품
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // 기타
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
