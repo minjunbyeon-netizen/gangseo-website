@@ -1691,3 +1691,78 @@ img {
         font-size: 15px;
     }
 }
+
+/* =====================================================
+   Popup Banner
+   ===================================================== */
+.popup-banner-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.popup-banner-container {
+    position: relative;
+    max-width: 550px;
+    width: 90%;
+    background: #fff;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.popup-banner-img {
+    width: 100%;
+    display: block;
+    cursor: pointer;
+}
+
+.popup-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #f5f5f5;
+    border-top: 1px solid #eee;
+}
+
+.popup-today-btn {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.popup-today-btn:hover {
+    color: #333;
+}
+
+.popup-close-text {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #999;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.popup-close-text:hover {
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .popup-banner-container {
+        max-width: 90vw;
+    }
+}

@@ -59,6 +59,19 @@
 </head>
 
 <body>
+    <!-- 팝업 배너 -->
+    <div id="popupBanner" class="popup-banner-overlay">
+        <div class="popup-banner-container">
+            <a href="https://gs2015.kr" target="_blank" rel="noopener">
+                <img src="images/pop/ED9CB4EAB480.jpg" alt="공지 배너" class="popup-banner-img">
+            </a>
+            <div class="popup-bottom-bar">
+                <button class="popup-today-btn" onclick="closePopupToday()">오늘 하루 열지않음</button>
+                <button class="popup-close-text" onclick="closePopup()">닫기</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-inner">
@@ -395,6 +408,49 @@
             // 초기 인포윈도우 열기
             infowindow.open(map, marker);
         });
+    </script>
+
+    <!-- 팝업 배너 스크립트 -->
+    <script>
+        // 팝업 노출 기한: 2026년 2월 20일 19:00까지
+        const POPUP_EXPIRY = new Date('2026-02-20T19:00:00+09:00');
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        function setCookie(name, value, hours) {
+            const date = new Date();
+            date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('popupBanner');
+            popup.style.opacity = '0';
+            setTimeout(() => { popup.style.display = 'none'; }, 300);
+        }
+
+        function closePopupToday() {
+            setCookie('popup_hide', 'true', 24);
+            closePopup();
+        }
+
+        function showPopup() {
+            // 기한 체크
+            if (new Date() > POPUP_EXPIRY) return;
+            // 오늘 하루 열지않음 체크
+            if (getCookie('popup_hide') === 'true') return;
+
+            const popup = document.getElementById('popupBanner');
+            popup.style.display = 'flex';
+            setTimeout(() => { popup.style.opacity = '1'; }, 10);
+        }
+
+        document.addEventListener('DOMContentLoaded', showPopup);
     </script>
 </body>
 

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>상품 데이터 → Firestore 업로드</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            background: #484f58;
+            cursor: not-allowed;
+        }
+
+        .log {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .ok {
+            color: #3fb950;
+        }
+
+        .err {
+            color: #f85149;
+        }
+
+        .info {
+            color: #58a6ff;
+        }
+
+        .warn {
+            color: #d29922;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>상품 데이터 → Firestore (boards/products/articles)</h1>
+    <p style="color:#8b949e; margin-bottom:20px;">크롤링된 상품 JSON을 관리자 게시판 형식으로 업로드합니다</p>
+    <button id="btnUpload" onclick="uploadProducts()">업로드 시작</button>
+    <div class="log" id="logArea"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        function log(msg, type = '') {
+            const el = document.getElementById('logArea');
+            el.innerHTML += `<div class="${type}">${new Date().toLocaleTimeString()} | ${msg}</div>`;
+            el.scrollTop = el.scrollHeight;
+        }
+
+        async function uploadProducts() {
+            const btn = document.getElementById('btnUpload');
+            btn.disabled = true;
+            btn.textContent = '업로드 중...';
+
+            try {
+                // Google 로그인
+                log('Google 로그인 중...', 'info');
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                log(`로그인 성공: ${result.user.email}`, 'ok');
+
+                // 게시판 메타문서 생성
+                await db.collection('boards').doc('products').set({
+                    name: '상품등록',
+                    totalArticles: 0,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                log('boards/products 메타문서 생성 완료', 'ok');
+
+                const categories = [
+                    { cateNo: 23, name: '정일품참기름' },
+                    { cateNo: 25, name: '액상차즙' },
+                    { cateNo: 53, name: '더치커피' }
+                ];
+
+                let totalUploaded = 0;
+
+                for (const cat of categories) {
+                    log(`${cat.name} 로딩 중...`, 'info');
+
+                    try {
+                        const response = await fetch(`migration_data/products_${cat.cateNo}_${cat.name}.json`);
+                        const data = await response.json();
+
+                        if (!data.products || data.products.length === 0) {
+                            log(`${cat.name}: 상품 없음`, 'warn');
+                            continue;
+                        }
+
+                        const batch = db.batch();
+
+                        for (const product of data.products) {
+                            // boards/products/articles/{id} 형식으로 저장
+                            const docRef = db.collection('boards')
+                                .doc('products')
+                                .collection('articles')
+                                .doc(String(product.id));
+
+                            // 기존 게시판과 동일한 형식으로 저장
+                            const docData = {
+                                title: (product.name || '').replace('상품명 : ', ''),
+                                content_html: product.content_html || '',
+                                content_text: product.summary || '',
+                                date: new Date().toISOString().split('T')[0],
+                                type: cat.name,  // 카테고리를 type으로
+                                price: product.list_info?.price || product.price || '',
+                                image: product.image || '',
+                                thumbnail: product.list_info?.image || product.image || '',
+                                source_url: product.source_url || '',
+                                category: cat.name,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            };
+
+                            batch.set(docRef, docData);
+                        }
+
+                        await batch.commit();
+                        totalUploaded += data.products.length;
+                        log(`${cat.name}: ${data.products.length}건 업로드 완료`, 'ok');
+
+                    } catch (error) {
+                        log(`${cat.name} 업로드 실패: ${error.message}`, 'err');
+                    }
+                }
+
+                // 메타문서 업데이트
+                await db.collection('boards').doc('products').update({
+                    totalArticles: totalUploaded
+                });
+
+                log(`전체 ${totalUploaded}건 업로드 완료!`, 'ok');
+
+            } catch (error) {
+                log(`오류: ${error.message}`, 'err');
+                console.error(error);
+            }
+
+            btn.disabled = false;
+            btn.textContent = '업로드 시작';
+        }
+    </script>
+</body>
+
+</html>
