@@ -416,21 +416,47 @@
                             return false;
                         }
 
-                        // 모든 유효성 검사 통과 - Cafe24 참여신청서 페이지로 이동
-                        var popup = window.open('https://gs2015.kr/board/urgency/urgency.html', '_blank', 'width=1000,height=800,scrollbars=yes,resizable=yes');
+                        // 모든 유효성 검사 통과 - Firestore에 저장
+                        const programLabels = {
+                            'public': '공익형',
+                            'capacity': '역량형',
+                            'community': '공동체형',
+                            'employment': '취업알선형'
+                        };
 
-                        // 팝업창 상태 체크 - 등록 완료 후 자동 닫기
-                        if (popup) {
-                            var checkClosed = setInterval(function () {
-                                if (popup.closed) {
-                                    clearInterval(checkClosed);
-                                    // 팝업이 닫히면 성공 메시지 표시
-                                    alert('참여신청서가 접수되었습니다. 담당자가 곧 연락드리겠습니다.');
-                                    // 폼 초기화
-                                    document.getElementById('applyForm').reset();
-                                }
-                            }, 1000);
-                        }
+                        const submitBtn = document.querySelector('.btn-submit');
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = '접수 중...';
+
+                        const formData = {
+                            programType: programLabels[programType] || programType,
+                            name: name,
+                            phone: phone,
+                            birthDate: birthYear + '-' + String(birthMonth).padStart(2, '0') + '-' + String(birthDay).padStart(2, '0'),
+                            basicLiving: basicLivingChecked.value,
+                            basicPension: basicPensionChecked.value,
+                            nearPoverty: nearPovertyChecked.value,
+                            message: document.getElementById('message').value.trim() || '',
+                            status: 'new',
+                            submittedAt: new Date().toISOString(),
+                            date: new Date().toISOString().split('T')[0]
+                        };
+
+                        // Firebase에 저장
+                        const db = firebase.firestore();
+                        db.collection('applications').add(formData)
+                            .then(function () {
+                                alert('참여신청서가 접수되었습니다.\n담당자가 확인 후 연락드리겠습니다.');
+                                document.getElementById('applyForm').reset();
+                            })
+                            .catch(function (error) {
+                                console.error('접수 실패:', error);
+                                alert('접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                            })
+                            .finally(function () {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = '참여신청서 등록';
+                            });
                         return false;
                     });
 
@@ -463,6 +489,14 @@
             </div>
         </div>
     </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        firebase.initializeApp(firebaseConfig);
+    </script>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

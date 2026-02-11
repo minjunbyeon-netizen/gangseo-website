@@ -1,6 +1,6 @@
 /**
- * Cafe24 Board Integration with Caching
- * Cafe24 게시판 콘텐츠를 가져와서 현재 페이지에 렌더링
+ * Board Integration with Firebase Firestore
+ * Firestore에서 게시판 콘텐츠를 가져와서 렌더링
  * LocalStorage 캐싱 + 스켈레톤 로딩 지원
  */
 
@@ -11,6 +11,7 @@
     const BOARDS = {
         jobs: {
             boardNo: 2,
+            firestoreCollection: 'jobs',
             listContainerId: 'jobs-list-container',
             paginationId: 'jobs-pagination',
             articleContainerId: 'article-view-container',
@@ -19,6 +20,7 @@
         },
         notice: {
             boardNo: 1,
+            firestoreCollection: 'notice',
             listContainerId: 'notice-list-container',
             paginationId: 'notice-pagination',
             articleContainerId: 'notice-article-view-container',
@@ -27,6 +29,7 @@
         },
         gallery: {
             boardNo: 8,
+            firestoreCollection: 'gallery',
             listContainerId: 'gallery-list-container',
             paginationId: 'gallery-pagination',
             articleContainerId: 'gallery-article-view-container',
@@ -36,17 +39,32 @@
     };
 
     const CONFIG = {
-        proxyUrl: 'https://gangseo-proxy.minjunbyeon.workers.dev',
         cachePrefix: 'board_cache_',
         listCacheTime: 3 * 60 * 1000,    // 목록 캐시: 3분
-        articleCacheTime: 5 * 60 * 1000  // 글 캐시: 5분
+        articleCacheTime: 5 * 60 * 1000,  // 글 캐시: 5분
+        pageSize: 10                       // 페이지당 글 수
     };
+
+    // Firebase 초기화 (firebase-config.js에서 가져온 설정 사용)
+    let db = null;
+
+    function initFirebase() {
+        if (db) return;
+        if (typeof firebase === 'undefined' || typeof firebaseConfig === 'undefined') {
+            console.error('Firebase SDK or config not loaded');
+            return;
+        }
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+    }
 
     /**
      * 캐시 관리 함수들
      */
-    function getCacheKey(type, boardNo, page, articleId) {
-        return `${CONFIG.cachePrefix}${type}_${boardNo}_${page || 0}_${articleId || 0}`;
+    function getCacheKey(type, boardCollection, page, articleId) {
+        return `${CONFIG.cachePrefix}${type}_${boardCollection}_${page || 0}_${articleId || 0}`;
     }
 
     function getCache(key, maxAge) {
@@ -72,7 +90,6 @@
                 timestamp: Date.now()
             }));
         } catch (e) {
-            // localStorage 용량 초과 시 오래된 캐시 정리
             clearOldCache();
         }
     }
@@ -134,6 +151,7 @@
 
     // 페이지 로드시 실행
     document.addEventListener('DOMContentLoaded', function () {
+        initFirebase();
         const urlParams = new URLSearchParams(window.location.search);
 
         // 각 게시판별로 확인
@@ -143,7 +161,7 @@
             if (articleContainer) {
                 const articleId = urlParams.get('id');
                 if (articleId) {
-                    loadArticleDetail(board.boardNo, articleId, articleContainer);
+                    loadArticleDetail(board, articleId, articleContainer);
                 } else {
                     articleContainer.innerHTML = '<div class="board-error"><p>게시글을 찾을 수 없습니다.</p></div>';
                 }
@@ -161,20 +179,19 @@
     });
 
     /**
-     * 게시판 목록 로드
+     * Firestore에서 게시판 목록 로드
      */
-    function loadBoardList(board, page) {
+    async function loadBoardList(board, page) {
         const container = document.getElementById(board.listContainerId);
         const paginationContainer = document.getElementById(board.paginationId);
 
-        if (!container) return;
+        if (!container || !db) return;
 
         // 캐시 확인
-        const cacheKey = getCacheKey('list', board.boardNo, page, 0);
+        const cacheKey = getCacheKey('list', board.firestoreCollection, page, 0);
         const cachedData = getCache(cacheKey, CONFIG.listCacheTime);
 
         if (cachedData) {
-            // 캐시에서 즉시 렌더링
             renderBoardContent(board, container, paginationContainer, cachedData);
             return;
         }
@@ -183,23 +200,74 @@
         const skeletonType = board.boardNo === 8 ? 'gallery' : (board.boardNo === 2 ? 'jobs' : 'table');
         container.innerHTML = getSkeletonHTML(skeletonType);
 
-        // AJAX 요청
-        fetch(`${CONFIG.proxyUrl}?action=list&board_no=${board.boardNo}&page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.data && data.data.length > 0) {
-                    // 캐시 저장
-                    setCache(cacheKey, data);
-                    // 렌더링
-                    renderBoardContent(board, container, paginationContainer, data);
-                } else {
-                    container.innerHTML = '<div class="board-empty"><p>등록된 게시글이 없습니다.</p></div>';
+        try {
+            // 전체 문서 수 가져오기 (페이지네이션용)
+            const countSnapshot = await db.collection('boards')
+                .doc(board.firestoreCollection)
+                .collection('articles')
+                .get();
+            const totalItems = countSnapshot.size;
+            const totalPages = Math.ceil(totalItems / CONFIG.pageSize);
+
+            // 페이지에 해당하는 문서 가져오기
+            let query = db.collection('boards')
+                .doc(board.firestoreCollection)
+                .collection('articles')
+                .orderBy('date', 'desc');
+
+            // 페이지 오프셋 계산
+            if (page > 1) {
+                const skipCount = (page - 1) * CONFIG.pageSize;
+                const skipSnapshot = await db.collection('boards')
+                    .doc(board.firestoreCollection)
+                    .collection('articles')
+                    .orderBy('date', 'desc')
+                    .limit(skipCount)
+                    .get();
+
+                if (skipSnapshot.docs.length > 0) {
+                    const lastDoc = skipSnapshot.docs[skipSnapshot.docs.length - 1];
+                    query = query.startAfter(lastDoc);
                 }
-            })
-            .catch(error => {
-                console.error('Board load error:', error);
-                container.innerHTML = '<div class="board-error"><p>게시글을 불러오는 중 오류가 발생했습니다.</p></div>';
+            }
+
+            const snapshot = await query.limit(CONFIG.pageSize).get();
+
+            const items = [];
+            let num = totalItems - ((page - 1) * CONFIG.pageSize);
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                items.push({
+                    id: doc.id,
+                    num: num--,
+                    title: data.title || '',
+                    date: data.date || '',
+                    type: data.type || '',
+                    views: data.views || 0,
+                    thumbnail: data.thumbnail || '',
+                    isNotice: data.isNotice || false
+                });
             });
+
+            const result = {
+                success: true,
+                data: items,
+                pagination: {
+                    current: page,
+                    total: totalPages,
+                    hasNext: page < totalPages,
+                    hasPrev: page > 1
+                }
+            };
+
+            // 캐시 저장
+            setCache(cacheKey, result);
+            renderBoardContent(board, container, paginationContainer, result);
+
+        } catch (error) {
+            console.error('Board load error:', error);
+            container.innerHTML = '<div class="board-error"><p>게시글을 불러오는 중 오류가 발생했습니다.</p></div>';
+        }
     }
 
     /**
@@ -217,17 +285,17 @@
     }
 
     /**
-     * 게시글 상세 로드
+     * Firestore에서 게시글 상세 로드 + 조회수 증가
      */
-    function loadArticleDetail(boardNo, articleId, container) {
+    async function loadArticleDetail(board, articleId, container) {
         // 캐시 확인
-        const cacheKey = getCacheKey('view', boardNo, 0, articleId);
+        const cacheKey = getCacheKey('view', board.firestoreCollection, 0, articleId);
         const cachedData = getCache(cacheKey, CONFIG.articleCacheTime);
 
         if (cachedData) {
-            renderArticleDetail(container, cachedData.data);
-            if (cachedData.data.title) {
-                document.title = cachedData.data.title + ' | 부산강서시니어클럽';
+            renderArticleDetail(container, cachedData);
+            if (cachedData.title) {
+                document.title = cachedData.title + ' | 부산강서시니어클럽';
             }
             return;
         }
@@ -241,26 +309,40 @@
             </div>
         `;
 
-        // AJAX 요청
-        fetch(`${CONFIG.proxyUrl}?action=view&board_no=${boardNo}&article_id=${articleId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.data) {
-                    // 캐시 저장
-                    setCache(cacheKey, data);
-                    renderArticleDetail(container, data.data);
-                    // 페이지 타이틀 업데이트
-                    if (data.data.title) {
-                        document.title = data.data.title + ' | 부산강서시니어클럽';
-                    }
-                } else {
-                    container.innerHTML = '<div class="board-error"><p>게시글을 찾을 수 없습니다.</p></div>';
+        try {
+            const docRef = db.collection('boards')
+                .doc(board.firestoreCollection)
+                .collection('articles')
+                .doc(articleId);
+
+            // 조회수 증가 (비동기, 실패해도 무시)
+            docRef.update({
+                views: firebase.firestore.FieldValue.increment(1)
+            }).catch(function () { /* 조회수 증가 실패 무시 */ });
+
+            const doc = await docRef.get();
+
+            if (doc.exists) {
+                const article = { id: doc.id, ...doc.data() };
+                // content_html → content 필드 매핑 (렌더링 함수 호환)
+                article.content = article.content_html || '';
+                // 조회수 반영 (increment 직후이므로 +1)
+                article.views = (article.views || 0) + 1;
+
+                // 캐시 저장
+                setCache(cacheKey, article);
+                renderArticleDetail(container, article);
+
+                if (article.title) {
+                    document.title = article.title + ' | 부산강서시니어클럽';
                 }
-            })
-            .catch(error => {
-                console.error('Article load error:', error);
-                container.innerHTML = '<div class="board-error"><p>게시글을 불러오는 중 오류가 발생했습니다.</p></div>';
-            });
+            } else {
+                container.innerHTML = '<div class="board-error"><p>게시글을 찾을 수 없습니다.</p></div>';
+            }
+        } catch (error) {
+            console.error('Article load error:', error);
+            container.innerHTML = '<div class="board-error"><p>게시글을 불러오는 중 오류가 발생했습니다.</p></div>';
+        }
     }
 
     /**
@@ -274,6 +356,8 @@
             const description = item.description || '';
             const localLink = `${viewPage}?id=${item.id}`;
 
+            const views = item.views || 0;
+
             html += `
                 <div class="job-item">
                     <div class="job-badge ${badgeClass}">${item.type}</div>
@@ -281,7 +365,10 @@
                         <h4><a href="${localLink}">${escapeHtml(item.title)}</a></h4>
                         ${description ? `<p>${escapeHtml(description)}</p>` : ''}
                     </div>
-                    <div class="job-date">${item.date}</div>
+                    <div class="job-meta">
+                        <div class="job-date">${item.date}</div>
+                        <div class="job-views">조회 ${views}</div>
+                    </div>
                 </div>
             `;
         });
@@ -340,6 +427,8 @@
             const localLink = `${viewPage}?id=${item.id}`;
             const thumbnail = item.thumbnail || 'images/placeholder.png';
 
+            const views = item.views || 0;
+
             html += `
                 <a href="${localLink}" class="gallery-card">
                     <div class="gallery-card-img">
@@ -347,7 +436,10 @@
                     </div>
                     <div class="gallery-card-info">
                         <h4 class="gallery-card-title">${escapeHtml(item.title)}</h4>
-                        <span class="gallery-card-date">${item.date}</span>
+                        <div class="gallery-card-meta">
+                            <span class="gallery-card-date">${item.date}</span>
+                            <span class="gallery-card-views">조회 ${views}</span>
+                        </div>
                     </div>
                 </a>
             `;
@@ -369,7 +461,6 @@
      * 게시글 상세 렌더링
      */
     function renderArticleDetail(container, article) {
-        // 첨부파일을 이미지와 기타 파일로 분류
         let imageFiles = [];
         let otherFiles = [];
 
@@ -383,7 +474,6 @@
             });
         }
 
-        // 이미지 갤러리 섹션 생성
         let imagesHtml = '';
         if (imageFiles.length > 0) {
             imagesHtml = `
@@ -401,7 +491,6 @@
             `;
         }
 
-        // 기타 다운로드 파일 섹션 생성
         let attachmentsHtml = '';
         if (otherFiles.length > 0) {
             attachmentsHtml = `
@@ -430,11 +519,14 @@
             `;
         }
 
+        const views = article.views || 0;
+
         const html = `
             <div class="article-header">
                 <h3 class="article-title">${escapeHtml(article.title)}</h3>
                 <div class="article-meta">
                     <span class="article-date">${article.date}</span>
+                    <span class="article-views">조회 ${views}</span>
                 </div>
             </div>
             ${imagesHtml}
@@ -448,7 +540,7 @@
     }
 
     /**
-     * 페이지네이션 렌더링 (화살표 버튼 + 페이지 번호 제한)
+     * 페이지네이션 렌더링
      */
     function renderPagination(container, pagination) {
         if (!container || !pagination) return;
@@ -456,40 +548,32 @@
         let html = '';
         const currentPage = pagination.current || 1;
         const totalPages = pagination.total || 1;
-        const maxVisiblePages = 5; // 항상 5개의 페이지 번호만 표시
+        const maxVisiblePages = 5;
 
-        // 페이지 번호 범위 계산
         let startPage, endPage;
         if (totalPages <= maxVisiblePages) {
-            // 전체 페이지가 최대 표시 개수보다 적으면 모두 표시
             startPage = 1;
             endPage = totalPages;
         } else {
-            // 현재 페이지를 중심으로 범위 계산
             const halfVisible = Math.floor(maxVisiblePages / 2);
             startPage = Math.max(1, currentPage - halfVisible);
             endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-            // 끝에 도달했을 때 시작 페이지 조정
             if (endPage - startPage < maxVisiblePages - 1) {
                 startPage = Math.max(1, endPage - maxVisiblePages + 1);
             }
         }
 
-        // 이전 페이지 버튼 (<)
         if (currentPage > 1) {
             html += `<a href="?page=${currentPage - 1}" class="page-btn page-prev" title="이전 페이지">&lsaquo;</a>`;
         } else {
             html += `<button class="page-btn page-prev" disabled title="이전 페이지">&lsaquo;</button>`;
         }
 
-        // 페이지 번호 (5개만 표시)
         for (let i = startPage; i <= endPage; i++) {
             const activeClass = i === currentPage ? 'active' : '';
             html += `<a href="?page=${i}" class="page-btn ${activeClass}">${i}</a>`;
         }
 
-        // 다음 페이지 버튼 (>)
         if (currentPage < totalPages) {
             html += `<a href="?page=${currentPage + 1}" class="page-btn page-next" title="다음 페이지">&rsaquo;</a>`;
         } else {
