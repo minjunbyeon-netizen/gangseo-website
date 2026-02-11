@@ -383,6 +383,7 @@ body {
     border-radius: 2px;
     font-size: 11px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .type-hiring {
