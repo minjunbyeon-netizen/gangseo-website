@@ -1,1 +1,4 @@
-cache/
+node_modules/
+serviceAccountKey.json
+.DS_Store
+Thumbs.db
