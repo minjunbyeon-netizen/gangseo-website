@@ -1,0 +1,904 @@
+/* ===== Admin Panel - Cafe24 Style ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    color: #333;
+    background: #f5f5f5;
+    line-height: 1.5;
+}
+
+/* ===== 로그인 화면 ===== */
+.login-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f2f5;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-logo img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 16px;
+}
+
+.login-card h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.login-subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 32px;
+}
+
+.btn-google {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #3c4043;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-google:hover {
+    background: #f7f8f8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.login-hint {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* ===== 관리자 화면 레이아웃 ===== */
+.admin-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- 상단 헤더 --- */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 0 20px;
+    height: 50px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.header-left h1 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+}
+
+.header-left h1 span {
+    font-weight: 400;
+    color: #888;
+    font-size: 13px;
+    margin-left: 4px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-site {
+    font-size: 12px;
+    color: #4a90d9;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #4a90d9;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+
+.btn-site:hover {
+    background: #4a90d9;
+    color: #fff;
+}
+
+.user-email {
+    font-size: 12px;
+    color: #888;
+}
+
+.btn-logout {
+    padding: 5px 12px;
+    font-size: 12px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    color: #666;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.btn-logout:hover {
+    background: #e8e8e8;
+}
+
+/* --- 사이드바 + 콘텐츠 --- */
+.admin-body {
+    display: flex;
+    flex: 1;
+}
+
+/* 사이드바 */
+.sidebar {
+    width: 200px;
+    background: #2c3e50;
+    min-height: calc(100vh - 50px);
+    padding-top: 8px;
+    flex-shrink: 0;
+}
+
+.sidebar-title {
+    color: #8899aa;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 18px 6px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    color: #bcc8d6;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-left-color: #3498db;
+}
+
+.nav-icon {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-text {
+    flex: 1;
+}
+
+.nav-count {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ccc;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.nav-item.active .nav-count {
+    background: #3498db;
+    color: #fff;
+}
+
+/* --- 메인 콘텐츠 --- */
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f5f5f5;
+    overflow-y: auto;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.content-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    background: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.list-info {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-bottom: none;
+}
+
+/* ===== 테이블 ===== */
+.article-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+}
+
+.article-table thead {
+    background: #f2f5f7;
+}
+
+.article-table th {
+    padding: 9px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    text-align: center;
+    border-bottom: 2px solid #ccd5dd;
+    white-space: nowrap;
+}
+
+.article-table td {
+    padding: 9px 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.article-table tbody tr:hover {
+    background: #fafbfc;
+}
+
+.col-check {
+    width: 36px;
+    text-align: center;
+}
+
+.col-num {
+    width: 50px;
+    text-align: center;
+    color: #888;
+}
+
+.col-category {
+    width: 80px;
+    text-align: center;
+}
+
+.col-title {
+    text-align: left;
+}
+
+.col-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.col-title a:hover {
+    color: #3498db;
+    text-decoration: underline;
+}
+
+.col-preview {
+    width: 80px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.col-date {
+    width: 90px;
+    text-align: center;
+    color: #888;
+    font-size: 12px;
+}
+
+.col-actions {
+    width: 120px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* 컬럼 태그 */
+.type-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.type-hiring {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.type-seeking {
+    background: #fce4ec;
+    color: #c62828;
+}
+
+.type-default {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.badge-notice {
+    display: inline-block;
+    background: #ff5722;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-right: 6px;
+    font-weight: 500;
+}
+
+/* 버튼 */
+.btn-preview {
+    padding: 3px 8px;
+    font-size: 11px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #555;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-preview:hover {
+    background: #f0f0f0;
+}
+
+.btn-edit {
+    padding: 3px 8px;
+    font-size: 11px;
+    background: #fff;
+    border: 1px solid #3498db;
+    border-radius: 3px;
+    color: #3498db;
+    cursor: pointer;
+    font-family: inherit;
+    margin-right: 2px;
+}
+
+.btn-edit:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+.btn-delete {
+    padding: 3px 8px;
+    font-size: 11px;
+    background: #fff;
+    border: 1px solid #e74c3c;
+    border-radius: 3px;
+    color: #e74c3c;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-delete:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* 상태 표시 */
+.loading,
+.empty,
+.error {
+    padding: 40px;
+    text-align: center;
+    color: #888;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+}
+
+.error {
+    color: #e74c3c;
+}
+
+/* ===== 글쓰기 폼 ===== */
+.write-form {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.form-table th {
+    width: 100px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    text-align: left;
+    background: #fafbfc;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.form-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-input {
+    width: 400px;
+    max-width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: #3498db;
+}
+
+.form-select {
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    min-width: 100px;
+}
+
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 12px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+}
+
+/* ===== 에디터 ===== */
+.editor-wrap {
+    border-bottom: 1px solid #eee;
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 6px 10px;
+    background: #fafbfc;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.editor-toolbar button {
+    padding: 4px 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    color: #333;
+    min-width: 28px;
+    text-align: center;
+}
+
+.editor-toolbar button:hover {
+    background: #e8e8e8;
+}
+
+.editor-toolbar button.btn-img {
+    padding: 4px 10px;
+}
+
+.toolbar-select {
+    padding: 3px 6px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+}
+
+.toolbar-sep {
+    width: 1px;
+    height: 20px;
+    background: #ddd;
+    margin: 0 4px;
+}
+
+.color-bar {
+    display: block;
+    width: 14px;
+    height: 3px;
+    background: #e74c3c;
+    margin: 0 auto;
+    margin-top: 1px;
+}
+
+.editor {
+    min-height: 400px;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    outline: none;
+    color: #333;
+    background: #fff;
+}
+
+.editor:empty::before {
+    content: '내용을 입력하세요';
+    color: #bbb;
+}
+
+.editor img {
+    max-width: 100%;
+    height: auto;
+}
+
+.editor-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 12px;
+    background: #fafbfc;
+    border-top: 1px solid #eee;
+}
+
+.char-count {
+    font-size: 12px;
+    color: #e74c3c;
+}
+
+/* 첨부파일 */
+.attach-table {
+    margin-top: 0;
+}
+
+.attach-table th {
+    color: #3498db;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.attach-table td {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.attach-table input[type="file"] {
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.file-name {
+    font-size: 12px;
+    color: #888;
+}
+
+/* 폼 하단 버튼 */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+
+.btn-cancel {
+    padding: 8px 24px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.btn-cancel:hover {
+    background: #f0f0f0;
+}
+
+.btn-submit {
+    padding: 8px 32px;
+    background: #3498db;
+    border: none;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.btn-submit:hover {
+    background: #2980b9;
+}
+
+.btn-submit:disabled {
+    background: #95c8e8;
+    cursor: not-allowed;
+}
+
+/* ===== 참여신청서 관리 ===== */
+.sidebar-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 8px 14px;
+}
+
+.nav-count-new.has-new {
+    background: #e74c3c;
+    color: #fff;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.app-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.app-new {
+    background: #ffeaea;
+    color: #e74c3c;
+}
+
+.app-checked {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.app-contacted {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.row-new {
+    background: #fffdf0 !important;
+}
+
+.row-new:hover {
+    background: #fff8e1 !important;
+}
+
+.col-status {
+    width: 70px;
+    text-align: center;
+}
+
+.col-program {
+    width: 90px;
+    text-align: center;
+}
+
+.col-name {
+    width: 80px;
+    text-align: center;
+}
+
+.col-name a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.col-name a:hover {
+    color: #3498db;
+    text-decoration: underline;
+}
+
+.col-phone {
+    width: 120px;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+}
+
+.status-select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+}
+
+.btn-status-save {
+    padding: 5px 12px;
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-left: 6px;
+}
+
+.btn-status-save:hover {
+    background: #219a52;
+}
+
+.app-detail-content .form-table {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+}
+
+.app-detail-content .form-table th {
+    width: 130px;
+}
+
+.header-actions select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: inherit;
+    background: #fff;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 160px;
+    }
+
+    .admin-header {
+        padding: 0 12px;
+    }
+
+    .header-left h1 {
+        font-size: 13px;
+    }
+
+    .header-left h1 span {
+        display: none;
+    }
+
+    .user-email {
+        display: none;
+    }
+
+    .content {
+        padding: 12px;
+    }
+
+    .form-input {
+        width: 100%;
+    }
+
+    .col-preview,
+    .col-check {
+        display: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .sidebar {
+        width: 50px;
+        overflow: hidden;
+    }
+
+    .sidebar-title,
+    .nav-text,
+    .nav-count {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+        padding: 12px 0;
+    }
+
+    .nav-icon {
+        font-size: 18px;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

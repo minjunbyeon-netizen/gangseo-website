@@ -1196,6 +1196,22 @@ img {
     font-weight: 600;
 }
 
+.footer-admin {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.footer-admin .admin-link {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-admin .admin-link:hover {
+    color: rgba(255, 255, 255, 0.6);
+}
+
 /* =====================================================
    Responsive Design
    ===================================================== */
