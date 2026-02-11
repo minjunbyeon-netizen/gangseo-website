@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>이미지 백업 업로드 (Local -> Firebase Storage)</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            background: #484f58;
+            cursor: not-allowed;
+        }
+
+        .log {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .ok {
+            color: #3fb950;
+        }
+
+        .err {
+            color: #f85149;
+        }
+
+        .info {
+            color: #58a6ff;
+        }
+
+        .warn {
+            color: #d29922;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>이미지 백업 → Firebase Storage 업로드 (디버그 모드)</h1>
+    <p style="color:#8b949e; margin-bottom:20px;">
+        로컬에 백업된 이미지들을 Firebase Storage로 전송합니다.<br>
+        (대상: 대표 이미지, 상세 페이지 이미지)
+    </p>
+
+    <button id="btnLogin" onclick="googleLogin()">1. Google 로그인</button>
+    <button id="btnUpload" onclick="startUpload()" disabled>2. 업로드 시작</button>
+
+    <div class="log" id="logArea"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+
+        // 카테고리별 상품 JSON 파일 목록
+        const PRODUCT_FILES = [
+            'migration_data/products_23_정일품참기름.json',
+            'migration_data/products_25_액상차즙.json',
+            'migration_data/products_53_더치커피.json'
+        ];
+
+        function log(msg, type = '') {
+            const el = document.getElementById('logArea');
+            el.innerHTML += `<div class="${type}">${new Date().toLocaleTimeString()} | ${msg}</div>`;
+            el.scrollTop = el.scrollHeight;
+        }
+
+        async function googleLogin() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                log(`로그인 성공: ${result.user.email}`, 'ok');
+                document.getElementById('btnLogin').style.display = 'none';
+                document.getElementById('btnUpload').disabled = false;
+            } catch (error) {
+                log(`로그인 실패: ${error.message}`, 'err');
+            }
+        }
+
+        async function startUpload() {
+            const btn = document.getElementById('btnUpload');
+            btn.disabled = true;
+            btn.textContent = '업로드 중...';
+
+            let sCount = 0;
+            let fCount = 0;
+
+            try {
+                // 1. 상세 이미지 업로드
+                log('=== 상세 페이지 이미지 업로드 시작 ===', 'info');
+                try {
+                    log('매핑 파일 로딩 중...', 'info');
+                    const response = await fetch('migration_data/content_images_map.json');
+                    if (!response.ok) throw new Error(`매핑 파일 없음 (${response.status})`);
+                    const mapData = await response.json();
+
+                    const filenames = Object.values(mapData);
+                    const uniqueFilenames = [...new Set(filenames)];
+                    log(`총 ${uniqueFilenames.length}개의 상세 이미지 발견`, 'info');
+
+                    let index = 0;
+                    for (const filename of uniqueFilenames) {
+                        index++;
+                        try {
+                            const encodedFilename = encodeURIComponent(filename);
+                            const url = `migration_data/images/details/${encodedFilename}`;
+
+                            log(`[${index}/${uniqueFilenames.length}] 로컬 파일 읽는 중: ${filename}`, 'info');
+                            const blob = await fetchBlob(url);
+                            log(`   → 읽기 성공 (${blob.size} bytes), Firebase 전송 시작...`, 'info');
+
+                            const ref = storage.ref().child(`products/details/${filename}`);
+                            await ref.put(blob);
+
+                            log(`   → 업로드 성공!`, 'ok');
+                            sCount++;
+                        } catch (e) {
+                            log(`   → 실패: ${e.message}`, 'err');
+                            console.error(e);
+                            fCount++;
+                        }
+                    }
+                } catch (e) {
+                    log(`상세 이미지 처리 중 오류: ${e.message}`, 'warn');
+                }
+
+                // 2. 대표 이미지 업로드
+                log('=== 대표 이미지 업로드 시작 ===', 'info');
+                for (const jsonFile of PRODUCT_FILES) {
+                    try {
+                        const res = await fetch(jsonFile);
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        if (!data.products) continue;
+
+                        for (const product of data.products) {
+                            const filename = `product_${product.id}_main`;
+                            try {
+                                const url = `migration_data/images/${encodeURIComponent(filename)}`;
+
+                                log(`[대표] 로컬 읽기: ${filename}`, 'info');
+                                const blob = await fetchBlob(url);
+
+                                log(`[대표] Firebase 전송 시작...`, 'info');
+                                const metadata = { contentType: blob.type };
+                                const ref = storage.ref().child(`products/main/${filename}`);
+                                await ref.put(blob, metadata);
+
+                                log(`[대표] 성공`, 'ok');
+                                sCount++;
+                            } catch (e) {
+                                log(`[대표] 실패: ${e.message}`, 'warn');
+                                fCount++;
+                            }
+                        }
+                    } catch (e) {
+                        log(`${jsonFile} 처리 실패: ${e.message}`, 'err');
+                    }
+                }
+
+                log(`=== 모든 작업 완료 ===`, 'info');
+                log(`성공: ${sCount}건, 실패: ${fCount}건`, sCount > 0 ? 'ok' : 'warn');
+
+            } catch (error) {
+                log(`치명적 오류: ${error.message}`, 'err');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '업로드 완료';
+        }
+
+        async function fetchBlob(url) {
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return await res.blob();
+            } catch (e) {
+                throw new Error(`파일 fetch 실패 (${url}): ${e.message}`);
+            }
+        }
+    </script>
+</body>
+
+</html>
