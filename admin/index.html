@@ -81,6 +81,9 @@
                 <a href="#" class="nav-item" onclick="switchToPopupManager(this)">
                     <span class="nav-text">팝업 관리</span>
                 </a>
+                <a href="#" class="nav-item" onclick="switchToPopupHistory(this)">
+                    <span class="nav-text">팝업 설정현황</span>
+                </a>
                 <div class="sidebar-divider"></div>
                 <div class="sidebar-title">신청 관리</div>
                 <a href="#" class="nav-item" data-board="applications" onclick="switchToApplications(this)">
@@ -202,6 +205,19 @@
                         <div class="form-actions">
                             <button class="btn-submit" onclick="savePopupSettings()">저장</button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- 팝업 설정현황 뷰 -->
+                <div id="popupHistoryView" style="display:none">
+                    <div class="content-header">
+                        <h2>팝업 설정현황</h2>
+                    </div>
+                    <div class="list-info">
+                        <span id="historyTotalCount">총 <strong>0</strong>건</span>
+                    </div>
+                    <div class="article-list" id="popupHistoryList">
+                        <div class="loading">데이터를 불러오는 중...</div>
                     </div>
                 </div>
 
@@ -904,6 +920,7 @@
             document.getElementById('applicationsView').style.display = 'none';
             document.getElementById('appDetailView').style.display = 'none';
             document.getElementById('popupManagerView').style.display = 'none';
+            document.getElementById('popupHistoryView').style.display = 'none';
             _origSwitchBoard(board, el);
         };
 
@@ -927,6 +944,7 @@
             document.getElementById('writeView').style.display = 'none';
             document.getElementById('applicationsView').style.display = 'none';
             document.getElementById('appDetailView').style.display = 'none';
+            document.getElementById('popupHistoryView').style.display = 'none';
             document.getElementById('popupManagerView').style.display = 'block';
 
             loadPopupSettings();
@@ -1024,6 +1042,13 @@
                 await db.collection('settings').doc('popup').set(settings);
                 document.getElementById('popupImageUrl').value = imageUrl;
 
+                // 변경 이력 저장
+                await db.collection('popup_history').add({
+                    ...settings,
+                    action: settings.enabled ? '활성' : '비활성',
+                    savedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
                 alert('팝업 설정이 저장되었습니다.');
             } catch (e) {
                 console.error('팝업 저장 실패:', e);
@@ -1032,6 +1057,99 @@
 
             btn.disabled = false;
             btn.textContent = '저장';
+        }
+
+        // ===================== 팝업 설정현황 =====================
+
+        function switchToPopupHistory(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('writeView').style.display = 'none';
+            document.getElementById('applicationsView').style.display = 'none';
+            document.getElementById('appDetailView').style.display = 'none';
+            document.getElementById('popupManagerView').style.display = 'none';
+            document.getElementById('popupHistoryView').style.display = 'block';
+
+            loadPopupHistory();
+        }
+
+        async function loadPopupHistory() {
+            const container = document.getElementById('popupHistoryList');
+            container.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
+
+            try {
+                const snapshot = await db.collection('popup_history')
+                    .orderBy('savedAt', 'desc')
+                    .limit(50)
+                    .get();
+
+                document.getElementById('historyTotalCount').innerHTML = `총 <strong>${snapshot.size}</strong>건`;
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<div class="empty-state">설정 이력이 없습니다.</div>';
+                    return;
+                }
+
+                let html = `<table class="article-table">
+                    <thead><tr>
+                        <th style="width:50px">번호</th>
+                        <th style="width:70px">상태</th>
+                        <th>제목</th>
+                        <th style="width:150px">노출기간</th>
+                        <th style="width:80px">크기</th>
+                        <th style="width:140px">저장일시</th>
+                    </tr></thead><tbody>`;
+
+                let num = snapshot.size;
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    const savedAt = d.savedAt ? d.savedAt.toDate() : null;
+                    const dateStr = savedAt ? formatDateTime(savedAt) : '-';
+                    const status = d.enabled
+                        ? '<span style="color:#2e9e5e;font-weight:600">활성</span>'
+                        : '<span style="color:#999">비활성</span>';
+
+                    const startStr = d.startDate ? formatDateShort(d.startDate) : '-';
+                    const endStr = d.endDate ? formatDateShort(d.endDate) : '-';
+
+                    html += `<tr>
+                        <td style="text-align:center">${num--}</td>
+                        <td style="text-align:center">${status}</td>
+                        <td>${escapeHtml(d.title || '(제목없음)')}</td>
+                        <td style="text-align:center;font-size:11px">${startStr}<br>~ ${endStr}</td>
+                        <td style="text-align:center;font-size:11px">${d.width || '-'}×${d.height || '-'}</td>
+                        <td style="text-align:center;font-size:12px">${dateStr}</td>
+                    </tr>`;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+
+            } catch (e) {
+                console.error('팝업 이력 로드 실패:', e);
+                container.innerHTML = '<div class="empty-state">이력을 불러올 수 없습니다.</div>';
+            }
+        }
+
+        function formatDateTime(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            const h = String(date.getHours()).padStart(2, '0');
+            const min = String(date.getMinutes()).padStart(2, '0');
+            return `${y}-${m}-${d} ${h}:${min}`;
+        }
+
+        function formatDateShort(dateStr) {
+            if (!dateStr) return '-';
+            const d = new Date(dateStr);
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const h = String(d.getHours()).padStart(2, '0');
+            const min = String(d.getMinutes()).padStart(2, '0');
+            return `${m}/${day} ${h}:${min}`;
         }
     </script>
 </body>
