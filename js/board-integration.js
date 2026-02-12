@@ -367,7 +367,6 @@
                     </div>
                     <div class="job-meta">
                         <div class="job-date">${item.date}</div>
-                        <div class="job-views">조회 ${views}</div>
                     </div>
                 </div>
             `;
@@ -387,7 +386,6 @@
                         <th class="num">번호</th>
                         <th class="title">제목</th>
                         <th class="date">작성일</th>
-                        <th class="views">조회</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -404,7 +402,6 @@
                     <td class="num">${numDisplay}</td>
                     <td class="title"><a href="${localLink}">${escapeHtml(item.title)}</a></td>
                     <td class="date">${item.date}</td>
-                    <td class="views">${views}</td>
                 </tr>
             `;
         });
@@ -438,7 +435,6 @@
                         <h4 class="gallery-card-title">${escapeHtml(item.title)}</h4>
                         <div class="gallery-card-meta">
                             <span class="gallery-card-date">${item.date}</span>
-                            <span class="gallery-card-views">조회 ${views}</span>
                         </div>
                     </div>
                 </a>
@@ -526,7 +522,6 @@
                 <h3 class="article-title">${escapeHtml(article.title)}</h3>
                 <div class="article-meta">
                     <span class="article-date">${article.date}</span>
-                    <span class="article-views">조회 ${views}</span>
                 </div>
             </div>
             ${imagesHtml}
